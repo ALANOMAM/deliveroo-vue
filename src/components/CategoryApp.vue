@@ -15,21 +15,21 @@ mounted(){
      //chiamata axios che tramite l'api mi restituisce i posts
      axios.get('http://127.0.0.1:8000/api/restaurants').then(res => {
 
-   console.log(res.data);
+      console.log(res.data);
 
-   //salvato i miei ris dentro l'array 
- this.restaurants = res.data.results;
+      //salvato i miei ris dentro l'array 
+      this.restaurants = res.data.results;
 
-})
+  })
 }
 
 }
 </script>
 
 <template>
- <section> 
+ <section class="parallax"> 
    <div class="container text-center">
-    <h2 class="">Cerca Per Categorie</h2>
+    <h2 class="text-white">Cerca Per Categorie</h2>
 
     <div class="row">
 
@@ -67,27 +67,42 @@ mounted(){
 
 <style lang="scss" scoped>
 
-section{
-    background-color: bisque;
-    padding-top: 40px;
-    padding-bottom: 40px;
+section {
+
+  background-image: url('/img/categories_background.jpeg');
+  background-position: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
 }
 
-.category-icon{
-    width: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.parallax {
+
+  min-height: 600px;
+
+  background-attachment: fixed;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: blur(0px);
+
+}
+
+.category-icon {
+
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
     
-    i{
-        font-size: 100px;
-        color:#FFCA0B; 
-    }
+  i {
+    font-size: 100px;
+    color:#FFCA0B; 
+  }
 
 }
 
 .category-name{
-    color:#FFCA0B; 
+  color:#FFCA0B; 
 }
 
 .category-name:active{
