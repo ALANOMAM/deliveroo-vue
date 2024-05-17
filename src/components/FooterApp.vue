@@ -4,7 +4,24 @@ export default{
 data(){
 
     return{
+        email: '',
+        showIcon: true
+    }
+},
 
+methods: {
+    checkInput: function() {
+        this.showIcon = this.email === '';
+    }
+},
+
+mounted() {
+    this.checkInput();
+},
+
+watch: {
+    email: function() {
+        this.checkInput();
     }
 }
 
@@ -18,7 +35,7 @@ data(){
                 <div class="col-5 left">
                     <div class="row">
                         <div class="col">
-                            <h2>Compagnia</h2>
+                            <h2>Azienda</h2>
                             <ul>
                                 <li><a href="">Chi Siamo</a></li>
                                 <li><a href="">Team</a></li>
@@ -62,8 +79,9 @@ data(){
 
                         <div class="col">
                             <span>Ricevi offerte esclusive nella tua casella di posta</span>
-                            <form action="" class="mt-3">
-                                <input type="email" class="form-control" placeholder="&#xf0e0; Inserisci la tua mail" >
+                            <form action="" class="mt-3 input-icon">
+                                <i class="fa fa-envelope icon" v-show="showIcon"></i>
+                                <input type="email" class="form-control" placeholder="Inserisci la tua mail" id="email-input" v-model="email">
                                 <button type="submit">Iscriviti</button>
                             </form>
                         </div>
@@ -143,8 +161,16 @@ data(){
                         cursor: default;
                     }
 
-                    form {
+                    .input-icon {
                         display: flex;
+                        position: relative;
+
+                        i {
+                            position: absolute;
+                            left: 10px;
+                            top: 13px;
+                            color: #A0A0A0;
+                        }
 
                         input {
                             width: 250px;
@@ -153,12 +179,13 @@ data(){
                             border: none;
                             color: #A0A0A0;
                             background-color: #424242;
-
+                            
                             &:focus {
                                 box-shadow: none;
                             }
-
+                            
                             &::placeholder {
+                                padding-left: 25px;
                                 font-size: 14px;
                                 color: #A0A0A0;
                             }
