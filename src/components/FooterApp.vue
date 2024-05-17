@@ -40,7 +40,7 @@ data(){
                             <h2>Legale</h2>
                             <ul>
                                 <li><a href="">Termini & Condizioni</a></li>
-                                <li><a href="">Rimborso 6 Cancellazione</a></li>
+                                <li><a href="">Rimborso & Cancellazione</a></li>
                                 <li><a href="">Informativa sulla Privacy</a></li>
                                 <li><a href="">Informativa sui Cookie</a></li>
                             </ul>
@@ -78,7 +78,7 @@ data(){
                     <span>Tutti i diritti riservati <i class="fa-regular fa-copyright"></i> <strong>Miriam Evardi, Mario Arista, Alan Omam, Pietro Antonio Nini</strong></span>   
                 </div>
                 <div class="col made-by">
-                    <span>Made with by <i class="fa-solid fa-heart"></i> <strong>Boolean</strong></span>
+                    <span>Made with <i class="fa-solid fa-heart"></i> by <strong>Boolean</strong></span>
                 </div>
             </div>
         </div>
@@ -103,11 +103,13 @@ data(){
             ul {
                 padding: 0;
 
-                li a{
+                li {
                     list-style-type: none;
-                    text-decoration: none;
-                    font-size: 8px;
-                    color: #DBDBDB;
+                    a{
+                        text-decoration: none;
+                        font-size: 8px;
+                        color: #DBDBDB;
+                    }
                 }
             } 
         }
