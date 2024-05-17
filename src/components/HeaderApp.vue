@@ -17,7 +17,7 @@ export default{
 
                 <!-- Logo con link -->
                 <router-link :to="'/'">
-                    <img src="/public/logo.svg" alt="Logo Just Bool">
+                    <img src="/logo.svg" alt="Logo Just Bool">
                 </router-link>
                 
                 <!-- Link Login Admin -->
@@ -75,7 +75,7 @@ header {
                 border: none;
                 border-radius: 8px;
 
-                box-shadow: 0 1px 3px 0 #ffb30e70;
+                box-shadow: 0 1px 3px 0 rgba(246, 89, 0, 1);
 
                 text-decoration: none;
                 background-color: white;
