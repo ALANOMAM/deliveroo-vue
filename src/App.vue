@@ -1,15 +1,21 @@
-<script setup>
-
+<script>
+import HeaderApp from './components/HeaderApp.vue';
+import FooterApp from './components/FooterApp.vue';
+export default{
+  components:{
+ HeaderApp,
+ FooterApp,
+  }
+}
 </script>
 
 <template>
    
-   
+    <HeaderApp></HeaderApp>
     <div class="container">
-      <h1>ciao</h1>
         <router-view></router-view>
     </div>
-
+    <FooterApp></FooterApp>
 </template>
 
 <style>
