@@ -21,9 +21,9 @@ export default{
 
     <JumboApp></JumboApp>
 
-    <div class="container">
+    
         <router-view></router-view>
-    </div>
+  
     
     <FooterApp></FooterApp>
 </template>
