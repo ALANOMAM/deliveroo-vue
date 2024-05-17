@@ -75,7 +75,7 @@ header {
                 border: none;
                 border-radius: 8px;
 
-                box-shadow: 0 1px 3px 0 rgba(246, 89, 0, 1);
+                box-shadow: 0px 3px 6px rgba(242, 173, 60, 0.5);
 
                 text-decoration: none;
                 background-color: white;
