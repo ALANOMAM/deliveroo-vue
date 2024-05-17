@@ -2,7 +2,7 @@
 import axios from 'axios';
 import RestaurantCard from '../components/RestaurantCard.vue';
 export default{
-name:'FilterRestaurant',
+name:'FilterRestaurants',
 data(){
     return{
       
@@ -16,12 +16,11 @@ data(){
   },
   
 mounted(){
-     //chiamata axios che tramite l'api mi restituisce i posts
      axios.get('http://127.0.0.1:8000/api/restaurants').then(res => {
 
    console.log(res.data);
 
-   //salvato i miei ris dentro l'array 
+
  this.restaurants = res.data.results;
 
 })
