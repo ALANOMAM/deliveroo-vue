@@ -32,7 +32,7 @@ watch: {
     <div class="footer">
         <div class="container">
             <div class="row">
-                <div class="col-5 left">
+                <div class="left col-lg-5 col-12 ms-4 m-lg-0">
                     <div class="row">
                         <div class="col">
                             <h2>Azienda</h2>
@@ -65,7 +65,7 @@ watch: {
                     </div>
                 </div>
 
-                <div class="col-7 right">
+                <div class="right col-lg-7 col-12 d-flex justify-content-lg-end justify-content-center">
                     <div class="row">
                         <div class="col">
                             <h2>Follow us</h2>
@@ -92,10 +92,10 @@ watch: {
             <hr>
 
             <div class="row">
-                <div class="col company">
+                <div class="col-9 col-lg company">
                     <span>Tutti i diritti riservati <i class="fa-regular fa-copyright"></i> <strong>Miriam Evardi, Mario Arista, Alan Omam, Pietro Antonio Nini</strong></span>   
                 </div>
-                <div class="col made-by">
+                <div class="col-3 col-lg made-by">
                     <span>Made with <i class="fa-solid fa-heart"></i> by <strong>Boolean</strong></span>
                 </div>
             </div>
@@ -133,8 +133,6 @@ watch: {
         }
 
         .right {
-            display: flex;
-            justify-content: end;
             .row {
                 display: flex;
                 flex-direction: column;
