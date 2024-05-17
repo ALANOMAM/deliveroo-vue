@@ -28,6 +28,7 @@ mounted(){
 <template>
     <h1>home</h1>
     <img src="/public/img/image.png"  style="background-color: brown;" alt="">
+    <i class="fa-solid fa-house"></i>
     <div v-for="restaurant in restaurants">
     <div>
       <img :src="restaurant.image" alt="">
