@@ -1,12 +1,16 @@
 <script>
 import HeaderApp from './components/HeaderApp.vue';
 import FooterApp from './components/FooterApp.vue';
-import FilterRestaurants from './pages/FilterRestaurants.vue';
+import JumboApp from './components/JumboApp.vue';
+
 export default{
+
   components:{
- HeaderApp,
- FooterApp,
- FilterRestaurants
+
+    HeaderApp,
+    FooterApp,
+    JumboApp,
+
   }
 }
 </script>
@@ -14,10 +18,13 @@ export default{
 <template>
    
     <HeaderApp></HeaderApp>
-    <div class="container">
+
+    <JumboApp></JumboApp>
+
+    
         <router-view></router-view>
-        <FilterRestaurants></FilterRestaurants>
-    </div>
+  
+    
     <FooterApp></FooterApp>
 </template>
 

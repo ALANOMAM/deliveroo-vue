@@ -1,32 +1,31 @@
 <script>
-import axios from 'axios';
+import CategoryApp from '../components/CategoryApp.vue';
+import IntroApp from '../components/IntroApp.vue';
+import SectionMobile from '../components/SectionMobile.vue';
+
 export default{
-name:'HomePage',
-data(){
-    return{
-      
-        restaurants:[],
-    }
-},
+  name:'HomePage',
 
-mounted(){
-     //chiamata axios che tramite l'api mi restituisce i posts
-     axios.get('http://127.0.0.1:8000/api/restaurants').then(res => {
+  components:{
+    CategoryApp,
+    IntroApp,
+    SectionMobile,
+  },
 
-   console.log(res.data);
-
-   //salvato i miei ris dentro l'array 
- this.restaurants = res.data.results;
-
-})
-}
-
+  data(){
+      return{
+        
+          
+      }
+  },
 }
 
 </script>
 
 <template>
-
+  <IntroApp></IntroApp>
+  <CategoryApp></CategoryApp>
+  <SectionMobile></SectionMobile>
 </template>
 
 <style>
