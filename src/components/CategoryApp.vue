@@ -2,15 +2,16 @@
 import axios from 'axios';
 import FilterRestaurants from './FilterRestaurants.vue';
 import { useRouter } from 'vue-router';
+import {store} from '../store.js'
 
 export default {
   name: 'CategoryApp',
   data() {
     return {
+      store,
       restaurants: [],
       categories: [],
-      checkBoxValue: [],
-      apiBaseUrl: 'http://127.0.0.1:8000/api',
+      
       apiPageNumber: 1,
     };
   },
@@ -20,26 +21,26 @@ export default {
   },
 
   mounted() {
-    axios.get('http://127.0.0.1:8000/api/restaurants').then(res => {
-      this.restaurants = res.data.results;
-    });
+    // axios.get('http://127.0.0.1:8000/api/restaurants').then(res => {
+    //   this.restaurants = res.data.results;
+    // });
 
-    axios.get('http://127.0.0.1:8000/api/categories').then(res => {
+    axios.get(this.store.apiBaseUrl +'/categories').then(res => {
       this.categories = res.data.results;
     })
   },
 
   methods: {
-    navigateToCategory(category) {
+    filterCategory(category) {
       this.$router.push({ name: 'filter-restaurants', params: { category } });
 
-      if(this.checkBoxValue.length > 0) {
-                axios.get('http://127.0.0.1:8000/api/restaurant?categories=' + this.checkBoxValue, {
+      if(this.store.checkBoxValue.length > 0) {
+                axios.get(this.store.apiBaseUrl +'/restaurants?categories=' + this.store.checkBoxValue, {
                     params: {
                         page: this.apiPageNumber
                     }
                 }).then(res => {
-
+                  console.log(res)
                     this.restaurants = res.data.results
 
                 })
@@ -62,7 +63,9 @@ export default {
               <div class="category-icon">
                 <i class="fa-solid fa-bowl-food"></i>
               </div>
-              <a href="#" class="btn category-name" @click.prevent="navigateToCategory(categoryElement.category_name)">{{ categoryElement.category_name }}</a>
+              <input class="form-check-input" type="checkbox" role="switch" :value="categoryElement.category_name" :id="categoryElement.category_name" :name="categoryElement.category_name" v-model="store.checkBoxValue" @change="filterCategory()">                  
+              <label class="form-check-label" :for="categoryElement.category_name">{{categoryElement.category_name}}</label>
+              <!-- <a href="#" class="btn category-name" @click.prevent="filterCategory(categoryElement.category_name)">{{ categoryElement.category_name }}</a> -->
             </div>
           </div>
         </div>

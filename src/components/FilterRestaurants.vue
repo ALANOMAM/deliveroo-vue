@@ -1,11 +1,12 @@
 <script>
 import axios from 'axios';
 import RestaurantCard from '../components/RestaurantCard.vue';
+import {store} from '../store.js'
 export default{
 name:'FilterRestaurants',
 data(){
     return{
-      
+        store,
         restaurants:[],
     }
 
@@ -16,14 +17,15 @@ data(){
   },
   
 mounted(){
-     axios.get('http://127.0.0.1:8000/api/restaurants').then(res => {
+  axios.get(this.store.apiBaseUrl +'/restaurants?categories=' + this.store.checkBoxValue, {
+                    params: {
+                        page: this.apiPageNumber
+                    }
+                }).then(res => {
+                  console.log(res)
+                    this.restaurants = res.data.results
 
-   console.log(res.data);
-
-
- this.restaurants = res.data.results;
-
-})
+                })
 }
 
 }
