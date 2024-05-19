@@ -1,7 +1,7 @@
 <script>
 import HeaderApp from './components/HeaderApp.vue';
 import FooterApp from './components/FooterApp.vue';
-import JumboApp from './components/JumboApp.vue';
+
 
 export default{
 
@@ -9,7 +9,7 @@ export default{
 
     HeaderApp,
     FooterApp,
-    JumboApp,
+   
 
   }
 }
@@ -19,7 +19,7 @@ export default{
    
     <HeaderApp></HeaderApp>
 
-    <JumboApp></JumboApp>
+   
 
     
         <router-view></router-view>

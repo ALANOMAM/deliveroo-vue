@@ -1,6 +1,7 @@
 <script>
 import axios from 'axios';
 import RestaurantCard from '../components/RestaurantCard.vue';
+import JumboApp from '../components/JumboApp.vue';
 import {store} from '../store.js'
 export default{
 name:'FilterRestaurants',
@@ -14,6 +15,7 @@ data(){
 
   components: {
     RestaurantCard,
+    JumboApp
   },
   
 mounted(){
@@ -34,7 +36,7 @@ mounted(){
 
 <template>
 
-  
+<JumboApp></JumboApp>
 
     <div class="container my-5">
         <div class="row">
