@@ -34,8 +34,7 @@ mounted(){
 
   
 
-    <div>
-        <h1>Home</h1>
+    <div class="container my-5">
         <div class="row">
             <RestaurantCard v-for="restaurant in restaurants" :key="restaurant.id" :restaurant="restaurant"></RestaurantCard>
         </div>

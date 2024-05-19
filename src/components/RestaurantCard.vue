@@ -20,31 +20,33 @@ export default{
 </script>
 
 <template>
-    
-    <div class="card pt-3 px-3">
+    <div class="col-sm-3 mt-4 mb-sm-0">
+      <div class="card pt-3 px-3">
         <div class="image">
-            <img :src="'http://localhost:8000/storage/' + restaurant.image" class="card-img-top" alt="...">
+          <img :src="'http://localhost:8000/storage/' + restaurant.image" class="card-img-top" alt="...">
         </div>
         <div class="card-body">
-            <h5 class="card-title text-center py-3">{{ restaurant.restaurant_name }}</h5>
+          <h5 class="card-title text-center py-3">{{ restaurant.restaurant_name }}</h5>
         </div>
-        <router-link :to="{name: 'single-restaurant', params: {id: restaurant.id}}" class="btn btn-primary ">Visualizza</router-link>
+        <router-link :to="{name: 'single-restaurant', params: {id: restaurant.id}}" class="btn btn-primary d-block mx-auto my-3">Visualizza</router-link>
+      </div>
     </div>
-    
-</template>
-
-<style lang="scss">
+  </template>
+  
+  <style lang="scss" scoped>
     .card {
-        width: 20%;
+      width: 100%;
     }
-
+  
     .image {
-        width: 100%;
-        height: 150px;
-        display: flex; 
+      width: 100%;
+      height: 150px;
+      display: flex; 
     }
-
+  
     img {
-        object-fit: cover;
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
     }
-</style>
+  </style>

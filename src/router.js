@@ -1,16 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
-
-// components
-
-// qui importo le mie viste 
 import HomePage from './pages/HomePage.vue';
-import SingleRestaurant from './pages/SingleRestaurant.vue';
-//import SinglePage from './pages/SinglePage.vue';
-
+import FilterRestaurants from "./components/FilterRestaurants.vue";
+import SingleRestaurant from "./pages/SingleRestaurant.vue";
 const router = createRouter({
     history: createWebHistory(),
-
-    // qui definisco le rotte delle mie viste 
     routes: [
         {
             path: '/',
@@ -18,11 +11,16 @@ const router = createRouter({
             component: HomePage
         },
         {
-            path: '/restaurants/:id',
+            path: '/restaurants/:category?',
+            name: 'filter-restaurants',
+            component: FilterRestaurants,
+        },
+        {
+            path: '/restaurant/:id',
             name: 'single-restaurant',
-            component: SingleRestaurant
+            component: SingleRestaurant,
         },
     ]
 });
 
-export { router };  
+export { router };
