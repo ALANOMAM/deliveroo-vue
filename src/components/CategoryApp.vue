@@ -30,7 +30,7 @@ export default {
     axios.get(this.store.apiBaseUrl +'/categories').then(res => {
       this.categories = res.data.results;
     })
-
+    this.getAllRestaurants();
     this.filterCategory();
   },
 
@@ -48,7 +48,19 @@ export default {
 
                 })
 
-            } 
+            } else {
+              this.getAllRestaurants();
+            }
+    },
+
+    getAllRestaurants() {
+      axios.get(this.store.apiBaseUrl + '/restaurants', {
+        params: {
+          page: this.apiPageNumber
+        }
+      }).then(res => {
+        this.restaurants = res.data.results;
+      });
     },
   }
 };
