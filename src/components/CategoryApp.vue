@@ -15,6 +15,8 @@ export default {
       categories: [],
       
       apiPageNumber: 1,
+
+      currentPage: 1,
     };
   },
 
@@ -43,7 +45,7 @@ export default {
                         page: this.apiPageNumber
                     }
                 }).then(res => {
-                  console.log(res)
+                  // console.log(res)
                     this.restaurants = res.data.results
 
                 })
@@ -59,7 +61,8 @@ export default {
           page: this.apiPageNumber
         }
       }).then(res => {
-        this.restaurants = res.data.results;
+      console.log(res)
+        this.restaurants = res.data.results.data;
       });
     },
   }
@@ -95,6 +98,14 @@ export default {
         <div class="row">
             <RestaurantCard v-for="restaurant in restaurants" :key="restaurant.id" :restaurant="restaurant"></RestaurantCard>
         </div>
+
+        <vue-awesome-paginate
+  :total-items="50"
+  v-model="currentPage"
+  :items-per-page="5"
+  :max-pages-shown="5"
+  :on-click="onClickHandler"
+/>
     </div>
   </section>
 
