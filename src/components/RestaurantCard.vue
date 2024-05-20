@@ -28,7 +28,7 @@ export default{
         <div class="card-body">
           <h5 class="card-title text-center py-3">{{ restaurant.restaurant_name }}</h5>
         </div>
-        <a :href="'/restaurant/' + restaurant.id" class="btn btn-primary d-block mx-auto my-3">Visualizza</a>
+       <a :href="'/restaurant/' + restaurant.id" class="btn btn-primary d-block mx-auto my-3">Visualizza</a>
       </div>
     </div>
   </template>

@@ -1,8 +1,10 @@
 <script>
 import axios from 'axios';
-import FilterRestaurants from './FilterRestaurants.vue';
-import { useRouter } from 'vue-router';
+
+
 import {store} from '../store.js'
+import RestaurantCard from './RestaurantCard.vue';
+
 
 export default {
   name: 'CategoryApp',
@@ -17,7 +19,7 @@ export default {
   },
 
   components: {
-    FilterRestaurants,
+    RestaurantCard,
   },
 
   mounted() {
@@ -28,11 +30,12 @@ export default {
     axios.get(this.store.apiBaseUrl +'/categories').then(res => {
       this.categories = res.data.results;
     })
+
+    this.filterCategory();
   },
 
   methods: {
-    filterCategory(category) {
-      this.$router.push({ name: 'filter-restaurants', params: { category } });
+    filterCategory() {
 
       if(this.store.checkBoxValue.length > 0) {
                 axios.get(this.store.apiBaseUrl +'/restaurants?categories=' + this.store.checkBoxValue, {
@@ -70,6 +73,11 @@ export default {
           </div>
         </div>
       </div>
+    </div>
+    <div class="container my-5">
+        <div class="row">
+            <RestaurantCard v-for="restaurant in restaurants" :key="restaurant.id" :restaurant="restaurant"></RestaurantCard>
+        </div>
     </div>
   </section>  
 </template>
