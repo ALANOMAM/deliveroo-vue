@@ -181,6 +181,7 @@ export default {
               :items-per-page="per_page"
               :max-pages-shown="last_page"
               :on-click="changePage"
+              :hide-prev-next-when-ends="true"
             />
         </div>
     </div>
