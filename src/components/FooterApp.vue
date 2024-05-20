@@ -71,7 +71,7 @@ watch: {
                             <h2>Follow us</h2>
                         </div>
 
-                        <div class="col d-flex gap-2">
+                        <div class="col d-flex gap-3">
                             <a href=""><i class="fa-brands fa-instagram"></i></a>
                             <a href=""><i class="fa-brands fa-facebook"></i></a>
                             <a href=""><i class="fa-brands fa-x-twitter"></i></a>
@@ -115,7 +115,7 @@ watch: {
         .left {
             h2 {
                 margin-bottom: 20px;
-                font-size: 10px;
+                font-size: 14px;
                 color: white;
                 cursor: default;
             }
@@ -127,12 +127,12 @@ watch: {
                     list-style-type: none;
                     a{
                         text-decoration: none;
-                        font-size: 8px;
+                        font-size: 9px;
                         color: #DBDBDB;
                         transition: 0.2s;
 
                         &:hover {
-                            font-size: 10px;
+                            font-size: 11px;
                             color: #fffcfc;
                         }
                     }
@@ -148,7 +148,7 @@ watch: {
 
                 .col {
                     h2 {
-                        font-size: 9px;
+                        font-size: 12px;
                         font-weight: 800;
                         text-transform: uppercase;
                         color: #A0A0A0;
@@ -156,7 +156,7 @@ watch: {
                     }
 
                     a {
-                        font-size: 15px;
+                        font-size: 17px;
                         color: #A0A0A0;
 
                         transition: 0.2s;
@@ -206,8 +206,8 @@ watch: {
 
                         button {
                             padding: 8px 20px;
-                            font-size: 12px;
-                            font-weight: 600;
+                            font-size: 14px;
+                            font-weight: 700;
                             color: white;
                             border: 0;
                             border-radius: 6px;
@@ -225,7 +225,7 @@ watch: {
     }
 
     .company {
-        font-size: 8px;
+        font-size: 9px;
         color: #F5F5F5;
         cursor: default;
     }
@@ -233,7 +233,7 @@ watch: {
     .made-by {
         display: flex;
         justify-content: end;
-        font-size: 8px;
+        font-size: 9px;
         color: #F5F5F5;
 
         i {
