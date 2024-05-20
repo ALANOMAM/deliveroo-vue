@@ -16,18 +16,15 @@ export default{
 </script>
 
 <template>
-   
+  <div class="main">
     <HeaderApp></HeaderApp>
-
-   
-
-    
-        <router-view></router-view>
-  
-    
+    <router-view></router-view>
     <FooterApp></FooterApp>
+  </div>
 </template>
 
 <style>
-
+.main {
+  user-select: none;
+}
 </style>

@@ -9,6 +9,7 @@ export default {
             restaurantId: null,
             restaurant: {},   
             baseApiUrl: 'http://127.0.0.1:8000/api',
+            quantity: 1,
         }
     },
 
@@ -33,6 +34,16 @@ export default {
                 return '/img/Default_different_food_0.jpg';
             }
         },    
+
+        decrement() {
+            if (this.quantity > 1) {
+                this.quantity--;
+            }
+        },
+            
+        increment() {
+            this.quantity++;
+        }
     },
 }
 </script>
@@ -80,7 +91,7 @@ export default {
             <h2 class="text-center fs-2 my-4 text-uppercase">Menù</h2>
 
             <div class="dishes" v-for="dish in restaurant.dishes" :key="dish.id">
-                <div class="dish">
+                <div class="dish" type="button" data-bs-toggle="modal" data-bs-target="#addDish">
 
                     <!-- Immagine Piatto -->
                     <div class="img-dish d-flex align-items-center">
@@ -108,6 +119,27 @@ export default {
                     </div>
                 </div>
                 <hr>
+
+                <!-- Modal -->
+                <div class="modal fade" id="addDish" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content py-2 px-5">
+                        <div class="modal-body d-flex flex-column align-items-center">
+                            <h2 class="text-center mb-4">{{ dish.dish_name }}</h2>
+                            <span class="mb-5 fs-5 fw-bold">{{ dish.dish_price }} €</span>
+
+                            <div class="counter">
+                                <span class="minus" @click="decrement" :disabled="quantity === 1">-</span>
+                                <span class="px-3 fs-3">{{ quantity }}</span>
+                                <span class="plus" @click="increment">+</span>
+                            </div>
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="button" class="btn button">Aggiungi al carrello</button>
+                        </div>
+                    </div>
+                </div>
+                </div>
             </div>
         </div>
     </div>
@@ -177,6 +209,38 @@ export default {
             width: 110px;
             height: 65px;
             border-radius: 8px;
+        }
+    }
+}
+
+.modal {
+    .counter {
+        .minus, .plus {
+            font-size: 25px;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        input {
+            border: none;
+        }
+    }
+
+    .button {
+        margin-top: 10px;
+        padding: 10px 20px;
+    
+        text-transform: uppercase;
+        font-size: bold;
+        font-weight: 16px;
+        
+        background-color: rgba(246, 89, 0, 1);
+        color: white;
+    
+        &:hover {
+            background-color: transparent;
+            color: rgba(246, 89, 0, 1);
+            border: 1px solid rgba(246, 89, 0, 1);
         }
     }
 }
