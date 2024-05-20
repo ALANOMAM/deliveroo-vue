@@ -141,7 +141,7 @@ export default {
   </section>  
 
   <section class="restaurants-section">
-       <h2>Lista Ristoranti</h2>
+       <h2 class="text-center my-5">Lista Ristoranti</h2>
     <div class="container my-5">
         <div class="row">
             <RestaurantCard v-for="restaurant in restaurants" :key="restaurant.id" :restaurant="restaurant"></RestaurantCard>
@@ -177,10 +177,6 @@ export default {
   background-color:#FFCA0B;  
   color: white
 }*/
-
-.restaurants-section{
-    background-color:#FEFAF1;
-}
 
 .parallax {
 
