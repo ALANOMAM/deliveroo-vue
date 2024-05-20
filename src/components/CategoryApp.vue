@@ -16,9 +16,8 @@ export default {
       
       apiPageNumber: 1,
 
-      isActive:false,
+      /*isActive:false,*/
 
-      activeCatNumber: 1,
      
       //rispettare ordine
       categoryImages:[
@@ -84,14 +83,13 @@ export default {
       });
     },
 
- selectedCategory(index){
+ /*selectedCategory(index){
 
     if(this.activeCatNumber == index){
         this.isActive = !this.isActive
     }
- 
     console.log(index);
- }   
+ }   */
 
 
   }
@@ -119,10 +117,15 @@ export default {
                 </div>
                
               </div>
+               
 
-              <input class="form-check-input checkbox-hidden" type="checkbox" role="switch" :value="categoryElement.category_name" :id="categoryElement.category_name" :name="categoryElement.category_name" v-model="store.checkBoxValue" @change="filterCategory()">                  
-              <label class=" form-check-label categoryEv "  :id="catIndex" :class=" isActive? 'active' : ''" @click = selectedCategory(catIndex)  :for="categoryElement.category_name">{{categoryElement.category_name}}</label>
+              <div class="checkbox-name">
+              <input class="form-check-input" type="checkbox" role="switch" :value="categoryElement.category_name" :id="categoryElement.category_name" :name="categoryElement.category_name" v-model="store.checkBoxValue" @change="filterCategory()">                  
+              <label class=" form-check-label categoryEv "   :for="categoryElement.category_name">{{categoryElement.category_name}}</label>
+              <!--<label class=" form-check-label categoryEv "   :class=" isActive? 'active' : ''"  @click = selectedCategory(catIndex)  :for="categoryElement.category_name">{{categoryElement.category_name}}</label>-->
               <!-- <a href="#" class="btn category-name" @click.prevent="filterCategory(categoryElement.category_name)">{{ categoryElement.category_name }}</a> -->
+             </div>
+            
             </div>
           </div>
 
@@ -152,24 +155,29 @@ export default {
 
 <style lang="scss" scoped>
 
+.checkbox-name{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .box:hover{
     border: #F17228 solid 2px;
     background-color: whitesmoke;
 }
 
-.checkbox-hidden{
-    display: none;
-}
+
 
 .categoryEv{
     padding:5px;
     border-radius: 5px;
 
 }
-.active{
+
+/*.active{
   background-color:#FFCA0B;  
   color: white
-}
+}*/
 
 .restaurants-section{
     background-color:#FEFAF1;
@@ -208,6 +216,7 @@ filter: blur(0px);
     width: 70px;
     height: 70px;
     border-radius: 50%;
+    object-fit:cover;
  }
 
 }
