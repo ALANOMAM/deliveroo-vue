@@ -234,6 +234,11 @@ export default {
     border: 1px solid rgba(255, 179, 14, 1);
   }
 
+  h2 {
+  color: #F17228;
+  font-weight: 700;
+}
+
 .categoryEv{
     padding:5px;
     border-radius: 5px;

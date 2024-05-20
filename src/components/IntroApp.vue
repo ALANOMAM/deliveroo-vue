@@ -59,6 +59,7 @@ export default{
 
 h2 {
   color: #F17228;
+  font-weight: 700;
 }
 
 .order-box {
@@ -110,13 +111,20 @@ h2 {
   }
 }
 
+.meals-bg,
+.order-bg,
+.payments-bg{
+  filter: drop-shadow(0px 15px 20px rgba(255, 174, 0, 0.3));
+}
+
 .card-text {
   font-weight: bold;
+  font-size: 22px;
 }
 
 .card-description {
   max-width: 300px;
-  font-size: 14px;
+  font-size: 18px;
   color: #9E9E9E;
 }
 </style>
