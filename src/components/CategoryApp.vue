@@ -17,6 +17,11 @@ export default {
       apiPageNumber: 1,
 
       currentPage: 1,
+      per_page: 1,
+      last_page: 1,
+      total_items:1,
+      apiLinks: [],
+
     };
   },
 
@@ -45,8 +50,8 @@ export default {
                         page: this.apiPageNumber
                     }
                 }).then(res => {
-                  // console.log(res)
-                    this.restaurants = res.data.results
+                  console.log(res)
+                    this.restaurants = res.data.results.data
 
                 })
 
@@ -63,9 +68,27 @@ export default {
       }).then(res => {
       console.log(res)
         this.restaurants = res.data.results.data;
+        this.apiLinks = res.data.results.links;
+        this.last_page = res.data.results.last_page;
+        this.total_items = res.data.results.total;
+        this.per_page = res.data.results.per_page;
       });
     },
-  }
+  
+
+  changePage(direction) {
+            if (direction === 'next' && this.currentPage < this.last_page) {
+                this.currentPage++;
+            } else if (direction === 'prev' && this.currentPage > 1) {
+                this.currentPage--;
+            }
+
+            this.apiPageNumber = this.currentPage;
+
+            
+            this.getAllRestaurants();
+        }
+      },
 };
 </script>
 
@@ -100,12 +123,12 @@ export default {
         </div>
 
         <vue-awesome-paginate
-  :total-items="50"
-  v-model="currentPage"
-  :items-per-page="5"
-  :max-pages-shown="5"
-  :on-click="onClickHandler"
-/>
+          :total-items="total_items"
+          v-model="currentPage"
+          :items-per-page="per_page"
+          :max-pages-shown="last_page"
+          :on-click="changePage"
+        />
     </div>
   </section>
 
