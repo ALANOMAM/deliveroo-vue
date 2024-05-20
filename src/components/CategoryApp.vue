@@ -15,10 +15,6 @@ export default {
       categories: [],
       
       apiPageNumber: 1,
-
-      isActive:false,
-     
-      
     };
   },
 
@@ -47,7 +43,7 @@ export default {
                         page: this.apiPageNumber
                     }
                 }).then(res => {
-                  //console.log(res)
+                  console.log(res)
                     this.restaurants = res.data.results
 
                 })
@@ -66,14 +62,6 @@ export default {
         this.restaurants = res.data.results;
       });
     },
-
- selectedCategory(index){
-
- this.isActive = !this.isActive
-    console.log(index);
- }   
-
-
   }
 };
 </script>
@@ -84,14 +72,14 @@ export default {
       <h2 class="text-white">Cerca Per Categorie</h2>
 
       <div class="row">
-        <div class="col-sm-3 mt-4 mb-sm-0" v-for="(categoryElement , catIndex) in categories" :key="categoryElement">
+        <div class="col-sm-3 mt-4 mb-sm-0" v-for="categoryElement in categories" :key="categoryElement">
           <div class="card">
             <div class="card-body d-flex flex-column align-items-center">
               <div class="category-icon">
                 <i class="fa-solid fa-bowl-food"></i>
               </div>
-              <input class="form-check-input checkbox-hidden" type="checkbox" role="switch" :value="categoryElement.category_name" :id="categoryElement.category_name" :name="categoryElement.category_name" v-model="store.checkBoxValue" @change="filterCategory()">                  
-              <label class="form-check-label categoryEv " :class=" isActive? 'active' : ''" @click = selectedCategory(catIndex)   :for="categoryElement.category_name">{{categoryElement.category_name}}</label>
+              <input class="form-check-input" type="checkbox" role="switch" :value="categoryElement.category_name" :id="categoryElement.category_name" :name="categoryElement.category_name" v-model="store.checkBoxValue" @change="filterCategory()">                  
+              <label class="form-check-label" :for="categoryElement.category_name">{{categoryElement.category_name}}</label>
               <!-- <a href="#" class="btn category-name" @click.prevent="filterCategory(categoryElement.category_name)">{{ categoryElement.category_name }}</a> -->
             </div>
           </div>
@@ -102,9 +90,8 @@ export default {
   </section>  
 
   <section class="restaurants-section">
-       
-    <div class="container p-5">
-         <h2 class="text-center">Lista Ristoranti</h2>
+       <h2>Lista Ristoranti</h2>
+    <div class="container my-5">
         <div class="row">
             <RestaurantCard v-for="restaurant in restaurants" :key="restaurant.id" :restaurant="restaurant"></RestaurantCard>
         </div>
@@ -115,23 +102,6 @@ export default {
 
 
 <style lang="scss" scoped>
-.checkbox-hidden{
-    display: none;
-}
-
-.categoryEv{
-    padding:5px;
-    border-radius: 5px;
-
-}
-.active{
-  background-color:#FFCA0B;  
-  color: white
-}
-
-.restaurants-section{
-    background-color:#FEFAF1;
-}
 
 .parallax {
 
