@@ -4,7 +4,24 @@ export default{
 data(){
 
     return{
+        email: '',
+        showIcon: true
+    }
+},
 
+methods: {
+    checkInput: function() {
+        this.showIcon = this.email === '';
+    }
+},
+
+mounted() {
+    this.checkInput();
+},
+
+watch: {
+    email: function() {
+        this.checkInput();
     }
 }
 
@@ -15,10 +32,10 @@ data(){
     <div class="footer">
         <div class="container">
             <div class="row">
-                <div class="col-5 left">
+                <div class="left col-lg-5 col-12 ms-4 m-lg-0">
                     <div class="row">
                         <div class="col">
-                            <h2>Compagnia</h2>
+                            <h2>Azienda</h2>
                             <ul>
                                 <li><a href="">Chi Siamo</a></li>
                                 <li><a href="">Team</a></li>
@@ -40,7 +57,7 @@ data(){
                             <h2>Legale</h2>
                             <ul>
                                 <li><a href="">Termini & Condizioni</a></li>
-                                <li><a href="">Rimborso 6 Cancellazione</a></li>
+                                <li><a href="">Rimborso & Cancellazione</a></li>
                                 <li><a href="">Informativa sulla Privacy</a></li>
                                 <li><a href="">Informativa sui Cookie</a></li>
                             </ul>
@@ -48,7 +65,7 @@ data(){
                     </div>
                 </div>
 
-                <div class="col-7 right">
+                <div class="right col-lg-7 col-12 d-flex justify-content-lg-end justify-content-center">
                     <div class="row">
                         <div class="col">
                             <h2>Follow us</h2>
@@ -62,8 +79,9 @@ data(){
 
                         <div class="col">
                             <span>Ricevi offerte esclusive nella tua casella di posta</span>
-                            <form action="" class="mt-3">
-                                <input type="email" class="form-control" placeholder="&#xf0e0; Inserisci la tua mail" >
+                            <form action="" class="mt-3 input-icon">
+                                <i class="fa fa-envelope icon" v-show="showIcon"></i>
+                                <input type="email" class="form-control" placeholder="Inserisci la tua mail" id="email-input" v-model="email">
                                 <button type="submit">Iscriviti</button>
                             </form>
                         </div>
@@ -74,11 +92,11 @@ data(){
             <hr>
 
             <div class="row">
-                <div class="col company">
+                <div class="col-9 col-lg company">
                     <span>Tutti i diritti riservati <i class="fa-regular fa-copyright"></i> <strong>Miriam Evardi, Mario Arista, Alan Omam, Pietro Antonio Nini</strong></span>   
                 </div>
-                <div class="col made-by">
-                    <span>Made with by <i class="fa-solid fa-heart"></i> <strong>Boolean</strong></span>
+                <div class="col-3 col-lg made-by">
+                    <span>Made with <i class="fa-solid fa-heart"></i> by <strong>Boolean</strong></span>
                 </div>
             </div>
         </div>
@@ -87,8 +105,10 @@ data(){
 
 <style lang="scss" scoped>
 .footer {
+    position: relative;
     padding: 40px 0;
     background-color: #212121;
+    z-index: 1;
 
     .row {
         padding-bottom: 10px;
@@ -103,18 +123,24 @@ data(){
             ul {
                 padding: 0;
 
-                li a{
+                li {
                     list-style-type: none;
-                    text-decoration: none;
-                    font-size: 8px;
-                    color: #DBDBDB;
+                    a{
+                        text-decoration: none;
+                        font-size: 8px;
+                        color: #DBDBDB;
+                        transition: 0.2s;
+                        
+                        &:hover {
+                            font-size: 9px;
+                            color: #f0f0f0;
+                        }
+                    }
                 }
             } 
         }
 
         .right {
-            display: flex;
-            justify-content: end;
             .row {
                 display: flex;
                 flex-direction: column;
@@ -132,6 +158,12 @@ data(){
                     a {
                         font-size: 15px;
                         color: #A0A0A0;
+                        transition: 0.2s;
+                        
+                        &:hover {
+                            font-size: 9px;
+                            color: #f0f0f0;
+                        }
                     }
 
                     span {
@@ -141,8 +173,16 @@ data(){
                         cursor: default;
                     }
 
-                    form {
+                    .input-icon {
                         display: flex;
+                        position: relative;
+
+                        i {
+                            position: absolute;
+                            left: 10px;
+                            top: 13px;
+                            color: #A0A0A0;
+                        }
 
                         input {
                             width: 250px;
@@ -151,12 +191,13 @@ data(){
                             border: none;
                             color: #A0A0A0;
                             background-color: #424242;
-
+                            
                             &:focus {
                                 box-shadow: none;
                             }
-
+                            
                             &::placeholder {
+                                padding-left: 25px;
                                 font-size: 14px;
                                 color: #A0A0A0;
                             }
@@ -185,6 +226,7 @@ data(){
     .company {
         font-size: 8px;
         color: #F5F5F5;
+        cursor: default;
     }
 
     .made-by {
@@ -192,6 +234,7 @@ data(){
         justify-content: end;
         font-size: 8px;
         color: #F5F5F5;
+        cursor: default;
 
         i {
             color: #F2AD3C;
