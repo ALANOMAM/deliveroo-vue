@@ -45,7 +45,7 @@ export default {
                 <div class="info">
                     <h2 class="fs-3">{{ restaurant.restaurant_name }}</h2>
 
-                    <div class="category list-group-item d-flex mt-3 gap-1">
+                    <div class="category list-group-item d-flex mt-3 gap-1 flex-wrap w-75">
                         <span v-for="category in restaurant.categories" :key="category.id" class="badge rounded-pill">
                             {{ category.category_name }}
                         </span>
@@ -55,16 +55,20 @@ export default {
                 </div>
 
                 <div class="contacts d-flex flex-column gap-2">
-                    <span><i class="fa-solid fa-phone me-2"></i> <a href="tel:{{ restaurant.phone }}" class="text-decoration-none">{{ restaurant.phone }}</a></span>
-                    <span><i class="fa-solid fa-location-dot me-2 mb-3"></i> <a :href="'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(restaurant.address)" target="_blank" class="text-decoration-none">{{ restaurant.address }}</a>.</span>
-                    <span>VAT: {{ restaurant.vat }}</span>
+                    <span class="phone"><i class="fa-solid fa-phone me-2"></i> <a href="tel:{{ restaurant.phone }}" class="text-decoration-none">{{ restaurant.phone }}</a></span>
+                    <span class="address"><i class="fa-solid fa-location-dot me-2 mb-3"></i> <a :href="'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(restaurant.address)" target="_blank" class="text-decoration-none">{{ restaurant.address }}</a>.</span>
+                    <span class="vat">VAT: {{ restaurant.vat }}</span>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="page">
-
+        <div class="container">
+            <div class="dishes">
+                
+            </div>
+        </div>
     </div>
 </template>
 
@@ -74,7 +78,7 @@ export default {
     cursor: default;
     
     .restaurant {
-        margin: 0 150px;
+        margin: 0 90px;
         padding: 15px 0;
         display: flex;
         align-items: center;
@@ -87,9 +91,9 @@ export default {
         }
 
         .info {
-            padding-left: 20px;
+            padding-left: 30px;
 
-            .category span{
+            .category span {
                 font-size: 11px;
                 color: #403f3f;
                 background: linear-gradient(to right, #ebb45b 0%, #c68434 100%);
@@ -103,9 +107,9 @@ export default {
         }
 
         .contacts {
-            padding-left: 50px;
+            padding-left: 20px;
 
-            span {
+            .phone, .address {
                 font-size: 13px;
                 transition: 0.2s;
                 &:hover {
@@ -115,6 +119,10 @@ export default {
                 a {
                     color: #A0A0A0;
                 }
+            }
+
+            .vat {
+                font-size: 13px;
             }
             
         }
