@@ -122,13 +122,15 @@ export default {
             <RestaurantCard v-for="restaurant in restaurants" :key="restaurant.id" :restaurant="restaurant"></RestaurantCard>
         </div>
 
-        <vue-awesome-paginate
-          :total-items="total_items"
-          v-model="currentPage"
-          :items-per-page="per_page"
-          :max-pages-shown="last_page"
-          :on-click="changePage"
-        />
+        <div class="text-center mt-5">
+            <vue-awesome-paginate
+              :total-items="total_items"
+              v-model="currentPage"
+              :items-per-page="per_page"
+              :max-pages-shown="last_page"
+              :on-click="changePage"
+            />
+        </div>
     </div>
   </section>
 
