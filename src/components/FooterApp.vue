@@ -129,6 +129,12 @@ watch: {
                         text-decoration: none;
                         font-size: 8px;
                         color: #DBDBDB;
+                        transition: 0.2s;
+
+                        &:hover {
+                            font-size: 10px;
+                            color: #fffcfc;
+                        }
                     }
                 }
             } 
@@ -152,6 +158,13 @@ watch: {
                     a {
                         font-size: 15px;
                         color: #A0A0A0;
+
+                        transition: 0.2s;
+
+                        &:hover {
+                            transform: scale(130%);
+                            color: #fffcfc;
+                        }
                     }
 
                     span {
@@ -214,6 +227,7 @@ watch: {
     .company {
         font-size: 8px;
         color: #F5F5F5;
+        cursor: default;
     }
 
     .made-by {
@@ -223,6 +237,7 @@ watch: {
         color: #F5F5F5;
 
         i {
+            cursor: default;
             color: #F2AD3C;
         }
     }
