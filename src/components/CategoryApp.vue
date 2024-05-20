@@ -86,34 +86,40 @@ export default {
         </div>
       </div>
     </div>
+    
+  </section>  
+
+  <section class="restaurants-section">
+       <h2>Lista Ristoranti</h2>
     <div class="container my-5">
         <div class="row">
             <RestaurantCard v-for="restaurant in restaurants" :key="restaurant.id" :restaurant="restaurant"></RestaurantCard>
         </div>
     </div>
-  </section>  
+  </section>
+
 </template>
 
 
 <style lang="scss" scoped>
+.restaurants-section{
+    background-color: bisque;
+}
 
-section {
+.parallax {
 
   background-image: url('/img/categories_background.jpeg');
   background-position: center;
   padding-top: 40px;
   padding-bottom: 40px;
-}
 
-.parallax {
+min-height: 600px;
 
-  min-height: 600px;
-
-  background-attachment: fixed;
-  background-position: center bottom;
-  background-repeat: no-repeat;
-  background-size: cover;
-  filter: blur(0px);
+background-attachment: fixed;
+background-position: center bottom;
+background-repeat: no-repeat;
+background-size: cover;
+filter: blur(0px);
 
 }
 
