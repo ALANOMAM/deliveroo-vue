@@ -18,7 +18,7 @@ export default{
                 <!-- Titoli a sinistra -->
                 <div>
                     <h1>Hai Fame?</h1>
-                    <h2>Con un click, senza stress, il tuo pasto è un success</h2>
+                    <h2 class="fs-3">Con un click, senza stress, il tuo pasto è un success</h2>
                 </div>
 
                 <!-- Immagine a destra -->
@@ -40,7 +40,8 @@ section {
 
     width: 100%;
     height: 620px;
-    background-color: rgba(255, 179, 14, 1);
+    background: rgb(255,138,0);
+    background: linear-gradient(0deg, rgba(255,138,0,1) 0%, rgba(255,174,0,1) 58%);
 
     overflow: hidden;
 
@@ -63,13 +64,11 @@ section {
         img {
             width: 500px;
             height: auto;
-            filter: drop-shadow(-10px 0px 40px rgba(0, 0, 0, 0.5));
+            filter: drop-shadow(-100px 0px 40px rgba(0, 0, 0, 0.5));
             
         }
 
     }
-
-
 
 }
 

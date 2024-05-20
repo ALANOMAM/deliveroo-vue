@@ -86,16 +86,21 @@ export default {
           page: this.apiPageNumber
         }
       }).then(res => {
-      console.log(res)
+      //aggiorna l'elenco dei ristoranti con i dati ricevuti
         this.restaurants = res.data.results.data;
+        //aggiorna i link di navigazione della paginazione
         this.apiLinks = res.data.results.links;
+        //aggiorna l'ultima pagina disponibile
         this.last_page = res.data.results.last_page;
+        //aggiorna il numero totale di ristoranti
         this.total_items = res.data.results.total;
+        //aggiorna il numero di elementi per pagina
         this.per_page = res.data.results.per_page;
       });
     },
   
 
+//funzione per cambiare la pagina corrente
   changePage(direction) {
             if (direction === 'next' && this.currentPage < this.last_page) {
                 this.currentPage++;
@@ -189,7 +194,7 @@ export default {
 </template>
 
 
-<style lang="scss" scoped>
+<style lang="scss" >
 
 .checkbox-name{
     display: flex;
@@ -202,7 +207,31 @@ export default {
     background-color: whitesmoke;
 }
 
-
+.pagination-container {
+    display: flex;
+    column-gap: 10px;
+  }
+  .paginate-buttons {
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+    cursor: pointer;
+    background-color: rgb(242, 242, 242);
+    border: 1px solid rgb(217, 217, 217);
+    color: black;
+  }
+  .paginate-buttons:hover {
+    background-color: #d8d8d8;
+  }
+  .active-page {
+    background-color: #F17228;
+    border: 1px solid #F17228;
+    color: white;
+  }
+  .active-page:hover {
+    background-color: rgba(255, 179, 14, 1);
+    border: 1px solid rgba(255, 179, 14, 1);
+  }
 
 .categoryEv{
     padding:5px;
