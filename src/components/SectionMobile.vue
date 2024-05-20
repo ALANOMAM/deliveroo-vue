@@ -24,12 +24,12 @@ export default{
             <h2>Installa l'App</h2>
             <p>Non è mai stato così facile ordinare cibo. Cerca gli sconti migliori e ti perderai in un mondo di cibo delizioso.</p>
             <div class="buttons">
-                <!-- <a href="">
-                    <img src="/public/img/google-play.png" alt="" class="android"> 
+                <a href="">
+                    <img src="/public/img/playstore.png" alt="" class="android"> 
                 </a>
                 <a href="">
-                    <img src="/public/img/app-store.png" alt="" class="apple">
-                </a> -->
+                    <img src="/public/img/appstore.png" alt="" class="apple">
+                </a>
             </div>
         </div>
     </div>
@@ -47,24 +47,25 @@ position: relative;
     
         .iphone-bg {
             position: absolute;
-            top: 28%;
+            top: 52%;
             left: 20%;
             max-width: 200px;
         }
     
         .iphone {
             position: absolute;
-            top: 15%;
-            left: 33.3%;
+            top: 41%;
+            left: 28.5%;
             max-width: 200px;
         }
     }
 
     .text {
         position: absolute;
-        top: 15%;
-        right: 20%;
+        top: 25%;
+        right: 30%;
         max-width: 300px;
+        cursor: default;
 
         h2 {
             margin-bottom: 15px;
@@ -81,8 +82,19 @@ position: relative;
 
         .buttons {
             display: flex;
-            justify-content: center;
             align-items: center;
+            gap: 15px;
+
+            img {
+                width: 120px;
+                height: 37px;
+                border-radius: 10px;
+                transition: 0.2s;
+
+                &:hover {
+                    transform: scale(110%);
+                }
+            }
         }
     }
 }
