@@ -1,5 +1,5 @@
-<script>
 
+<script>
 import axios from 'axios';
 
 export default {
@@ -16,12 +16,23 @@ export default {
     
         this.restaurantId = this.$route.params.id;
         
-        axios.get(`${this.baseApiUrl}/restaurants/${this.restaurantId}`)
-            .then(res => {
-                this.restaurant = res.data.restaurant;
-                console.log(this.restaurant)
-            })
-           
+        axios.get(`${this.baseApiUrl}/restaurants/${this.restaurantId}`).then(res => {
+            this.restaurant = res.data.restaurant;
+        })
+    },
+
+    methods: {
+        getImageUrl(image) {
+            if (image) {
+                if (image.startsWith('http://') || image.startsWith('https://')) {
+                    return image;
+                } else {
+                    return `${this.baseApiUrl}/storage/${image}`;
+                }
+            } else {
+                return '/img/Default_different_food_0.jpg';
+            }
+        },    
     },
 }
 </script>
@@ -65,8 +76,38 @@ export default {
 
     <div class="page">
         <div class="container">
-            <div class="dishes">
-                
+            
+            <h2 class="text-center fs-2 my-4 text-uppercase">Menù</h2>
+
+            <div class="dishes" v-for="dish in restaurant.dishes" :key="dish.id">
+                <div class="dish">
+
+                    <!-- Immagine Piatto -->
+                    <div class="img-dish d-flex align-items-center">
+                        <div class="image me-2">
+                            <img :src="getImageUrl(dish.dish_image)" :alt="dish.dish_name"/>
+                        </div>
+                    </div>
+
+                    <div class="info-dish d-flex flex-column justify-content-center">
+                        <!-- Nome piatto -->
+                        <div class="title-dish">
+                            <div class="fw-bold"> {{ dish.dish_name }} </div>
+                        </div>
+    
+                        <!-- Prezzo piatto -->
+                        <div class="price-dish">
+                            <div class="fw-normal"> {{ dish.dish_price }} € </div>
+                        </div>
+    
+                        <!-- Ingredienti piatto -->
+                        <div class="ingedients-dish">
+                            <div class="fw-normal"> {{ dish.ingredients || 'Nessun Ingrediente inserito' }} </div>
+                        </div>
+
+                    </div>
+                </div>
+                <hr>
             </div>
         </div>
     </div>
@@ -82,7 +123,6 @@ export default {
         padding: 15px 0;
         display: flex;
         align-items: center;
-        justify-content: space-between;
         color: #A0A0A0;
 
         .image-box .image img {
@@ -91,7 +131,7 @@ export default {
         }
 
         .info {
-            padding-left: 30px;
+            padding:0 50px;
 
             .category span {
                 font-size: 11px;
@@ -107,7 +147,7 @@ export default {
         }
 
         .contacts {
-            padding-left: 20px;
+            padding-left: 50px;
 
             .phone, .address {
                 font-size: 13px;
@@ -125,6 +165,18 @@ export default {
                 font-size: 13px;
             }
             
+        }
+    }
+}
+
+.page {
+    .dish {
+        display: flex;
+
+        .image img {
+            width: 110px;
+            height: 65px;
+            border-radius: 8px;
         }
     }
 }
