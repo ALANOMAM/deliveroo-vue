@@ -17,7 +17,24 @@ export default {
       apiPageNumber: 1,
 
       isActive:false,
+
+      activeCatNumber: 1,
      
+      //rispettare ordine
+      categoryImages:[
+      '/public/img/cinese-category.jpg',
+      '/public/img/pizza-category.jpg',
+      '/public/img/mexican-category.jpg',
+      '/public/img/japanese-category.avif',
+      '/public/img/fast-category.jpg',
+      '/public/img/vegan-category.jpg',
+      '/public/img/vege-category.jpeg',
+      '/public/img/ita-category.jpg',
+      '/public/img/corean-category.jpg',
+      '/public/img/sushi-category.jpg',
+      '/public/img/kebab-category.jpg',
+      '/public/img/gourmet-category.jpg',
+      ]
       
     };
   },
@@ -69,7 +86,10 @@ export default {
 
  selectedCategory(index){
 
- this.isActive = !this.isActive
+    if(this.activeCatNumber == index){
+        this.isActive = !this.isActive
+    }
+ 
     console.log(index);
  }   
 
@@ -84,17 +104,33 @@ export default {
       <h2 class="text-white">Cerca Per Categorie</h2>
 
       <div class="row">
-        <div class="col-sm-3 mt-4 mb-sm-0" v-for="(categoryElement , catIndex) in categories" :key="categoryElement">
-          <div class="card">
+        <div class="col-sm-2 mt-4 mb-sm-0 " v-for="(categoryElement , catIndex) in categories" :key="categoryElement">
+          
+            <div class="card box" >
             <div class="card-body d-flex flex-column align-items-center">
-              <div class="category-icon">
-                <i class="fa-solid fa-bowl-food"></i>
+
+              <div  class="category-icon">
+                 <!--tutti gli elementi dell'array delle immagini-->
+                <div v-for="(categoryLogo,logoIndex) in categoryImages" >
+                    <!--solo le immagini che corrispondono all'index della categoria-->
+                    <div v-if="catIndex == logoIndex">
+                    <img  class="category-image" :src="categoryLogo" alt="">
+                    </div>
+                </div>
+               
               </div>
+
               <input class="form-check-input checkbox-hidden" type="checkbox" role="switch" :value="categoryElement.category_name" :id="categoryElement.category_name" :name="categoryElement.category_name" v-model="store.checkBoxValue" @change="filterCategory()">                  
-              <label class="form-check-label categoryEv " :class=" isActive? 'active' : ''" @click = selectedCategory(catIndex)   :for="categoryElement.category_name">{{categoryElement.category_name}}</label>
+              <label class=" form-check-label categoryEv "  :id="catIndex" :class=" isActive? 'active' : ''" @click = selectedCategory(catIndex)  :for="categoryElement.category_name">{{categoryElement.category_name}}</label>
               <!-- <a href="#" class="btn category-name" @click.prevent="filterCategory(categoryElement.category_name)">{{ categoryElement.category_name }}</a> -->
             </div>
           </div>
+
+
+
+
+
+
         </div>
       </div>
     </div>
@@ -115,6 +151,12 @@ export default {
 
 
 <style lang="scss" scoped>
+
+.box:hover{
+    border: #F17228 solid 2px;
+    background-color: whitesmoke;
+}
+
 .checkbox-hidden{
     display: none;
 }
@@ -138,9 +180,9 @@ export default {
   background-image: url('/img/categories_background.jpeg');
   background-position: center;
   padding-top: 40px;
-  padding-bottom: 40px;
+  padding-bottom: 400px;
 
-min-height: 600px;
+max-height: 460px;
 
 background-attachment: fixed;
 background-position: center bottom;
@@ -155,16 +197,18 @@ filter: blur(0px);
 }
 
 .category-icon {
-
-  width: 50%;
+  /*border: 1px solid red;*/
+  width: 100%;
+  height:auto;
   display: flex;
   justify-content: center;
   align-items: center;
     
-  i {
-    font-size: 100px;
-    color:#FFCA0B; 
-  }
+ .category-image{
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+ }
 
 }
 
