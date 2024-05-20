@@ -63,7 +63,7 @@ export default {
                         page: this.apiPageNumber
                     }
                 }).then(res => {
-                  //console.log(res)
+                  console.log(res)
                     this.restaurants = res.data.results
 
                 })
@@ -141,9 +141,8 @@ export default {
   </section>  
 
   <section class="restaurants-section">
-       
-    <div class="container p-5">
-         <h2 class="text-center">Lista Ristoranti</h2>
+       <h2>Lista Ristoranti</h2>
+    <div class="container my-5">
         <div class="row">
             <RestaurantCard v-for="restaurant in restaurants" :key="restaurant.id" :restaurant="restaurant"></RestaurantCard>
         </div>
