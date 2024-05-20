@@ -22,9 +22,16 @@ export default{
 <template>
     <div class="col-sm-3 mt-4 mb-sm-0">
       <div class="card pt-3 px-3">
-        <div class="image">
-          <img :src="'http://localhost:8000/storage/' + restaurant.image" class="card-img-top" alt="...">
+        <div class="image" v-if="restaurant.image === null">
+          <img  src="/img/restaurant_placeholder.jpg" class="card-img-top" alt="...">
         </div>
+        <div class="image" v-else-if="restaurant.image.startsWith('images/')">
+          <img  :src="'http://localhost:8000/storage/' + restaurant.image" class="card-img-top" alt="...">
+        </div>
+        <div class="image" v-else :src="restaurant.image">
+          <img :src="restaurant.image" class="card-img-top" alt="...">
+        </div>
+        
         <div class="card-body">
           <h5 class="card-title text-center py-3">{{ restaurant.restaurant_name }}</h5>
         </div>
