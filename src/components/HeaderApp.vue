@@ -23,7 +23,7 @@ export default{
                 <!-- Link Login Admin -->
 
                 <div>
-                    <a href="http://127.0.0.1:8000" target=”_blank” class="login_btn">
+                    <a href="http://127.0.0.1:8000/admin" target=”_blank” class="login_btn">
                         <i class="fa-solid fa-user"></i>
                         <span>Login</span>
                     </a>
