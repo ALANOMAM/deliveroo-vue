@@ -145,10 +145,10 @@ export default {
                 </div>
                 </div>
             </div>
+            <StorageApp></StorageApp>
         </div>
     </div>
 
-<StorageApp></StorageApp>
 
 
 
