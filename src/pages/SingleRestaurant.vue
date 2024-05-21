@@ -195,7 +195,7 @@ export default {
                         </li>
                         </ul>
 
-                        <button @click="addToCart({ name: item.name  , quantity: 1 })">Aggiungi Prodotto 1</button>
+                        <button @click="addToCart({ name: item.name  , quantity: 1 })">Aggiungi Prodotto</button>
 
                         </div>
                     </div>
