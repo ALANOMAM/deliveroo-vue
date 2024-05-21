@@ -1,12 +1,12 @@
 
 <script>
 import axios from 'axios';
-import StorageApp from '../components/StorageApp.vue';
+
 
 export default {
     name: 'SingleRestaurant',
     components:{
-        StorageApp,
+       
     },
     data() {
         return {
@@ -14,7 +14,15 @@ export default {
             restaurant: {},   
             baseApiUrl: 'http://127.0.0.1:8000/api',
             quantity: 1,
+
+            //pezzo carrello
+            cart: []
         }
+    },
+
+    //pezzo carrello
+    created() {
+      this.loadCart();
     },
 
     mounted() {
@@ -47,7 +55,28 @@ export default {
             
         increment() {
             this.quantity++;
+        },
+
+        //pezzo carrello
+        loadCart() {
+         const savedCart = localStorage.getItem('cart');
+         this.cart = savedCart ? JSON.parse(savedCart) : [];
+        },
+
+        addToCart(item) {
+            this.cart.push(item);
+            this.updateLocalStorage();
+        },
+
+        removeFromCart(index) {
+        this.cart.splice(index, 1);
+        this.updateLocalStorage();
+        },
+
+        updateLocalStorage() {
+        localStorage.setItem('cart', JSON.stringify(this.cart));
         }
+
     },
 }
 </script>
@@ -153,11 +182,24 @@ export default {
                     
                 </div>
 
+                <!--carello inizio-->
                 <div class="col-md-4">
+                    <div>
 
-                    <StorageApp></StorageApp>
+                        <h2 class="text-center fs-2 my-4 text-uppercase">Carrello</h2>
 
-                </div>
+                        <ul>
+                        <li v-for="(item, index) in cart" :key="index">
+                            {{ item.name }} - {{ item.quantity }}
+                            <button @click="removeFromCart(index)">Rimuovi</button>
+                        </li>
+                        </ul>
+
+                        <button @click="addToCart({ name: item.name  , quantity: 1 })">Aggiungi Prodotto 1</button>
+
+                        </div>
+                    </div>
+                <!--carello fine-->
 
             </div>
             
