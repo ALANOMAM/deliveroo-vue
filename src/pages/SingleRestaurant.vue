@@ -255,6 +255,12 @@ export default {
 
                             <span class="fs-3 me-1">{{ totalPrice }} €</span>
                         </div>
+                     
+                        <div class="d-flex justify-content-center align-items-center ">
+                            <a :href="'/restaurant/' + restaurant.id + '/card'"  class="btn card-btn">vai alla card</a>
+                        </div>
+                        
+                    
                     </div>
                 </div>
                 <!--carello fine-->
@@ -270,6 +276,11 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+.card-btn{
+    background-color:#ebb45b ;
+    color:white;
+}
+
 .header-page {
     background-color: #202020;
     cursor: default;
