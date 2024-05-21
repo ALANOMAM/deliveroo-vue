@@ -9,7 +9,13 @@ export default{
             baseApiUrl: 'http://127.0.0.1:8000/api',
             quantity: 1,
             currentDish: null,
-
+               
+           //pezzi legati al form che aggiunge indirizzo ecc 
+           customerInfo :{},
+            customerAddress:'',
+            customerName:'',
+            customerMail:'',
+            customerComment:'',
 
 //pezzo carrello
 cart: []
@@ -93,16 +99,18 @@ methods: {
 
    //AGGIUNTO DA ME START
     addToCart2() {
-        const cartItem2 = {
-            address: this.user_address,
-            name: this.user_name,
-            email: this.user_mail,
-            payment:this.user_payment
+
+        this.customerInfo = {
+            one:this.customerAddress,
+            two:this.customerName,
+            three:this.customerMail,
+            four:this.customerComment,
         }
 
-        this.cart.push(cartItem2);
     
-        console.log(cartItem2);
+        console.log(this.test);
+
+        
     },
      //AGGIUNTO DA ME END
 
@@ -165,111 +173,131 @@ watch: {
 
 <!--inizio container-->
 <div class="container d-flex justify-content-between">
-<form>
+
+ <!--form start-->   
+<div class="form">
+
   <div class="mb-3">
-    
+     <div class="d-flex gap-2">
     <i class="fa-solid fa-location-dot"></i>
     <label for="user_address" class="form-label"><strong>Indirizzo Consegna</strong></label>
-    
-    <input type="text" class="form-control" name="user_address" id="user_address" placeholder="Inserisci Indirizzo">
+     </div>
+    <input  v-model="customerAddress" type="text" class="form-control" name="user_address" id="user_address" placeholder="Inserisci Indirizzo">
   </div>
 
-  <div class="mb-3">
-    
+ <div class="mb-3">
+    <div class="d-flex gap-2">
     <i class="fa-solid fa-location-dot"></i>
     <label for="user_name" class="form-label"><strong>Nome</strong></label>
-    
-    <input type="text" class="form-control" name="user_name" id="user_name" placeholder="Inserisci Nome" >
+    </div>
+    <input v-model="customerName"  type="text" class="form-control" name="user_name" id="user_name" placeholder="Inserisci Nome" >
   </div>
 
   <div class="mb-3">
-    
+    <div class="d-flex gap-2">
     <i class="fa-solid fa-location-dot"></i>
     <label for="user_mail" class="form-label"><strong>Email</strong></label>
-    
-    <input type="email" class="form-control"  name="user_mail" id="user_mail" aria-describedby="emailHelp" placeholder="esempio@rossi.com" >
+    </div>
+    <input v-model="customerMail"  type="email" class="form-control"  name="user_mail" id="user_mail" aria-describedby="emailHelp" placeholder="esempio@rossi.com" >
   </div>
-
- 
+            
 <hr>
   <div class="mb-3">
-    
+    <div class="d-flex gap-2">
     <i class="fa-solid fa-location-dot"></i>
     <label for="user_payment" class="form-label"><strong>Metodo Di Pagamento</strong></label>
-    
+    </div>
     <input type="text" class="form-control"  name="user_payment" id="user_payment" placeholder="Come vuoi pagare?">
-  </div>
+  </div> 
 
+  <button class="btn form-btn"  @click="addToCart2()"> Invia </button>
 
-
-  <button type="submit" class="btn btn-primary" @click="addToCart2()">Submit</button>
-</form>
-
+</div>
+<!--form end-->
 
 
 <div class="mb-3 d-flex flex-column">
     <label for="exampleInputEmail1" class="form-label"><strong>Una nota per noi?</strong></label>
-    <textarea name="exampleInputEmail1" id="exampleInputEmail1" cols="50" rows="5" placeholder="Inserisci un commento o nota"></textarea>
-  </div>
+    <textarea v-model="customerComment" name="exampleInputEmail1" id="exampleInputEmail1" cols="50" rows="5" placeholder="Inserisci un commento o nota"></textarea>
+</div>
 
 
  <!--carello inizio-->
- <div class="col-md-4">
-                    <div class="cart">
-                        <h2 class="text-center fs-2 mb-5 pt-4 text-uppercase">Carrello</h2>
-                        
-                        <ul>
-                            <li>
-                            Indirizzo : 
-                            </li>
+ <div class="col-md-4 mb-5">
+    <div class="cart">
+        <h2 class="text-center fs-2 mb-5 pt-4 text-uppercase">Carrello</h2>
 
-                            <li>Nome : </li>
-                            <li>Email : </li>
-                            <li>Pagamento : </li>
-                            
-                            <li v-for="(cartItem, index) in cart" :key="index" class="d-flex justify-content-between mb-4">
-                                <div class="d-flex flex-column">
-                                    <span>{{ cartItem.name }}</span>
-                                    <span class="price">€ {{ cartItem.price }}</span>
-                                </div>
+            <ul>
+            <li class="list-group-item">
+             <strong>Indirizzo : </strong>
+            <span>{{ this.customerInfo .one}}</span>
+            </li>
 
-                                <div class="d-flex align-items-center">
-                                   <!--numero, piu e meno-->
-                                    <div class="d-flex gap-2 align-items-center" >
-                                    <i class="fa-solid fa-minus" @click="updateCartItem(index, false)"></i>
-                                    <span>{{ cartItem.quantity }}</span>
-                                    <i class="fa-solid fa-plus" @click="updateCartItem(index, true)"></i>
-                                    </div>
-                                    <!--numero, piu e meno-->
+            <li class="list-group-item" >
+            <strong>Nome : </strong>
+            <span>{{ this.customerInfo .two}}</span>
+            </li>
 
-                                    <span @click="removeFromCart(index)" class="remove-item">
-                                        <i class="fa-solid fa-x ms-4 me-2 d-none"></i>
-                                        <i class="fa-solid fa-trash fs-5 ms-4 me-2"></i>
-                                    </span>
-                                </div>
+            <li class="list-group-item">
+                <strong>Email : </strong>
+                <span>{{ this.customerInfo .three }}</span>
+            </li>
 
-                            </li>
-                        </ul>
-                        
-                        <hr class="mx-4">
+            <li class="list-group-item">
+                <strong>Nota : </strong> 
+            <span>{{ this.customerInfo .four }}</span>
+            </li>
+            
+            <li class="list-group-item">
+            <strong>Pagamento : </strong>
+            <span>{{  }}</span>
+            </li>
+            </ul>
 
-                        <div class="d-flex justify-content-between align-items-center mx-4">
-                            <h2 class="fs-4 ms-2">Totale</h2>
-
-                            <span class="fs-3 me-1">{{ totalPrice }} €</span>
-                        </div>
-                     
-                         <!-- Bottone che porta alla pagina del carrello -->
-
-                         <div class="d-flex justify-content-center">
-                            <button class="btn btn-success">vai al pagamento</button>
-                           <!--<a :href="'/restaurant/' + restaurant.id + '/card'"  class="btn card-btn">vai alla card</a>-->
-                        </div>
-                    
-                    </div>
+            <ul>
+            <li v-for="(cartItem, index) in cart" :key="index" class="d-flex justify-content-between mb-4">
+                <div class="d-flex flex-column">
+                    <span>{{ cartItem.name }}</span>
+                    <span class="price">€ {{ cartItem.price }}</span>
                 </div>
 
-                <!--carello fine-->
+                <div class="d-flex align-items-center">
+                    <!--numero, piu e meno-->
+                    <div class="d-flex gap-2 align-items-center" >
+                    <i class="fa-solid fa-minus" @click="updateCartItem(index, false)"></i>
+                    <span>{{ cartItem.quantity }}</span>
+                    <i class="fa-solid fa-plus" @click="updateCartItem(index, true)"></i>
+                    </div>
+                    <!--numero, piu e meno-->
+
+                    <span @click="removeFromCart(index)" class="remove-item">
+                        <i class="fa-solid fa-x ms-4 me-2 d-none"></i>
+                        <i class="fa-solid fa-trash fs-5 ms-4 me-2"></i>
+                    </span>
+                </div>
+
+            </li>
+        </ul>
+        
+        <hr class="mx-4">
+
+        <div class="d-flex justify-content-between align-items-center mx-4">
+            <h2 class="fs-4 ms-2">Totale</h2>
+
+            <span class="fs-3 me-1">{{ totalPrice }} €</span>
+        </div>
+        
+            <!-- Bottone che porta alla pagina del carrello -->
+
+            <div class="d-flex justify-content-center">
+            <button class="btn cart-btn">vai al pagamento</button>
+            <!--<a :href="'/restaurant/' + restaurant.id + '/card'"  class="btn card-btn">vai alla card</a>-->
+        </div>
+    
+    </div>
+</div>
+
+<!--carello fine-->
 
 </div>
 <!--fine container-->
@@ -283,6 +311,12 @@ i{
     color:#ebb45b;
     font-size: 20px;
 }
+
+.form-btn, .cart-btn{
+    background-color:#ebb45b;
+    color: white;
+}
+
 
 .cart {
     padding-bottom: 20px;
