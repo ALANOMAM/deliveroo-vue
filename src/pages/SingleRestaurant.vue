@@ -258,8 +258,16 @@ export default {
 
                             <span class="fs-3 me-1">{{ totalPrice }} €</span>
                         </div>
+
+                        <!-- Bottone che porta alla pagina del carrello -->
+
+                        <div class="d-flex justify-content-center">
+                            <button type="button" class="btn button-cart" >Procedi all'ordine</button>
+                        </div>
+
                     </div>
                 </div>
+
                 <!--carello fine-->
 
             </div>
@@ -387,6 +395,24 @@ export default {
 
         &:hover {
             transform: scale(120%);
+        }
+    }
+
+    .button-cart {
+        margin-top: 10px;
+        padding: 10px 20px;
+    
+        text-transform: uppercase;
+        font-size: bold;
+        font-weight: 16px;
+        
+        background-color: rgba(246, 89, 0, 1);
+        color: white;
+    
+        &:hover {
+            background-color: transparent;
+            color: rgba(246, 89, 0, 1);
+            border: 1px solid rgba(246, 89, 0, 1);
         }
     }
 }
