@@ -14,6 +14,7 @@ export default {
             restaurant: {},   
             baseApiUrl: 'http://127.0.0.1:8000/api',
             quantity: 1,
+            currentDish: null,
 
             //pezzo carrello
             cart: []
@@ -59,22 +60,33 @@ export default {
 
         //pezzo carrello
         loadCart() {
-         const savedCart = localStorage.getItem('cart');
-         this.cart = savedCart ? JSON.parse(savedCart) : [];
+            const savedCart = localStorage.getItem('cart');
+            this.cart = savedCart ? JSON.parse(savedCart) : [];
         },
 
-        addToCart(item) {
-            this.cart.push(item);
+        addToCart() {
+            const cartItem = {
+                name: this.currentDish.dish_name,
+                quantity: this.quantity,
+                price: this.currentDish.dish_price * this.quantity
+            };
+            this.cart.push(cartItem);
             this.updateLocalStorage();
         },
 
         removeFromCart(index) {
-        this.cart.splice(index, 1);
-        this.updateLocalStorage();
+            this.cart.splice(index, 1);
+            this.updateLocalStorage();
         },
 
         updateLocalStorage() {
-        localStorage.setItem('cart', JSON.stringify(this.cart));
+            localStorage.setItem('cart', JSON.stringify(this.cart));
+        },
+
+        openModal(dish) {
+            this.currentDish = dish;
+            this.quantity = 1;
+            new bootstrap.Modal(document.getElementById('addDish')).show();
         }
 
     },
@@ -128,7 +140,7 @@ export default {
                     <h2 class="text-center fs-2 my-4 text-uppercase">Menù</h2>
 
                     <div class="dishes" v-for="dish in restaurant.dishes" :key="dish.id">
-                        <div class="dish" type="button" data-bs-toggle="modal" data-bs-target="#addDish">
+                        <div class="dish" type="button" data-bs-toggle="modal" data-bs-target="#addDish" @click="openModal(dish)">
 
                             <!-- Immagine Piatto -->
                             <div class="img-dish d-flex align-items-center">
@@ -162,8 +174,8 @@ export default {
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content py-2 px-5">
                                     <div class="modal-body d-flex flex-column align-items-center">
-                                        <h2 class="text-center mb-4">{{ dish.dish_name }}</h2>
-                                        <span class="mb-5 fs-5 fw-bold">{{ dish.dish_price }} €</span>
+                                        <h2 class="text-center mb-4">{{ currentDish ? currentDish.dish_name : '' }}</h2>
+                                        <span class="mb-5 fs-5 fw-bold">{{ currentDish ? currentDish.dish_price : '' }} €</span>
 
                                         <div class="counter">
                                             <span class="minus" @click="decrement" :disabled="quantity === 1">-</span>
@@ -172,7 +184,7 @@ export default {
                                         </div>
                                     </div>
                                     <div class="modal-footer d-flex justify-content-center">
-                                        <button type="button" class="btn button">Aggiungi al carrello</button>
+                                        <button type="button" class="btn button" @click="addToCart" data-bs-dismiss="modal">Aggiungi al carrello</button>
                                     </div>
                                 </div>
                             </div>
@@ -185,20 +197,15 @@ export default {
                 <!--carello inizio-->
                 <div class="col-md-4">
                     <div>
-
                         <h2 class="text-center fs-2 my-4 text-uppercase">Carrello</h2>
-
                         <ul>
-                        <li v-for="(item, index) in cart" :key="index">
-                            {{ item.name }} - {{ item.quantity }}
-                            <button @click="removeFromCart(index)">Rimuovi</button>
-                        </li>
+                            <li v-for="(cartItem, index) in cart" :key="index">
+                                {{ cartItem.name }} - {{ cartItem.quantity }} - {{ cartItem.price }}€
+                                <button @click="removeFromCart(index)">Rimuovi</button>
+                            </li>
                         </ul>
-
-                        <button @click="addToCart({ name: item.name  , quantity: 1 })">Aggiungi Prodotto 1</button>
-
-                        </div>
                     </div>
+                </div>
                 <!--carello fine-->
 
             </div>
