@@ -243,7 +243,10 @@ export default {
 
                                 <div>
                                     <span>{{ cartItem.quantity }}</span>
-                                    <span @click="removeFromCart(index)" class="remove-item"><i class="fa-solid fa-x ms-4 me-2"></i></span>
+                                    <span @click="removeFromCart(index)" class="remove-item">
+                                        <i class="fa-solid fa-x ms-4 me-2 d-none"></i>
+                                        <i class="fa-solid fa-trash fs-5 ms-4 me-2"></i>
+                                    </span>
                                 </div>
                             </li>
                         </ul>
