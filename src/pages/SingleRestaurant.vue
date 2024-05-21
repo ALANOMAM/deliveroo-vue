@@ -91,61 +91,76 @@ export default {
 
     <div class="page">
         <div class="container">
+
+            <div class="row">
+
+                <div class="col-md-8">
+
+                    <h2 class="text-center fs-2 my-4 text-uppercase">Menù</h2>
+
+                    <div class="dishes" v-for="dish in restaurant.dishes" :key="dish.id">
+                        <div class="dish" type="button" data-bs-toggle="modal" data-bs-target="#addDish">
+
+                            <!-- Immagine Piatto -->
+                            <div class="img-dish d-flex align-items-center">
+                                <div class="image me-2">
+                                    <img :src="getImageUrl(dish.dish_image)" :alt="dish.dish_name"/>
+                                </div>
+                            </div>
+
+                            <div class="info-dish d-flex flex-column justify-content-center">
+                                <!-- Nome piatto -->
+                                <div class="title-dish">
+                                    <div class="fw-bold"> {{ dish.dish_name }} </div>
+                                </div>
             
-            <h2 class="text-center fs-2 my-4 text-uppercase">Menù</h2>
+                                <!-- Prezzo piatto -->
+                                <div class="price-dish">
+                                    <div class="fw-normal"> {{ dish.dish_price }} € </div>
+                                </div>
+            
+                                <!-- Ingredienti piatto -->
+                                <div class="ingedients-dish">
+                                    <div class="fw-normal"> {{ dish.ingredients || 'Nessun Ingrediente inserito' }} </div>
+                                </div>
 
-            <div class="dishes" v-for="dish in restaurant.dishes" :key="dish.id">
-                <div class="dish" type="button" data-bs-toggle="modal" data-bs-target="#addDish">
-
-                    <!-- Immagine Piatto -->
-                    <div class="img-dish d-flex align-items-center">
-                        <div class="image me-2">
-                            <img :src="getImageUrl(dish.dish_image)" :alt="dish.dish_name"/>
-                        </div>
-                    </div>
-
-                    <div class="info-dish d-flex flex-column justify-content-center">
-                        <!-- Nome piatto -->
-                        <div class="title-dish">
-                            <div class="fw-bold"> {{ dish.dish_name }} </div>
-                        </div>
-    
-                        <!-- Prezzo piatto -->
-                        <div class="price-dish">
-                            <div class="fw-normal"> {{ dish.dish_price }} € </div>
-                        </div>
-    
-                        <!-- Ingredienti piatto -->
-                        <div class="ingedients-dish">
-                            <div class="fw-normal"> {{ dish.ingredients || 'Nessun Ingrediente inserito' }} </div>
-                        </div>
-
-                    </div>
-                </div>
-                <hr>
-
-                <!-- Modal -->
-                <div class="modal fade" id="addDish" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content py-2 px-5">
-                        <div class="modal-body d-flex flex-column align-items-center">
-                            <h2 class="text-center mb-4">{{ dish.dish_name }}</h2>
-                            <span class="mb-5 fs-5 fw-bold">{{ dish.dish_price }} €</span>
-
-                            <div class="counter">
-                                <span class="minus" @click="decrement" :disabled="quantity === 1">-</span>
-                                <span class="px-3 fs-3">{{ quantity }}</span>
-                                <span class="plus" @click="increment">+</span>
                             </div>
                         </div>
-                        <div class="modal-footer d-flex justify-content-center">
-                            <button type="button" class="btn button">Aggiungi al carrello</button>
+                        <hr>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="addDish" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content py-2 px-5">
+                                    <div class="modal-body d-flex flex-column align-items-center">
+                                        <h2 class="text-center mb-4">{{ dish.dish_name }}</h2>
+                                        <span class="mb-5 fs-5 fw-bold">{{ dish.dish_price }} €</span>
+
+                                        <div class="counter">
+                                            <span class="minus" @click="decrement" :disabled="quantity === 1">-</span>
+                                            <span class="px-3 fs-3">{{ quantity }}</span>
+                                            <span class="plus" @click="increment">+</span>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer d-flex justify-content-center">
+                                        <button type="button" class="btn button">Aggiungi al carrello</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
                     </div>
+                    
                 </div>
+
+                <div class="col-md-4">
+
+                    <StorageApp></StorageApp>
+
                 </div>
+
             </div>
-            <StorageApp></StorageApp>
+            
         </div>
     </div>
 
