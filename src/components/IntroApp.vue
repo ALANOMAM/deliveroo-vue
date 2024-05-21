@@ -22,8 +22,8 @@ export default{
               <img src="/public/img/order-bg.png" alt="" class="order-bg">
               <img src="/public/img/order.png" alt="" class="order-icon">
             </div>
-            <p class="card-text">Scegli L'ordine.</p>
-            <p class="card-description">Scegli tra più di cento menu disponibili e prendi il tuo piatto preferito</p>
+            <p class="card-text">Scegli l'ordine</p>
+            <p class="card-description">Scegli tra più di cento menu disponibili il tuo piatto preferito</p>
           </div>
         </div>
 
@@ -33,7 +33,7 @@ export default{
               <img src="/public/img/payments-bg.png" alt="" class="payments-bg">
               <img src="/public/img/payments.png" alt="" class="payments-icon">
             </div>
-            <p class="card-text">Paga Con Comodità</p>
+            <p class="card-text">Paga con comodità</p>
             <p class="card-description">Comodo, facile e veloce, scegli tra i nostri diversi metodi di pagamento</p>
           </div>
         </div>
@@ -44,7 +44,7 @@ export default{
               <img src="/public/img/meals-bg.png" alt="" class="meals-bg">
               <img src="/public/img/meals.png" alt="" class="meals-icon">
             </div>
-            <p class="card-text">Goditi Il Cibo</p>
+            <p class="card-text">Goditi il cibo</p>
             <p class="card-description">Il cibo è fatto e consegnato direttamente a casa tua</p>
           </div>
         </div>
