@@ -116,11 +116,19 @@ methods: {
         localStorage.setItem('cart_' + this.restaurantId, JSON.stringify(this.cart));
     },
 
-    openModal(dish) {
-        this.currentDish = dish;
-        this.quantity = 1;
-        new bootstrap.Modal(document.getElementById('addDish')).show();
-    }   
+    updateCartItem(index, increment) {
+        if (increment) {
+            this.cart[index].quantity++;
+        } else if (this.cart[index].quantity > 1) {
+            this.cart[index].quantity--;
+        } else {
+            // Non fare nulla se la quantità è 1 e si tenta di decrementare
+            return;
+        }
+
+        this.cart[index].price = this.cart[index].quantity * (this.cart[index].price / (this.cart[index].quantity + (increment ? -1 : 1)));
+        this.updateLocalStorage();
+    }
 
 },
 
@@ -228,9 +236,9 @@ watch: {
                                 <div class="d-flex align-items-center">
                                    <!--numero, piu e meno-->
                                     <div class="d-flex gap-2 align-items-center" >
-                                    <i class="fa-solid fa-minus" @click="cartItem.quantity--"></i>
+                                    <i class="fa-solid fa-minus" @click="updateCartItem(index, false)"></i>
                                     <span>{{ cartItem.quantity }}</span>
-                                    <i class="fa-solid fa-plus" @click="cartItem.quantity++"></i>
+                                    <i class="fa-solid fa-plus" @click="updateCartItem(index, true)"></i>
                                     </div>
                                     <!--numero, piu e meno-->
 
