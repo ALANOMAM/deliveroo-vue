@@ -1,9 +1,13 @@
 
 <script>
 import axios from 'axios';
+import StorageApp from '../components/StorageApp.vue';
 
 export default {
     name: 'SingleRestaurant',
+    components:{
+        StorageApp,
+    },
     data() {
         return {
             restaurantId: null,
@@ -143,6 +147,11 @@ export default {
             </div>
         </div>
     </div>
+
+<StorageApp></StorageApp>
+
+
+
 </template>
 
 <style lang="scss" scoped>
