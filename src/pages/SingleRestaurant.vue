@@ -258,13 +258,13 @@ export default {
 
                             <span class="fs-3 me-1">{{ totalPrice }} €</span>
                         </div>
+                     
+                         <!-- Bottone che porta alla pagina del carrello -->
 
-                        <!-- Bottone che porta alla pagina del carrello -->
-
-                        <div class="d-flex justify-content-center">
-                            <button type="button" class="btn button-cart" >Procedi all'ordine</button>
+                         <div class="d-flex justify-content-center">
+                            <a :href="'/restaurant/' + restaurant.id + '/card'"  class="btn card-btn">vai alla card</a>
                         </div>
-
+                    
                     </div>
                 </div>
 
@@ -281,6 +281,11 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+.card-btn{
+    background-color:#ebb45b ;
+    color:white;
+}
+
 .header-page {
     background-color: #202020;
     cursor: default;
