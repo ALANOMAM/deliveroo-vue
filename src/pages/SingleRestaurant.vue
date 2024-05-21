@@ -1,4 +1,3 @@
-
 <script>
 import axios from 'axios';
 
@@ -23,7 +22,8 @@ export default {
 
     //pezzo carrello
     created() {
-      this.loadCart();
+        this.restaurantId = this.$route.params.id;
+        this.loadCart();
     },
 
     mounted() {
@@ -33,6 +33,12 @@ export default {
         axios.get(`${this.baseApiUrl}/restaurants/${this.restaurantId}`).then(res => {
             this.restaurant = res.data.restaurant;
         })
+    },
+
+    computed: {
+        totalPrice() {
+            return this.cart.reduce((total, item) => total + item.price, 0);
+        }
     },
 
     methods: {
@@ -60,7 +66,7 @@ export default {
 
         //pezzo carrello
         loadCart() {
-            const savedCart = localStorage.getItem('cart');
+            const savedCart = localStorage.getItem('cart_' + this.restaurantId);
             this.cart = savedCart ? JSON.parse(savedCart) : [];
         },
 
@@ -70,7 +76,20 @@ export default {
                 quantity: this.quantity,
                 price: this.currentDish.dish_price * this.quantity
             };
-            this.cart.push(cartItem);
+            
+            //Controlla se il piatto esiste già nel carrello
+            const existingItemIndex = this.cart.findIndex(item => item.name === cartItem.name);
+
+            if (existingItemIndex !== -1) {
+                //Aggiorna il piatto esistente
+                this.cart[existingItemIndex].quantity += this.quantity;
+                this.cart[existingItemIndex].price += cartItem.price;
+            
+            } else {
+                //Aggiungi il nuovo piatto
+                this.cart.push(cartItem);
+            }
+
             this.updateLocalStorage();
         },
 
@@ -80,7 +99,7 @@ export default {
         },
 
         updateLocalStorage() {
-            localStorage.setItem('cart', JSON.stringify(this.cart));
+            localStorage.setItem('cart_' + this.restaurantId, JSON.stringify(this.cart));
         },
 
         openModal(dish) {
@@ -90,6 +109,23 @@ export default {
         }
 
     },
+
+    // Osserva i cambiamenti del ristorante e aggiorna il carrello di conseguenza
+    watch: {
+        $route(to, from) {
+            // Salva il carrello corrente
+            this.updateLocalStorage();
+
+            // Aggiorna l'ID del ristorante e carica il nuovo carrello
+            this.restaurantId = to.params.id;
+            this.loadCart();
+
+            // Ricarica i dati del ristorante
+            axios.get(`${this.baseApiUrl}/restaurants/${this.restaurantId}`).then(res => {
+                this.restaurant = res.data.restaurant;
+            });
+        }
+    }
 }
 </script>
 
@@ -175,7 +211,7 @@ export default {
                                 <div class="modal-content py-2 px-5">
                                     <div class="modal-body d-flex flex-column align-items-center">
                                         <h2 class="text-center mb-4">{{ currentDish ? currentDish.dish_name : '' }}</h2>
-                                        <span class="mb-5 fs-5 fw-bold">{{ currentDish ? currentDish.dish_price : '' }} €</span>
+                                        <span class="mb-5 fs-5 fw-bold">{{ currentDish ? currentDish.dish_price * quantity : '' }} €</span>
 
                                         <div class="counter">
                                             <span class="minus" @click="decrement" :disabled="quantity === 1">-</span>
@@ -196,14 +232,29 @@ export default {
 
                 <!--carello inizio-->
                 <div class="col-md-4">
-                    <div>
-                        <h2 class="text-center fs-2 my-4 text-uppercase">Carrello</h2>
+                    <div class="cart">
+                        <h2 class="text-center fs-2 mb-5 pt-4 text-uppercase">Carrello</h2>
                         <ul>
-                            <li v-for="(cartItem, index) in cart" :key="index">
-                                {{ cartItem.name }} - {{ cartItem.quantity }} - {{ cartItem.price }}€
-                                <button @click="removeFromCart(index)">Rimuovi</button>
+                            <li v-for="(cartItem, index) in cart" :key="index" class="d-flex justify-content-between mb-4">
+                                <div class="d-flex flex-column">
+                                    <span>{{ cartItem.name }}</span>
+                                    <span class="price">€ {{ cartItem.price }}</span>
+                                </div>
+
+                                <div>
+                                    <span>{{ cartItem.quantity }}</span>
+                                    <span @click="removeFromCart(index)" class="remove-item"><i class="fa-solid fa-x ms-4 me-2"></i></span>
+                                </div>
                             </li>
                         </ul>
+                        
+                        <hr class="mx-4">
+
+                        <div class="d-flex justify-content-between align-items-center mx-4">
+                            <h2 class="fs-4 ms-2">Totale</h2>
+
+                            <span class="fs-3 me-1">{{ totalPrice }} €</span>
+                        </div>
                     </div>
                 </div>
                 <!--carello fine-->
@@ -314,6 +365,25 @@ export default {
             background-color: transparent;
             color: rgba(246, 89, 0, 1);
             border: 1px solid rgba(246, 89, 0, 1);
+        }
+    }
+}
+
+.cart {
+    padding-bottom: 20px;
+    background-color: #FEFAF1;
+
+    .price {
+        font-size: 14px;
+        color: #A0A0A0;
+    }
+
+    .remove-item i {
+        cursor: pointer;
+        transition: 0.1s;
+
+        &:hover {
+            transform: scale(120%);
         }
     }
 }
