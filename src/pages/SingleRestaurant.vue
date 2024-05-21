@@ -89,7 +89,7 @@ export default {
         </div>
     </div>
 
-    <div class="page">
+    <div class="page py-5">
         <div class="container">
 
             <div class="row">
