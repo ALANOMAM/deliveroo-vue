@@ -256,10 +256,11 @@ export default {
                             <span class="fs-3 me-1">{{ totalPrice }} €</span>
                         </div>
                      
-                        <div class="d-flex justify-content-center align-items-center ">
+                         <!-- Bottone che porta alla pagina del carrello -->
+
+                         <div class="d-flex justify-content-center">
                             <a :href="'/restaurant/' + restaurant.id + '/card'"  class="btn card-btn">vai alla card</a>
                         </div>
-                        
                     
                     </div>
                 </div>
