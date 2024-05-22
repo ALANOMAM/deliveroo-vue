@@ -7,8 +7,8 @@ router.post('/', (req, res, next) => {
         environment: braintree.Environment.Sandbox,
         // Use your own credentials from the sandbox Control Panel here
         merchantId: 'y58kr6st43mn4zfc',
-        publicKey: 'bj6qtjxc6rbqdrs3',
-        privateKey: '776a337b4b5df75df886e0b255f822a0'
+        publicKey: '776a337b4b5df75df886e0b255f822a0',
+        privateKey: 'bj6qtjxc6rbqdrs3'
     });
 
     // Use the payment method nonce here

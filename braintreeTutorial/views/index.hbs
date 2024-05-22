@@ -1,10 +1,10 @@
 <h1>{{title}}</h1>
 <p>Welcome to {{title}}</p>
 
+
 <div id="dropin-wrapper">
     <div id="checkout-message"></div>
     <div id="dropin-container"></div>
-
     <button id="submit-button">Submit payment</button>
 </div>
 <script>
@@ -21,7 +21,7 @@
                 // encrypted payment information in a variable called a payment method nonce
                 $.ajax({
                     type: 'POST',
-                    url: '/restaurants/:id/card',
+                    url: '/checkout',
                     data: { 'paymentMethodNonce': payload.nonce }
                 }).done(function (result) {
                     // Tear down the Drop-in UI

@@ -22,7 +22,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-// The checkout route---------------------------------------------------------------
+// The checkout route
 const checkout = require('./routes/checkout');
 app.use('/checkout', checkout);
 
