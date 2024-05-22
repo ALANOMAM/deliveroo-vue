@@ -32,23 +32,23 @@ watch: {
     <div class="footer">
         <div class="container">
             <div class="row">
-                <div class="left col-lg-5 col-12 ms-4 m-lg-0">
+                <div class="left col-lg-6 col-12 ms-4 m-lg-0">
                     <div class="row">
                         <div class="col">
                             <h2>Azienda</h2>
                             <ul>
-                                <li><a href="">Chi Siamo</a></li>
-                                <li><a href="">Team</a></li>
-                                <li><a href="">Lavora con Noi</a></li>
-                                <li><a href="">Blog</a></li>
+                                <li><a href="" >Chi Siamo </a></li>
+                                <li><a href="" >Team</a></li>
+                                <li><a href="" >Lavora con Noi</a></li>
+                                <li><a href="" >Blog</a></li>
                             </ul>
                         </div>
         
                         <div class="col">
                             <h2>Contatti</h2>
                             <ul>
-                                <li><a href="">Aiuto & Supporto</a></li>
-                                <li><a href="">Diventa nostro Partner</a></li>
+                                <li><a href="" >Aiuto & Supporto</a></li>
+                                <li><a href="" >Diventa nostro Partner</a></li>
                                 <li><a href="">Diventa un Corriere Partner</a></li>
                             </ul>
                         </div>
@@ -56,16 +56,16 @@ watch: {
                         <div class="col">
                             <h2>Legale</h2>
                             <ul>
-                                <li><a href="">Termini & Condizioni</a></li>
-                                <li><a href="">Rimborso & Cancellazione</a></li>
-                                <li><a href="">Informativa sulla Privacy</a></li>
-                                <li><a href="">Informativa sui Cookie</a></li>
+                                <li><a href="" >Termini & Condizioni</a></li>
+                                <li><a href="" >Rimborso & Cancellazione</a></li>
+                                <li><a href="" >Informativa sulla Privacy</a></li>
+                                <li><a href="" >Informativa sui Cookie</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
 
-                <div class="right col-lg-7 col-12 d-flex justify-content-lg-end justify-content-center">
+                <div class="right col-lg-6 col-12 d-flex justify-content-lg-end justify-content-center">
                     <div class="row">
                         <div class="col">
                             <h2>Follow us</h2>
@@ -104,6 +104,14 @@ watch: {
 </template>
 
 <style lang="scss" scoped>
+
+
+
+.options{
+font-size: 20px;
+color: red;
+}
+
 .footer {
     position: relative;
     padding: 40px 0;
@@ -115,7 +123,7 @@ watch: {
         .left {
             h2 {
                 margin-bottom: 20px;
-                font-size: 14px;
+                font-size: 20px;
                 color: white;
                 cursor: default;
             }
@@ -127,13 +135,14 @@ watch: {
                     list-style-type: none;
                     a{
                         text-decoration: none;
-                        font-size: 9px;
+                         font-size: 15px;
                         color: #DBDBDB;
-                        transition: 0.2s;
+                        transition: 0.5s;
 
                         &:hover {
-                            font-size: 11px;
+                            font-size: 17px;
                             color: #fffcfc;
+                           
                         }
                     }
                 }
@@ -148,7 +157,7 @@ watch: {
 
                 .col {
                     h2 {
-                        font-size: 12px;
+                        font-size: 20px;
                         font-weight: 800;
                         text-transform: uppercase;
                         color: #A0A0A0;
@@ -156,7 +165,7 @@ watch: {
                     }
 
                     a {
-                        font-size: 17px;
+                        font-size: 20px;
                         color: #A0A0A0;
 
                         transition: 0.2s;
@@ -168,7 +177,7 @@ watch: {
                     }
 
                     span {
-                        font-size: 11px;
+                        font-size: 15px;
                         font-weight: 500;
                         color: #A0A0A0;
                         cursor: default;
