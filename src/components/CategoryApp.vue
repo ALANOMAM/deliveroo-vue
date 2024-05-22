@@ -156,7 +156,20 @@ export default {
     
   </section>  
 
-  <section class="restaurants-section">
+  <section v-if="restaurants.length === 0" class="restaurants-section" >
+
+    <div class="container my-5">
+
+      <div class="d-flex flex-column align-items-center justify-content-center ">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <h1 class="text-center my-5">Non ci sono ristoranti per queste categorie, ci dispiace!</h1>
+
+      </div>
+
+    </div>
+
+  </section>
+  <section v-else class="restaurants-section">
        <h2 class="text-center my-5">Lista Ristoranti</h2>
     <div class="container my-5">
         <div class="row">
@@ -210,10 +223,6 @@ export default {
     align-items: center;
 }
 
-
-
-
-
 .pagination-container {
     display: flex;
     column-gap: 10px;
@@ -251,11 +260,6 @@ export default {
 
 }
 
-/*.active{
-  background-color:#FFCA0B;  
-  color: white
-}*/
-
 .parallax {
 
   background-image: url('/img/categories_background.jpeg');
@@ -271,6 +275,20 @@ export default {
   background-size: cover;
   filter: blur(0px);
 
+}
+
+section {
+  min-height: 400px;
+
+  h1 {
+    color: #F17228;
+    font-weight: 700;
+  }
+
+  i {
+    color: #F17228;
+    font-size: 100px;
+  }
 }
 
 .card {
