@@ -287,17 +287,6 @@ watch: {
     <input v-model="customerEmail"  type="email" class="form-control"  name="user_mail" id="user_mail" aria-describedby="emailHelp" placeholder="esempio@rossi.com" >
   </div>
             
-
-  <!-- <div class="mb-3">
-    <div class="d-flex gap-2">
-    <i class="fa-solid fa-location-dot"></i>
-    <label for="user_payment" class="form-label"><strong>Metodo Di Pagamento</strong></label>
-    </div>
-    <input type="text" class="form-control"  name="user_payment" id="user_payment" placeholder="Come vuoi pagare?">
-  </div> 
-
-  <button class="btn form-btn"  @click="addToCart2()"> Invia </button> -->
-  <button type="submit">Pay</button>
 </form>
 <!--form end-->
 
