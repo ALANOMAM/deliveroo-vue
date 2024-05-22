@@ -1,10 +1,7 @@
 <script>
 import axios from 'axios';
-
-
-import {store} from '../store.js'
+import { store } from '../store.js';
 import RestaurantCard from './RestaurantCard.vue';
-
 
 export default {
   name: 'CategoryApp',
@@ -13,35 +10,27 @@ export default {
       store,
       restaurants: [],
       categories: [],
-      
       apiPageNumber: 1,
-
       currentPage: 1,
       per_page: 1,
       last_page: 1,
-      total_items:1,
+      total_items: 1,
       apiLinks: [],
 
-
-      /*isActive:false,*/
-
-     
-      //rispettare ordine
-      categoryImages:[
-      '/public/img/cinese-category.jpg',
-      '/public/img/pizza-category.jpg',
-      '/public/img/mexican-category.jpg',
-      '/public/img/japanese-category.avif',
-      '/public/img/fast-category.jpg',
-      '/public/img/vegan-category.jpg',
-      '/public/img/vege-category.jpeg',
-      '/public/img/ita-category.jpg',
-      '/public/img/corean-category.jpg',
-      '/public/img/sushi-category.jpg',
-      '/public/img/kebab-category.jpg',
-      '/public/img/gourmet-category.jpg',
+      categoryImages: [
+        '/public/img/cinese-category.jpg',
+        '/public/img/pizza-category.jpg',
+        '/public/img/mexican-category.jpg',
+        '/public/img/japanese-category.avif',
+        '/public/img/fast-category.jpg',
+        '/public/img/vegan-category.jpg',
+        '/public/img/vege-category.jpeg',
+        '/public/img/ita-category.jpg',
+        '/public/img/corean-category.jpg',
+        '/public/img/sushi-category.jpg',
+        '/public/img/kebab-category.jpg',
+        '/public/img/gourmet-category.jpg',
       ]
-      
     };
   },
 
@@ -50,151 +39,119 @@ export default {
   },
 
   mounted() {
-    // axios.get('http://127.0.0.1:8000/api/restaurants').then(res => {
-    //   this.restaurants = res.data.results;
-    // });
 
-    axios.get(this.store.apiBaseUrl +'/categories').then(res => {
+    axios.get(this.store.apiBaseUrl + '/categories').then(res => {
       this.categories = res.data.results;
-    })
+    });
+
     this.getAllRestaurants();
     this.filterCategory();
+
   },
 
   methods: {
 
     filterCategory() {
 
-      if(this.store.checkBoxValue.length > 0) {
-                axios.get(this.store.apiBaseUrl +'/restaurants', {
-                    params: {
-                        categories: this.store.checkBoxValue.join(','),
-                        page: this.apiPageNumber
-                    }
-                }).then(res => {
-                  console.log(res)
-                    this.restaurants = res.data.results.data
+      if (this.store.checkBoxValue.length > 0) {
 
-                })
+        axios.get(this.store.apiBaseUrl + '/restaurants?categories=' + this.store.checkBoxValue, {
+          params: { page: this.apiPageNumber }
+        }).then(res => {
+          this.restaurants = res.data.results.data;
+        });
 
-            } else {
-              this.getAllRestaurants();
-            }
+      } else {
+
+        this.getAllRestaurants();
+
+      }
     },
 
     getAllRestaurants() {
+
       axios.get(this.store.apiBaseUrl + '/restaurants', {
-        params: {
-          page: this.apiPageNumber
-        }
+        params: { page: this.apiPageNumber }
       }).then(res => {
-      //aggiorna l'elenco dei ristoranti con i dati ricevuti
         this.restaurants = res.data.results.data;
-        //aggiorna i link di navigazione della paginazione
         this.apiLinks = res.data.results.links;
-        //aggiorna l'ultima pagina disponibile
         this.last_page = res.data.results.last_page;
-        //aggiorna il numero totale di ristoranti
         this.total_items = res.data.results.total;
-        //aggiorna il numero di elementi per pagina
         this.per_page = res.data.results.per_page;
       });
-    },
-  
 
-    //funzione per cambiare la pagina corrente
+    },
+
     changePage(direction) {
       if (direction === 'next' && this.currentPage < this.last_page) {
-          this.currentPage++;
+        this.currentPage++;
       } else if (direction === 'prev' && this.currentPage > 1) {
-          this.currentPage--;
+        this.currentPage--;
       }
-
       this.apiPageNumber = this.currentPage;
-
-      
       this.getAllRestaurants();
-      }
+
     },
 
-    // <-- aggiunta linea per modifica stile categorie
-
-    toggleCategorySelection(categoryName) { 
+    toggleCategorySelection(categoryName) {
       const index = this.store.checkBoxValue.indexOf(categoryName);
       if (index === -1) {
         this.store.checkBoxValue.push(categoryName);
       } else {
         this.store.checkBoxValue.splice(index, 1);
       }
-      this.filterCategory();
+      this.filterCategory(); 
 
     },
-
-    // <-- aggiunta linea per modifica stile categorie
 
     isCategorySelected(categoryName) {
-
+      // Controlla se la categoria è selezionata
       return this.store.checkBoxValue.includes(categoryName);
+    }
 
-    },
-}
-
+  }
+};
 </script>
 
 <template>
   <section class="parallax"> 
-
     <div class="container text-center">
-
       <h2 class="text-white">Cerca Per Categorie</h2>
 
       <div class="row">
-
-        <!-- CONTENITORE SINGOLA CATEGORIA DEI RISTORANTI -->
         <div class="col-sm-2 mt-4 mb-sm-0 " v-for="(categoryElement , catIndex) in categories" :key="categoryElement">
           
-          <!-- aggiunta linea per modifica stile categorie -->
-
-          <div class="card box" :class="{ 'active-category': isCategorySelected(categoryElement.category_name) }" @click="toggleCategorySelection(categoryElement.category_name)">
+          <div class="card box" :class="{ 'selected': isCategorySelected(categoryElement.category_name) }" @click="toggleCategorySelection(categoryElement.category_name)">
             <div class="card-body d-flex flex-column align-items-center">
 
               <div  class="category-icon">
-
-                <!--tutti gli elementi dell'array delle immagini-->
+                 <!--tutti gli elementi dell'array delle immagini-->
                 <div v-for="(categoryLogo,logoIndex) in categoryImages" >
                     <!--solo le immagini che corrispondono all'index della categoria-->
                     <div v-if="catIndex == logoIndex">
-                      <img  class="category-image" :src="categoryLogo" alt="">
+                    <img  class="category-image" :src="categoryLogo" alt="">
                     </div>
                 </div>
-              
+               
               </div>
-              
+               
 
               <div class="checkbox-name">
-
-
-                <input class="form-check-input" type="checkbox" :value="categoryElement.category_name" v-model="store.checkBoxValue" @change="filterCategory()" style="opacity: 0;">
-
-                <!-- aggiunta linea per modifica stile categorie -->
-
-                <label class="form-check-label categoryEv">{{ categoryElement.category_name }}</label>
-
-                <!-- NASCOSTA PRIMA linea per modifica stile categorie -->
-
-                <!-- <label class=" form-check-label categoryEv "   :for="categoryElement.category_name">{{categoryElement.category_name}}</label> -->
-
-                <!--<label class=" form-check-label categoryEv "   :class=" isActive? 'active' : ''"  @click = selectedCategory(catIndex)  :for="categoryElement.category_name">{{categoryElement.category_name}}</label>-->
-                <!-- <a href="#" class="btn category-name" @click.prevent="filterCategory(categoryElement.category_name)">{{ categoryElement.category_name }}</a> -->
-              </div>
+                <label class="form-check-label categoryEv" :for="categoryElement.category_name">{{ categoryElement.category_name }}</label>
+              <!--<label class=" form-check-label categoryEv "   :class=" isActive? 'active' : ''"  @click = selectedCategory(catIndex)  :for="categoryElement.category_name">{{categoryElement.category_name}}</label>-->
+              <!-- <a href="#" class="btn category-name" @click.prevent="filterCategory(categoryElement.category_name)">{{ categoryElement.category_name }}</a> -->
+             </div>
             
             </div>
           </div>
 
+
+
+
+
+
         </div>
-
       </div>
-
     </div>
     
   </section>  
@@ -224,18 +181,40 @@ export default {
 
 <style lang="scss" scoped>
 
+
+.box {
+  border: none;
+  background-color: rgba(245, 245, 245, 0.564);
+  color:black;
+  font-weight: bold;
+  
+
+  &:hover{
+
+    background-color: rgba(245, 245, 245, 0.335);
+  }
+
+  &.selected {
+
+    background-color: #f17228aa;
+    color: white;
+    font-weight: bold;
+    box-shadow: 1px 1px 1px #F17228;
+  }
+
+}
+
 .checkbox-name {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.box:hover,
-.active-category { /* aggiunta linea per modifica stile categorie */
-  border: #F17228 solid 2px;
-  background-color: rgba(245, 245, 245, 0.692)};
 
-  .pagination-container {
+
+
+
+.pagination-container {
     display: flex;
     column-gap: 10px;
   }
@@ -266,19 +245,10 @@ export default {
   font-weight: 700;
 }
 
-.active-page:hover {
-  background-color: rgba(255, 179, 14, 1);
-  border: 1px solid rgba(255, 179, 14, 1);
-}
-
 .categoryEv{
     padding:5px;
     border-radius: 5px;
 
-}
-
-.checkbox-name input {
-  pointer-events: none;
 }
 
 /*.active{
@@ -322,14 +292,6 @@ export default {
     object-fit:cover;
  }
 
-}
-
-.category-name{
-  color:#FFCA0B; 
-}
-
-.category-name:active{
-    color:#F17228;
 }
 
 </style>
