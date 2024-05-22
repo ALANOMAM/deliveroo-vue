@@ -70,9 +70,13 @@ export default {
                         page: this.apiPageNumber
                     }
                 }).then(res => {
-                  console.log(res)
-                    this.restaurants = res.data.results.data
+                    this.restaurants = res.data.results.data;
 
+                    //Aggiorna il numero totale di ristoranti filtrati
+                    this.total_items = res.data.results.total;
+
+                    //Resetta alla pagina 1 dopo aver applicato il filtro
+                    this.currentPage = 1;
                 })
 
             } else {
@@ -181,6 +185,7 @@ export default {
 
         <div class="text-center mt-5">
             <vue-awesome-paginate
+              v-if="restaurants && restaurants.length > 0"
               :total-items="total_items"
               v-model="currentPage"
               :items-per-page="per_page"

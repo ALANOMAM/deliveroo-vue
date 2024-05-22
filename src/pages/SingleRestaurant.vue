@@ -154,13 +154,13 @@ export default {
                         </span>
                     </div>
 
-                    <p class="mt-3">{{ restaurant.description }}</p>
+                    <p class="mt-3" v-if="restaurant.description">{{ restaurant.description }}</p>
                 </div>
 
                 <div class="contacts d-flex flex-column gap-2">
-                    <span class="phone"><i class="fa-solid fa-phone me-2"></i> <a href="tel:{{ restaurant.phone }}" class="text-decoration-none">{{ restaurant.phone }}</a></span>
-                    <span class="address"><i class="fa-solid fa-location-dot me-2 mb-3"></i> <a :href="'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(restaurant.address)" target="_blank" class="text-decoration-none">{{ restaurant.address }}</a>.</span>
-                    <span class="vat">VAT: {{ restaurant.vat }}</span>
+                    <span class="phone" v-if="restaurant.phone"><i class="fa-solid fa-phone me-2"></i> <a href="tel:{{ restaurant.phone }}" class="text-decoration-none">{{ restaurant.phone }}</a></span>
+                    <span class="address" v-if="restaurant.address"><i class="fa-solid fa-location-dot me-2 mb-3"></i> <a :href="'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(restaurant.address)" target="_blank" class="text-decoration-none">{{ restaurant.address }}</a>.</span>
+                    <span class="vat" v-if="restaurant.vat">VAT: {{ restaurant.vat }}</span>
                 </div>
             </div>
         </div>
@@ -176,7 +176,7 @@ export default {
                     <h2 class="text-center fs-2 my-4 text-uppercase">Menù</h2>
 
                     <div class="dishes" v-for="dish in restaurant.dishes" :key="dish.id">
-                        <div class="dish" type="button" data-bs-toggle="modal" data-bs-target="#addDish" @click="openModal(dish)">
+                        <div class="dish" type="button" data-bs-toggle="modal" data-bs-target="#addDish" @click="openModal(dish)" v-if="!dish.visible">
 
                             <!-- Immagine Piatto -->
                             <div class="img-dish d-flex align-items-center">
@@ -203,7 +203,6 @@ export default {
 
                             </div>
                         </div>
-                        <hr>
 
                         <!-- Modal -->
                         <div class="modal fade" id="addDish" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -344,6 +343,8 @@ export default {
 .page {
     .dish {
         display: flex;
+        padding: 10px 0;
+        border-bottom: 0.5px solid #A0A0A0;
 
         .image img {
             width: 110px;
