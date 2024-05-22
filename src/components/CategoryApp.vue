@@ -13,9 +13,6 @@ export default {
       store,
       restaurants: [],
       categories: [],
-
-      // <-- aggiunta linea per modifica stile categorie
-      selectedCategories: [], 
       
       apiPageNumber: 1,
 
@@ -69,8 +66,9 @@ export default {
     filterCategory() {
 
       if(this.store.checkBoxValue.length > 0) {
-                axios.get(this.store.apiBaseUrl +'/restaurants?categories=' + this.store.checkBoxValue, {
+                axios.get(this.store.apiBaseUrl +'/restaurants', {
                     params: {
+                        categories: this.store.checkBoxValue.join(','),
                         page: this.apiPageNumber
                     }
                 }).then(res => {
@@ -122,19 +120,12 @@ export default {
     // <-- aggiunta linea per modifica stile categorie
 
     toggleCategorySelection(categoryName) { 
-
-      const index = this.selectedCategories.indexOf(categoryName);
-
+      const index = this.store.checkBoxValue.indexOf(categoryName);
       if (index === -1) {
-
-        this.selectedCategories.push(categoryName);
-
+        this.store.checkBoxValue.push(categoryName);
       } else {
-
-        this.selectedCategories.splice(index, 1);
-
+        this.store.checkBoxValue.splice(index, 1);
       }
-
       this.filterCategory();
 
     },
@@ -164,7 +155,7 @@ export default {
           
           <!-- aggiunta linea per modifica stile categorie -->
 
-          <div class="card box" :class="{ 'active-category': isCategorySelected(categoryElement.category_name) }" @click="toggleCategorySelection(categoryElement.category_name)"> 
+          <div class="card box" :class="{ 'active-category': isCategorySelected(categoryElement.category_name) }" @click="toggleCategorySelection(categoryElement.category_name)">
             <div class="card-body d-flex flex-column align-items-center">
 
               <div  class="category-icon">
@@ -183,7 +174,7 @@ export default {
               <div class="checkbox-name">
 
 
-                <input class="form-check-input" type="checkbox" role="switch" :value="categoryElement.category_name" :id="categoryElement.category_name" :name="categoryElement.category_name" v-model="store.checkBoxValue" @change="filterCategory()" style="display: none;">
+                <input class="form-check-input" type="checkbox" :value="categoryElement.category_name" v-model="store.checkBoxValue" @change="filterCategory()" style="opacity: 0;">
 
                 <!-- aggiunta linea per modifica stile categorie -->
 
@@ -284,6 +275,10 @@ export default {
     padding:5px;
     border-radius: 5px;
 
+}
+
+.checkbox-name input {
+  pointer-events: none;
 }
 
 /*.active{
