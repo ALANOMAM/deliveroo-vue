@@ -303,25 +303,11 @@ watch: {
 
 <div id="dropin-container"></div>
 
-<button  class="button button--small button--green">Purchase</button>
-
 
 <div class="mb-3 d-flex flex-column">
     <label for="exampleInputEmail1" class="form-label"><strong>Una nota per noi?</strong></label>
     <textarea v-model="customerComment" name="exampleInputEmail1" id="exampleInputEmail1" cols="50" rows="5" placeholder="Inserisci un commento o nota"></textarea>
 </div>
-
-
-<div>
-        <!-- <form @submit.prevent="makePayment">
-            <input v-model="customerName" placeholder="Full Name" />
-            <input v-model="email" placeholder="Email" />
-            <input v-model="address" placeholder="Address" />
-            <input v-model="tel" placeholder="Telephone" />
-            <input v-model="description" placeholder="Description" />
-            
-        </form> -->
-    </div>
 
  <!--carello inizio-->
  <div class="col-md-4 mb-5">
