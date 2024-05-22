@@ -203,6 +203,8 @@ methods: {
                 }
             } catch (error) {
                 console.error('Error processing payment:', error);
+            }finally{
+                this.cart = [];
             }
     },
 
@@ -301,7 +303,7 @@ watch: {
 
 <div id="dropin-container"></div>
 
-<button id="submit-button" class="button button--small button--green">Purchase</button>
+<button  class="button button--small button--green">Purchase</button>
 
 
 <div class="mb-3 d-flex flex-column">
@@ -362,7 +364,7 @@ watch: {
             <!-- Bottone che porta alla pagina del carrello -->
 
             <div class="d-flex justify-content-center">
-            <button class="btn cart-btn">vai al pagamento</button>
+            <button id="submit-button" class="btn cart-btn">vai al pagamento</button>
             <!--<a :href="'/restaurant/' + restaurant.id + '/card'"  class="btn card-btn">vai alla card</a>-->
         </div>
     
