@@ -13,6 +13,9 @@ export default {
       store,
       restaurants: [],
       categories: [],
+
+      // <-- aggiunta linea per modifica stile categorie
+      selectedCategories: [], 
       
       apiPageNumber: 1,
 
@@ -62,6 +65,7 @@ export default {
   },
 
   methods: {
+
     filterCategory() {
 
       if(this.store.checkBoxValue.length > 0) {
@@ -100,74 +104,106 @@ export default {
     },
   
 
-//funzione per cambiare la pagina corrente
-  changePage(direction) {
-            if (direction === 'next' && this.currentPage < this.last_page) {
-                this.currentPage++;
-            } else if (direction === 'prev' && this.currentPage > 1) {
-                this.currentPage--;
-            }
+    //funzione per cambiare la pagina corrente
+    changePage(direction) {
+      if (direction === 'next' && this.currentPage < this.last_page) {
+          this.currentPage++;
+      } else if (direction === 'prev' && this.currentPage > 1) {
+          this.currentPage--;
+      }
 
-            this.apiPageNumber = this.currentPage;
+      this.apiPageNumber = this.currentPage;
 
-            
-            this.getAllRestaurants();
-        }
-      },
+      
+      this.getAllRestaurants();
+      }
+    },
 
- /*selectedCategory(index){
+    // <-- aggiunta linea per modifica stile categorie
 
-    if(this.activeCatNumber == index){
-        this.isActive = !this.isActive
-    }
-    console.log(index);
- }   */
+    toggleCategorySelection(categoryName) { 
 
+      const index = this.selectedCategories.indexOf(categoryName);
 
-  }
+      if (index === -1) {
+
+        this.selectedCategories.push(categoryName);
+
+      } else {
+
+        this.selectedCategories.splice(index, 1);
+
+      }
+
+      this.filterCategory();
+
+    },
+
+    // <-- aggiunta linea per modifica stile categorie
+
+    isCategorySelected(categoryName) {
+
+      return this.store.checkBoxValue.includes(categoryName);
+
+    },
+}
 
 </script>
 
 <template>
   <section class="parallax"> 
+
     <div class="container text-center">
+
       <h2 class="text-white">Cerca Per Categorie</h2>
 
       <div class="row">
+
+        <!-- CONTENITORE SINGOLA CATEGORIA DEI RISTORANTI -->
         <div class="col-sm-2 mt-4 mb-sm-0 " v-for="(categoryElement , catIndex) in categories" :key="categoryElement">
           
-            <div class="card box" >
+          <!-- aggiunta linea per modifica stile categorie -->
+
+          <div class="card box" :class="{ 'active-category': isCategorySelected(categoryElement.category_name) }" @click="toggleCategorySelection(categoryElement.category_name)"> 
             <div class="card-body d-flex flex-column align-items-center">
 
               <div  class="category-icon">
-                 <!--tutti gli elementi dell'array delle immagini-->
+
+                <!--tutti gli elementi dell'array delle immagini-->
                 <div v-for="(categoryLogo,logoIndex) in categoryImages" >
                     <!--solo le immagini che corrispondono all'index della categoria-->
                     <div v-if="catIndex == logoIndex">
-                    <img  class="category-image" :src="categoryLogo" alt="">
+                      <img  class="category-image" :src="categoryLogo" alt="">
                     </div>
                 </div>
-               
+              
               </div>
-               
+              
 
               <div class="checkbox-name">
-              <input class="form-check-input" type="checkbox" role="switch" :value="categoryElement.category_name" :id="categoryElement.category_name" :name="categoryElement.category_name" v-model="store.checkBoxValue" @change="filterCategory()">                  
-              <label class=" form-check-label categoryEv "   :for="categoryElement.category_name">{{categoryElement.category_name}}</label>
-              <!--<label class=" form-check-label categoryEv "   :class=" isActive? 'active' : ''"  @click = selectedCategory(catIndex)  :for="categoryElement.category_name">{{categoryElement.category_name}}</label>-->
-              <!-- <a href="#" class="btn category-name" @click.prevent="filterCategory(categoryElement.category_name)">{{ categoryElement.category_name }}</a> -->
-             </div>
+
+
+                <input class="form-check-input" type="checkbox" role="switch" :value="categoryElement.category_name" :id="categoryElement.category_name" :name="categoryElement.category_name" v-model="store.checkBoxValue" @change="filterCategory()" style="display: none;">
+
+                <!-- aggiunta linea per modifica stile categorie -->
+
+                <label class="form-check-label categoryEv">{{ categoryElement.category_name }}</label>
+
+                <!-- NASCOSTA PRIMA linea per modifica stile categorie -->
+
+                <!-- <label class=" form-check-label categoryEv "   :for="categoryElement.category_name">{{categoryElement.category_name}}</label> -->
+
+                <!--<label class=" form-check-label categoryEv "   :class=" isActive? 'active' : ''"  @click = selectedCategory(catIndex)  :for="categoryElement.category_name">{{categoryElement.category_name}}</label>-->
+                <!-- <a href="#" class="btn category-name" @click.prevent="filterCategory(categoryElement.category_name)">{{ categoryElement.category_name }}</a> -->
+              </div>
             
             </div>
           </div>
 
-
-
-
-
-
         </div>
+
       </div>
+
     </div>
     
   </section>  
@@ -197,18 +233,18 @@ export default {
 
 <style lang="scss" scoped>
 
-.checkbox-name{
+.checkbox-name {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.box:hover{
-    border: #F17228 solid 2px;
-    background-color: whitesmoke;
-}
+.box:hover,
+.active-category { /* aggiunta linea per modifica stile categorie */
+  border: #F17228 solid 2px;
+  background-color: rgba(245, 245, 245, 0.692)};
 
-.pagination-container {
+  .pagination-container {
     display: flex;
     column-gap: 10px;
   }
@@ -239,6 +275,11 @@ export default {
   font-weight: 700;
 }
 
+.active-page:hover {
+  background-color: rgba(255, 179, 14, 1);
+  border: 1px solid rgba(255, 179, 14, 1);
+}
+
 .categoryEv{
     padding:5px;
     border-radius: 5px;
@@ -257,13 +298,13 @@ export default {
   padding-top: 40px;
   padding-bottom: 400px;
 
-max-height: 460px;
+  max-height: 460px;
 
-background-attachment: fixed;
-background-position: center bottom;
-background-repeat: no-repeat;
-background-size: cover;
-filter: blur(0px);
+  background-attachment: fixed;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: blur(0px);
 
 }
 
