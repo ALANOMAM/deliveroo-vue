@@ -1,9 +1,11 @@
 <script>
 import axios from 'axios';
+import {store} from '../store.js'
 export default{
  name:'CardPage',
  data(){
     return{
+        store,
         restaurantId: null,
             restaurant: {},   
             baseApiUrl: 'http://127.0.0.1:8000/api',
@@ -14,8 +16,10 @@ export default{
            customerInfo :{},
             customerAddress:'',
             customerName:'',
-            customerMail:'',
+            customerEmail:'',
             customerComment:'',
+            customerSurname:'',
+            customerPhone: '',
 
 //pezzo carrello
 cart: []
@@ -35,7 +39,33 @@ cart: []
     
     axios.get(`${this.baseApiUrl}/restaurants/${this.restaurantId}`).then(res => {
         this.restaurant = res.data.restaurant;
-    })
+    }),
+
+    this.getToken();
+
+    var button = document.querySelector('#submit-button');
+
+    const makePayment = (nonce) => {
+        this.makePayment(nonce);
+    }
+
+    braintree.dropin.create({
+        authorization: 'sandbox_38ccykrv_y58kr6st43mn4zfc',
+        selector: '#dropin-container'
+        }, function (err, instance) {
+        button.addEventListener('click', function () {
+            instance.requestPaymentMethod(function (err, payload) {
+                
+                if (err) {
+                    console.error(err)
+
+                    return 
+                }
+                console.log(payload)
+                makePayment(payload.nonce);
+            });
+        })
+    });
 },
 
 computed: {
@@ -77,7 +107,8 @@ methods: {
         const cartItem = {
             name: this.currentDish.dish_name,
             quantity: this.quantity,
-            price: this.currentDish.dish_price * this.quantity
+            price: this.currentDish.dish_price * this.quantity,
+            id: this.currentDish.id,
         };
 
         
@@ -98,20 +129,20 @@ methods: {
     },
 
    //AGGIUNTO DA ME START
-    addToCart2() {
+    // addToCart2() {
 
-        this.customerInfo = {
-            one:this.customerAddress,
-            two:this.customerName,
-            three:this.customerMail,
-            four:this.customerComment,
-        }
+    //     this.customerInfo = {
+    //         one:this.customerAddress,
+    //         two:this.customerName,
+    //         three:this.customerEmail,
+    //         four:this.customerComment,
+    //     }
 
     
-        console.log(this.test);
+    //     console.log(this.test);
 
         
-    },
+    // },
      //AGGIUNTO DA ME END
 
 
@@ -136,7 +167,44 @@ methods: {
 
         this.cart[index].price = this.cart[index].quantity * (this.cart[index].price / (this.cart[index].quantity + (increment ? -1 : 1)));
         this.updateLocalStorage();
-    }
+    },
+
+    //pagamento (token braintree)
+        async getToken() {
+                try {
+                    const response = await axios.get( this.store.apiBaseUrl + '/get-token');
+                    this.nonce = response.data.token;
+                } catch (error) {
+                    console.error('Error fetching token:', error);
+                }
+            },
+        
+    async makePayment(nonce) {
+            const paymentData = {
+                customer_name: this.customerName,
+                customer_surname: this.customerSurname,
+                customer_email: this.customerEmail,
+                customer_phone: this.customerPhone,
+                customer_address: this.customerAddress,
+                message: this.customerComment,
+                cart: this.cart,
+                totalPrice: this.totalPrice,
+                nonce
+            };
+            console.log(paymentData)
+
+            try {
+                const response = await axios.post(this.store.apiBaseUrl + '/payment', paymentData);
+                if (response.data.success) {
+                    alert('Payment successful! Transaction ID: ' + response.data.transaction_id);
+                    // Esegui altre azioni dopo un pagamento riuscito
+                } else {
+                    alert('Payment failed: ' + response.data.message);
+                }
+            } catch (error) {
+                console.error('Error processing payment:', error);
+            }
+    },
 
 },
 
@@ -175,7 +243,7 @@ watch: {
 <div class="container d-flex justify-content-between">
 
  <!--form start-->   
-<div class="form">
+<form class="form" @submit.prevent="makePayment">
 
   <div class="mb-3">
      <div class="d-flex gap-2">
@@ -196,13 +264,29 @@ watch: {
   <div class="mb-3">
     <div class="d-flex gap-2">
     <i class="fa-solid fa-location-dot"></i>
+    <label for="user_surname" class="form-label"><strong>Cognome</strong></label>
+    </div>
+    <input v-model="customerSurname"  type="text" class="form-control" name="user_surname" id="user_surname" placeholder="Inserisci Cognome" >
+  </div>
+
+  <div class="mb-3">
+    <div class="d-flex gap-2">
+    <i class="fa-solid fa-location-dot"></i>
+    <label for="phone" class="form-label"><strong>Numero di telefono</strong></label>
+    </div>
+    <input v-model="customerPhone"  type="text" class="form-control" name="phone" id="phone" placeholder="Numero di telefono" >
+  </div>
+
+  <div class="mb-3">
+    <div class="d-flex gap-2">
+    <i class="fa-solid fa-location-dot"></i>
     <label for="user_mail" class="form-label"><strong>Email</strong></label>
     </div>
-    <input v-model="customerMail"  type="email" class="form-control"  name="user_mail" id="user_mail" aria-describedby="emailHelp" placeholder="esempio@rossi.com" >
+    <input v-model="customerEmail"  type="email" class="form-control"  name="user_mail" id="user_mail" aria-describedby="emailHelp" placeholder="esempio@rossi.com" >
   </div>
             
-<hr>
-  <div class="mb-3">
+
+  <!-- <div class="mb-3">
     <div class="d-flex gap-2">
     <i class="fa-solid fa-location-dot"></i>
     <label for="user_payment" class="form-label"><strong>Metodo Di Pagamento</strong></label>
@@ -210,10 +294,14 @@ watch: {
     <input type="text" class="form-control"  name="user_payment" id="user_payment" placeholder="Come vuoi pagare?">
   </div> 
 
-  <button class="btn form-btn"  @click="addToCart2()"> Invia </button>
-
-</div>
+  <button class="btn form-btn"  @click="addToCart2()"> Invia </button> -->
+  <button type="submit">Pay</button>
+</form>
 <!--form end-->
+
+<div id="dropin-container"></div>
+
+<button id="submit-button" class="button button--small button--green">Purchase</button>
 
 
 <div class="mb-3 d-flex flex-column">
@@ -222,37 +310,21 @@ watch: {
 </div>
 
 
+<div>
+        <!-- <form @submit.prevent="makePayment">
+            <input v-model="customerName" placeholder="Full Name" />
+            <input v-model="email" placeholder="Email" />
+            <input v-model="address" placeholder="Address" />
+            <input v-model="tel" placeholder="Telephone" />
+            <input v-model="description" placeholder="Description" />
+            
+        </form> -->
+    </div>
+
  <!--carello inizio-->
  <div class="col-md-4 mb-5">
     <div class="cart">
         <h2 class="text-center fs-2 mb-5 pt-4 text-uppercase">Carrello</h2>
-
-            <ul>
-            <li class="list-group-item">
-             <strong>Indirizzo : </strong>
-            <span>{{ this.customerInfo .one}}</span>
-            </li>
-
-            <li class="list-group-item" >
-            <strong>Nome : </strong>
-            <span>{{ this.customerInfo .two}}</span>
-            </li>
-
-            <li class="list-group-item">
-                <strong>Email : </strong>
-                <span>{{ this.customerInfo .three }}</span>
-            </li>
-
-            <li class="list-group-item">
-                <strong>Nota : </strong> 
-            <span>{{ this.customerInfo .four }}</span>
-            </li>
-            
-            <li class="list-group-item">
-            <strong>Pagamento : </strong>
-            <span>{{  }}</span>
-            </li>
-            </ul>
 
             <ul>
             <li v-for="(cartItem, index) in cart" :key="index" class="d-flex justify-content-between mb-4">

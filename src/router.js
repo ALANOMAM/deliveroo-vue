@@ -4,6 +4,7 @@ import HomePage from './pages/HomePage.vue';
 import SingleRestaurant from "./pages/SingleRestaurant.vue";
 
 import CardPage from "./pages/CardPage.vue"
+
 const router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -19,8 +20,8 @@ const router = createRouter({
         },
 
         {
-            path: '/restaurant/:id/card',
-            name: 'card-page',
+            path: '/restaurant/:id/checkout',
+            name: 'checkout',
             component: CardPage,
         },
     ]
