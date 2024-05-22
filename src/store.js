@@ -5,7 +5,7 @@ export const store = reactive({
 
     checkBoxValue: [],
     apiBaseUrl: 'http://127.0.0.1:8000/api',
-
+    
 
 
     //checkout
@@ -15,4 +15,8 @@ export const store = reactive({
     tel: "",
     description: "",
     cartTracker: null,
+
+
 })
+
+
