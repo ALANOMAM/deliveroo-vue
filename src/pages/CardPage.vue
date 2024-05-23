@@ -201,14 +201,7 @@ watch: {
     <input v-model="customerMail"  type="email" class="form-control"  name="user_mail" id="user_mail" aria-describedby="emailHelp" placeholder="esempio@rossi.com" >
   </div>
             
-<hr>
-  <div class="mb-3">
-    <div class="d-flex gap-2">
-    <i class="fa-solid fa-location-dot"></i>
-    <label for="user_payment" class="form-label"><strong>Metodo Di Pagamento</strong></label>
-    </div>
-    <input type="text" class="form-control"  name="user_payment" id="user_payment" placeholder="Come vuoi pagare?">
-  </div> 
+
 
   <button class="btn form-btn"  @click="addToCart2()"> Invia </button>
 
@@ -248,10 +241,6 @@ watch: {
             <span>{{ this.customerInfo .four }}</span>
             </li>
             
-            <li class="list-group-item">
-            <strong>Pagamento : </strong>
-            <span>{{  }}</span>
-            </li>
             </ul>
 
             <ul>
