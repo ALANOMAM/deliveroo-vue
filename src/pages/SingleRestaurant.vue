@@ -113,7 +113,8 @@ export default {
         goToCheckout() {
             const id = this.restaurantId;
             this.$router.push({ name: 'checkout', params: { id} })
-        }
+        },
+        
 
     },
 

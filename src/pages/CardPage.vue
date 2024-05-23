@@ -204,8 +204,13 @@ methods: {
             } catch (error) {
                 console.error('Error processing payment:', error);
             }finally{
-                this.cart = [];
+                this.clearCart();
             }
+    },
+
+    clearCart() {
+        this.cart = [];
+        this.updateLocalStorage();
     },
 
 },
