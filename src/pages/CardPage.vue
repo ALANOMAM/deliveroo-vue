@@ -197,14 +197,17 @@ export default{
 
             try {
                 const response = await axios.post(this.store.apiBaseUrl + '/payment-status', paymentData);
+
                 if (response.data.success) {
                     this.$router.push({ name: 'payment-status', params: { paymentSuccess: true, transactionId: response.data.transaction_id } });
                 } else {
                     this.$router.push({ name: 'payment-status', params: { paymentSuccess: false, errorMessage: response.data.message } });
                 }
+
             } catch (error) {
                 console.error('Error processing payment:', error);
                 this.$router.push({ name: 'payment-status', params: { paymentSuccess: false, errorMessage: 'Error processing payment' } });
+            
             } finally {
                 this.loading = false;
                 this.clearCart();

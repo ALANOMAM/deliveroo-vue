@@ -32,7 +32,11 @@ const router = createRouter({
             name: 'payment-status',
             component: PaymentStatus,
             //Permette di passare i dati come props
-            props: true
+            props: (route) => ({
+                paymentSuccess: route.query.paymentSuccess,
+                transactionId: route.query.transactionId,
+                errorMessage: route.query.errorMessage
+            })
         }
     ]
 });

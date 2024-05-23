@@ -1,4 +1,3 @@
-
 <script>
 import axios from 'axios';
 import {store} from '../store.js';
@@ -10,7 +9,7 @@ export default {
     data() {
         return {
             loading: true,
-            paymentSuccess: false,
+            paymentSuccess: null,
             transactionId: null,
             errorMessage: ''
         };
@@ -21,30 +20,11 @@ export default {
     },
 
     methods: {
-        async processPayment() {
-            const paymentData = this.$route.params.paymentData;
-
-            try {
-                const response = await axios.post(store.apiBaseUrl + '/payment', paymentData);
-                
-                if (response.data.success) {
-                this.paymentSuccess = true;
-                this.transactionId = response.data.transaction_id;
-                
-                } else {
-                this.paymentSuccess = false;
-                this.errorMessage = response.data.message;
-                }
-
-            } catch (error) {
-                this.paymentSuccess = false;
-                this.errorMessage = 'Error processing payment';
-                console.error('Error processing payment:', error);
-
-            } finally {
-
-                this.loading = false;
-            }
+        processPayment() {
+            this.paymentSuccess = this.$route.params.paymentSuccess;
+            this.transactionId = this.$route.params.transactionId;
+            this.errorMessage = this.$route.params.errorMessage;
+            this.loading = false;
         }
     },
 };
