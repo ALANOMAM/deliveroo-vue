@@ -266,10 +266,14 @@ export default {
                             <span class="fs-3 me-1">{{ totalPrice }} €</span>
                         </div>
                      
-                         <!-- Bottone che porta alla pagina del carrello -->
+                         <!-- Bottone che porta alla pagina del checkout -->
 
-                         <div class="d-flex justify-content-center">
+                         <!-- <div class="d-flex justify-content-center">
                             <div @click="goToCheckout(restaurant.id)" class="btn card-btn">vai alla card</div>
+                        </div> -->
+
+                        <div class="d-flex justify-content-center">
+                            <button type="button" class="btn button-cart" @click="goToCheckout(restaurant.id)">Procedi all'ordine</button>
                         </div>
                     
                     </div>
@@ -288,10 +292,6 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-.card-btn{
-    background-color:#ebb45b ;
-    color:white;
-}
 
 .header-page {
     background-color: #202020;
@@ -349,6 +349,9 @@ export default {
 }
 
 .page {
+
+    min-height: 620px;
+
     .dish {
         display: flex;
         padding: 10px 0;
@@ -360,7 +363,9 @@ export default {
             border-radius: 8px;
         }
     }
+
 }
+
 
 .modal {
     .counter {
