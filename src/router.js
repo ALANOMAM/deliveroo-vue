@@ -5,6 +5,8 @@ import SingleRestaurant from "./pages/SingleRestaurant.vue";
 
 import CardPage from "./pages/CardPage.vue"
 
+import PaymentStatus from "./pages/PaymentStatus.vue";
+
 const router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -24,6 +26,14 @@ const router = createRouter({
             name: 'checkout',
             component: CardPage,
         },
+        //Rotta per la pagina di conferma del pagamento
+        {
+            path: '/payment-status',
+            name: 'payment-status',
+            component: PaymentStatus,
+            //Permette di passare i dati come props
+            props: true
+        }
     ]
 });
 

@@ -2,18 +2,18 @@
 import axios from 'axios';
 import {store} from '../store.js'
 export default{
- name:'CardPage',
- data(){
-    return{
-        store,
-        restaurantId: null,
+    name:'CardPage',
+    data(){
+        return{
+            store,
+            restaurantId: null,
             restaurant: {},   
             baseApiUrl: 'http://127.0.0.1:8000/api',
             quantity: 1,
             currentDish: null,
-               
-           //pezzi legati al form che aggiunge indirizzo ecc 
-           customerInfo :{},
+                
+            //pezzi legati al form che aggiunge indirizzo ecc 
+            customerInfo :{},
             customerAddress:'',
             customerName:'',
             customerEmail:'',
@@ -21,13 +21,15 @@ export default{
             customerSurname:'',
             customerPhone: '',
 
-//pezzo carrello
-cart: []
-    }
- },
+            //pezzo carrello
+            cart: [],
+            //loader
+            loading: false,
+        }
+    },
 
-  //pezzo carrello
-  created() {
+    //pezzo carrello
+    created() {
         this.restaurantId = this.$route.params.id;
         this.loadCart();
     },
@@ -35,151 +37,152 @@ cart: []
     
     mounted() {
     
-    this.restaurantId = this.$route.params.id;
+        this.restaurantId = this.$route.params.id;
     
-    axios.get(`${this.baseApiUrl}/restaurants/${this.restaurantId}`).then(res => {
-        this.restaurant = res.data.restaurant;
-    }),
+        axios.get(`${this.baseApiUrl}/restaurants/${this.restaurantId}`).then(res => {
+            this.restaurant = res.data.restaurant;
+        }),
 
-    this.getToken();
+        this.getToken();
 
-    var button = document.querySelector('#submit-button');
+        var button = document.querySelector('#submit-button');
 
-    const makePayment = (nonce) => {
-        this.makePayment(nonce);
-    }
+        const makePayment = (nonce) => {
+            this.makePayment(nonce);
+        }
 
-    braintree.dropin.create({
-        authorization: 'sandbox_38ccykrv_y58kr6st43mn4zfc',
-        selector: '#dropin-container'
-        }, function (err, instance) {
-        button.addEventListener('click', function () {
-            instance.requestPaymentMethod(function (err, payload) {
-                
-                if (err) {
-                    console.error(err)
+        braintree.dropin.create({
+            authorization: 'sandbox_38ccykrv_y58kr6st43mn4zfc',
+            selector: '#dropin-container'
+            }, function (err, instance) {
+            button.addEventListener('click', function () {
+                instance.requestPaymentMethod(function (err, payload) {
+                    
+                    if (err) {
+                        console.error(err)
 
-                    return 
+                        return 
+                    }
+                    console.log(payload)
+                    makePayment(payload.nonce);
+                });
+            })
+        });
+    },
+
+    computed: {
+        totalPrice() {
+            return this.cart.reduce((total, item) => total + item.price, 0);
+        }
+    },
+
+    methods: {
+        getImageUrl(image) {
+            if (image) {
+                if (image.startsWith('http://') || image.startsWith('https://')) {
+                    return image;
+                } else {
+                    return `${this.baseApiUrl}/storage/${image}`;
                 }
-                console.log(payload)
-                makePayment(payload.nonce);
-            });
-        })
-    });
-},
-
-computed: {
-    totalPrice() {
-        return this.cart.reduce((total, item) => total + item.price, 0);
-    }
-},
-
-methods: {
-    getImageUrl(image) {
-        if (image) {
-            if (image.startsWith('http://') || image.startsWith('https://')) {
-                return image;
             } else {
-                return `${this.baseApiUrl}/storage/${image}`;
+                return '/img/Default_different_food_0.jpg';
             }
-        } else {
-            return '/img/Default_different_food_0.jpg';
-        }
-    },    
+        },    
 
-    decrement() {
-        if (this.quantity > 1) {
-            this.quantity--;
-        }
-    },
-        
-    increment() {
-        this.quantity++;
-    },
+        decrement() {
+            if (this.quantity > 1) {
+                this.quantity--;
+            }
+        },
+            
+        increment() {
+            this.quantity++;
+        },
 
-    //pezzo carrello
-    loadCart() {
-        const savedCart = localStorage.getItem('cart_' + this.restaurantId);
-        this.cart = savedCart ? JSON.parse(savedCart) : [];
-    },
+        //pezzo carrello
+        loadCart() {
+            const savedCart = localStorage.getItem('cart_' + this.restaurantId);
+            this.cart = savedCart ? JSON.parse(savedCart) : [];
+        },
 
-    addToCart() {
-        const cartItem = {
-            name: this.currentDish.dish_name,
-            quantity: this.quantity,
-            price: this.currentDish.dish_price * this.quantity,
-            id: this.currentDish.id,
-        };
+        addToCart() {
+            const cartItem = {
+                name: this.currentDish.dish_name,
+                quantity: this.quantity,
+                price: this.currentDish.dish_price * this.quantity,
+                id: this.currentDish.id,
+            };
 
-        
-        //Controlla se il piatto esiste già nel carrello
-        const existingItemIndex = this.cart.findIndex(item => item.name === cartItem.name);
+            
+            //Controlla se il piatto esiste già nel carrello
+            const existingItemIndex = this.cart.findIndex(item => item.name === cartItem.name);
 
-        if (existingItemIndex !== -1) {
-            //Aggiorna il piatto esistente
-            this.cart[existingItemIndex].quantity += this.quantity;
-            this.cart[existingItemIndex].price += cartItem.price;
-        
-        } else {
-            //Aggiungi il nuovo piatto
-            this.cart.push(cartItem);
-        }
+            if (existingItemIndex !== -1) {
+                //Aggiorna il piatto esistente
+                this.cart[existingItemIndex].quantity += this.quantity;
+                this.cart[existingItemIndex].price += cartItem.price;
+            
+            } else {
+                //Aggiungi il nuovo piatto
+                this.cart.push(cartItem);
+            }
 
-        this.updateLocalStorage();
-    },
+            this.updateLocalStorage();
+        },
 
-   //AGGIUNTO DA ME START
-    // addToCart2() {
+        //AGGIUNTO DA ME START
+        // addToCart2() {
 
-    //     this.customerInfo = {
-    //         one:this.customerAddress,
-    //         two:this.customerName,
-    //         three:this.customerEmail,
-    //         four:this.customerComment,
-    //     }
-
-    
-    //     console.log(this.test);
+        //     this.customerInfo = {
+        //         one:this.customerAddress,
+        //         two:this.customerName,
+        //         three:this.customerEmail,
+        //         four:this.customerComment,
+        //     }
 
         
-    // },
-     //AGGIUNTO DA ME END
+        //     console.log(this.test);
+
+            
+        // },
+        //AGGIUNTO DA ME END
 
 
-    removeFromCart(index) {
-        this.cart.splice(index, 1);
-        this.updateLocalStorage();
-    },
+        removeFromCart(index) {
+            this.cart.splice(index, 1);
+            this.updateLocalStorage();
+        },
 
-    updateLocalStorage() {
-        localStorage.setItem('cart_' + this.restaurantId, JSON.stringify(this.cart));
-    },
+        updateLocalStorage() {
+            localStorage.setItem('cart_' + this.restaurantId, JSON.stringify(this.cart));
+        },
 
-    updateCartItem(index, increment) {
-        if (increment) {
-            this.cart[index].quantity++;
-        } else if (this.cart[index].quantity > 1) {
-            this.cart[index].quantity--;
-        } else {
-            // Non fare nulla se la quantità è 1 e si tenta di decrementare
-            return;
-        }
+        updateCartItem(index, increment) {
+            if (increment) {
+                this.cart[index].quantity++;
+            } else if (this.cart[index].quantity > 1) {
+                this.cart[index].quantity--;
+            } else {
+                // Non fare nulla se la quantità è 1 e si tenta di decrementare
+                return;
+            }
 
-        this.cart[index].price = this.cart[index].quantity * (this.cart[index].price / (this.cart[index].quantity + (increment ? -1 : 1)));
-        this.updateLocalStorage();
-    },
+            this.cart[index].price = this.cart[index].quantity * (this.cart[index].price / (this.cart[index].quantity + (increment ? -1 : 1)));
+            this.updateLocalStorage();
+        },
 
-    //pagamento (token braintree)
+        //pagamento (token braintree)
         async getToken() {
-                try {
-                    const response = await axios.get( this.store.apiBaseUrl + '/get-token');
-                    this.nonce = response.data.token;
-                } catch (error) {
-                    console.error('Error fetching token:', error);
-                }
-            },
+            try {
+                const response = await axios.get( this.store.apiBaseUrl + '/get-token');
+                this.nonce = response.data.token;
+            } catch (error) {
+                console.error('Error fetching token:', error);
+            }
+        },
         
-    async makePayment(nonce) {
+        async makePayment(nonce) {
+
             const paymentData = {
                 customer_name: this.customerName,
                 customer_surname: this.customerSurname,
@@ -191,52 +194,46 @@ methods: {
                 totalPrice: this.totalPrice,
                 nonce
             };
-            console.log(paymentData)
 
             try {
-                const response = await axios.post(this.store.apiBaseUrl + '/payment', paymentData);
+                const response = await axios.post(this.store.apiBaseUrl + '/payment-status', paymentData);
                 if (response.data.success) {
-                    alert('Payment successful! Transaction ID: ' + response.data.transaction_id);
-                    // Esegui altre azioni dopo un pagamento riuscito
+                    this.$router.push({ name: 'payment-status', params: { paymentSuccess: true, transactionId: response.data.transaction_id } });
                 } else {
-                    alert('Payment failed: ' + response.data.message);
+                    this.$router.push({ name: 'payment-status', params: { paymentSuccess: false, errorMessage: response.data.message } });
                 }
             } catch (error) {
                 console.error('Error processing payment:', error);
-            }finally{
+                this.$router.push({ name: 'payment-status', params: { paymentSuccess: false, errorMessage: 'Error processing payment' } });
+            } finally {
+                this.loading = false;
                 this.clearCart();
             }
+        },
+
+        clearCart() {
+            this.cart = [];
+            this.updateLocalStorage();
+        },
     },
 
-    clearCart() {
-        this.cart = [];
-        this.updateLocalStorage();
-    },
+    // Osserva i cambiamenti del ristorante e aggiorna il carrello di conseguenza
+    watch: {
+        $route(to, from) {
+            // Salva il carrello corrente
+            this.updateLocalStorage();
 
-},
+            // Aggiorna l'ID del ristorante e carica il nuovo carrello
+            this.restaurantId = to.params.id;
+            this.loadCart();
 
-
-
-// Osserva i cambiamenti del ristorante e aggiorna il carrello di conseguenza
-watch: {
-    $route(to, from) {
-        // Salva il carrello corrente
-        this.updateLocalStorage();
-
-        // Aggiorna l'ID del ristorante e carica il nuovo carrello
-        this.restaurantId = to.params.id;
-        this.loadCart();
-
-        // Ricarica i dati del ristorante
-        axios.get(`${this.baseApiUrl}/restaurants/${this.restaurantId}`).then(res => {
-            this.restaurant = res.data.restaurant;
-        });
+            // Ricarica i dati del ristorante
+            axios.get(`${this.baseApiUrl}/restaurants/${this.restaurantId}`).then(res => {
+                this.restaurant = res.data.restaurant;
+            });
+        }
     }
 }
-
-
-}
-
 </script>
 
 <template>
@@ -363,7 +360,8 @@ watch: {
 </div>
 <!--fine container-->
 
-
+<!-- Loader -->
+<div v-if="loading" class="loader">Loading...</div>
 
 </template>
 
@@ -397,5 +395,20 @@ i{
             transform: scale(120%);
         }
     }
+}
+
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  font-size: 1.5rem;
+  color: #000;
 }
 </style>
