@@ -1,6 +1,4 @@
 <script>
-import axios from 'axios';
-import {store} from '../store.js';
 
 export default {
     
@@ -9,23 +7,26 @@ export default {
     data() {
         return {
             loading: true,
-            paymentSuccess: null,
-            transactionId: null,
-            errorMessage: ''
         };
     },
 
-    mounted() {
-        this.processPayment();
+    props: {
+        paymentSuccess: {
+            type: Boolean,
+            required: true
+        },
+        transactionId: {
+            type: String,
+            required: false
+        },
+        errorMessage: {
+            type: String,
+            required: false
+        }
     },
 
-    methods: {
-        processPayment() {
-            this.paymentSuccess = this.$route.params.paymentSuccess;
-            this.transactionId = this.$route.params.transactionId;
-            this.errorMessage = this.$route.params.errorMessage;
-            this.loading = false;
-        }
+    mounted() {
+        this.loading = false;
     },
 };
 </script>

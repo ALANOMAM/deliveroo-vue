@@ -182,7 +182,8 @@ export default{
         },
         
         async makePayment(nonce) {
-
+            this.loading = true;
+            
             const paymentData = {
                 customer_name: this.customerName,
                 customer_surname: this.customerSurname,
@@ -196,17 +197,17 @@ export default{
             };
 
             try {
-                const response = await axios.post(this.store.apiBaseUrl + '/payment-status', paymentData);
+                const response = await axios.post(this.store.apiBaseUrl + '/payment', paymentData);
 
                 if (response.data.success) {
-                    this.$router.push({ name: 'payment-status', params: { paymentSuccess: true, transactionId: response.data.transaction_id } });
+                    this.$router.push({ name: 'payment-status', query: { paymentSuccess: true, transactionId: response.data.transaction_id } });
                 } else {
-                    this.$router.push({ name: 'payment-status', params: { paymentSuccess: false, errorMessage: response.data.message } });
+                    this.$router.push({ name: 'payment-status', query: { paymentSuccess: false, errorMessage: response.data.message } });
                 }
 
             } catch (error) {
                 console.error('Error processing payment:', error);
-                this.$router.push({ name: 'payment-status', params: { paymentSuccess: false, errorMessage: 'Error processing payment' } });
+                this.$router.push({ name: 'payment-status', query: { paymentSuccess: false, errorMessage: 'Error processing payment' } });
             
             } finally {
                 this.loading = false;
