@@ -21,6 +21,9 @@ export default{
             customerSurname:'',
             customerPhone: '',
 
+            //var per validazione
+            errors: {},
+
 //pezzo carrello
 cart: []
     }
@@ -180,6 +183,36 @@ methods: {
             },
         
     async makePayment(nonce) {
+
+            this.errors = {};
+
+            // Validazione dei campi del form
+            if (!this.customerName) {
+                this.errors.customerName = 'Il campo nome è obbligatorio.'
+            }
+
+            if (!this.customerSurname) {
+                this.errors.customerSurname = 'Il campo cognome è obbligatorio.'
+            }
+
+            if (!this.customerEmail) {
+                this.errors.customerEmail = 'Il campo della mail è obbligatorio.'
+            } else if (!this.validEmail(this.customerEmail)) {
+                this.errors.customerEmail = 'Il campo email deve essere un indirizzo email valido.';
+            }
+
+            if (!this.customerPhone) {
+                this.errors.customerPhone = 'Il campo telefono è obbligatorio.'
+            }
+
+            if (!this.customerAddress) {
+                this.errors.customerAddress = 'Il campo indirizzo è obbligatorio.'
+            }
+
+            if (this.cart.length === 0) {
+                this.errors.cart = 'Il carrello è obbligatorio.';
+            }
+
             const paymentData = {
                 customer_name: this.customerName,
                 customer_surname: this.customerSurname,
@@ -268,6 +301,7 @@ watch: {
             <label for="user_address" class="form-label"><strong>Indirizzo Consegna</strong></label>
             </div>
             <input  v-model="customerAddress" type="text" class="form-control" name="user_address" id="user_address" placeholder="Inserisci Indirizzo">
+            <div v-if="errors.customerAddress" class="text-danger">{{ errors.customerAddress }}</div>
         </div>
 
         <div class="mb-3">
@@ -276,6 +310,7 @@ watch: {
             <label for="user_name" class="form-label"><strong>Nome</strong></label>
             </div>
             <input v-model="customerName"  type="text" class="form-control" name="user_name" id="user_name" placeholder="Inserisci Nome" >
+            <div v-if="errors.customerName" class="text-danger">{{ errors.customerName }}</div>
         </div>
 
         <div class="mb-3">
@@ -284,6 +319,7 @@ watch: {
             <label for="user_surname" class="form-label"><strong>Cognome</strong></label>
             </div>
             <input v-model="customerSurname"  type="text" class="form-control" name="user_surname" id="user_surname" placeholder="Inserisci Cognome" >
+            <div v-if="errors.customerSurname" class="text-danger">{{ errors.customerSurname }}</div>
         </div>
 
         <div class="mb-3">
@@ -292,6 +328,7 @@ watch: {
             <label for="phone" class="form-label"><strong>Numero di telefono</strong></label>
             </div>
             <input v-model="customerPhone"  type="text" class="form-control" name="phone" id="phone" placeholder="Numero di telefono" >
+            <div v-if="errors.customerPhone" class="text-danger">{{ errors.customerPhone }}</div>
         </div>
 
         <div class="mb-3">
@@ -300,6 +337,7 @@ watch: {
             <label for="user_mail" class="form-label"><strong>Email</strong></label>
             </div>
             <input v-model="customerEmail"  type="email" class="form-control"  name="user_mail" id="user_mail" aria-describedby="emailHelp" placeholder="esempio@rossi.com" >
+            <div v-if="errors.customerEmail" class="text-danger">{{ errors.customerEmail }}</div>
         </div>
             
     
