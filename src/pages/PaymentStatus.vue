@@ -37,12 +37,12 @@ export default {
 
     <div v-else>
         <div v-if="paymentSuccess">
-            <h2>Payment successful!</h2>
+            <h1>Pagamento Avvenuto con Successo!</h1>
             <p>Transaction ID: {{ transactionId }}</p>
         </div>
 
         <div v-else>
-            <h2>Payment failed</h2>
+            <h1>Pagamento Fallito</h1>
             <p>{{ errorMessage }}</p>
         </div>
     </div>
