@@ -255,7 +255,7 @@ watch: {
 </div>
 
 <!--inizio container-->
-<div class="container d-flex gap-4 pb-5">
+<div class="container d-flex gap-4 mt-5 pb-5">
 
     <!--form start-->   
     <form class="col-md-6 form" @submit.prevent="makePayment">
