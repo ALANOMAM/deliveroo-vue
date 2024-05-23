@@ -247,7 +247,7 @@ watch: {
 </div>
 
 <!--inizio container-->
-<div class="container d-flex justify-content-between">
+<div class="container d-flex gap-4">
 
  <!--form start-->   
 <form class="form" @submit.prevent="makePayment">
@@ -291,17 +291,20 @@ watch: {
     </div>
     <input v-model="customerEmail"  type="email" class="form-control"  name="user_mail" id="user_mail" aria-describedby="emailHelp" placeholder="esempio@rossi.com" >
   </div>
-            
-</form>
-<!--form end-->
-
-<div id="dropin-container"></div>
-
-
+           
+  
 <div class="mb-3 d-flex flex-column">
     <label for="exampleInputEmail1" class="form-label"><strong>Una nota per noi?</strong></label>
     <textarea v-model="customerComment" name="exampleInputEmail1" id="exampleInputEmail1" cols="50" rows="5" placeholder="Inserisci un commento o nota"></textarea>
 </div>
+
+
+</form>
+<!--form end-->
+
+ 
+
+
 
  <!--carello inizio-->
  <div class="col-md-4 mb-5">
@@ -342,19 +345,24 @@ watch: {
         </div>
         
             <!-- Bottone che porta alla pagina del carrello -->
-
             <div class="d-flex justify-content-center">
             <button id="submit-button" class="btn cart-btn">vai al pagamento</button>
             <!--<a :href="'/restaurant/' + restaurant.id + '/card'"  class="btn card-btn">vai alla card</a>-->
         </div>
     
     </div>
-</div>
 
+    
+</div>
 <!--carello fine-->
+
+<!--box del pagamento-->
+<div id="dropin-container"></div>
+
 
 </div>
 <!--fine container-->
+
 
 
 </template>
