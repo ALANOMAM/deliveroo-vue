@@ -1,18 +1,56 @@
 <script>
+import axios from 'axios';
+import { store } from '../store.js';
+import TopRestaurantCard from '../components/TopRestaurantCard.vue';
+
 export default{
     name:'IntroApp',
+    components: {
+      TopRestaurantCard
+    },
+
     data(){
         return{
-
+           store,
+           topRestaurants: []
         }
-    }
+    },
+
+   
+
+
+    methods: {
+    async fetchTopRestaurants() {
+  try {
+    const response = await axios.get(this.store.apiBaseUrl + '/top-restaurants');
+    const data = response.data;
+  
+    if (data.success) {
+      this.topRestaurants = data.results.map(restaurant => ({
+        id: restaurant.restaurant_id,
+        name: restaurant.restaurant_name,
+        image:restaurant.image,
+        total_orders: restaurant.total_orders
+      }));
+    } 
+  } catch (error) {
+    console.error('Error fetching top restaurants:', error);
+  }
 }
+  },
+
+  created() {
+    this.fetchTopRestaurants();
+  },
+}
+
+
 </script>
 
 <template>
   <section>
 
-    <div class="container text-center">
+    <div class="container text-center ">
       <h2 class="my-5">Come Funziona</h2>
 
       <div class="row mb-5">
@@ -53,6 +91,16 @@ export default{
     </div>
 
   </section>
+
+  <div class="container">
+    <h2 class="text-center mt-5 pt-5">I RISTORANTI PIU' POPOLARI</h2>
+  <div class="d-flex m-auto" v-if="topRestaurants.length > 0">
+  <TopRestaurantCard v-for="restaurant in topRestaurants" :key="restaurant.id" :topRestaurant="restaurant"></TopRestaurantCard>
+</div>
+</div>
+
+
+
 </template>
 
 <style lang="scss" scoped>

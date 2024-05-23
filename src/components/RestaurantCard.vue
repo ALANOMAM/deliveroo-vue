@@ -13,6 +13,7 @@ export default{
     props : {
 
         restaurant: Object,
+        
 
     }
 }

@@ -1,35 +1,40 @@
 <script>
+import { store } from '../store.js';
+
 import CategoryApp from '../components/CategoryApp.vue';
 import IntroApp from '../components/IntroApp.vue';
 import JumboApp from '../components/JumboApp.vue';
 import SectionMobile from '../components/SectionMobile.vue';
 
-export default{
-  name:'HomePage',
 
-  components:{
+export default {
+  name: 'HomePage',
+
+  components: {
     CategoryApp,
     IntroApp,
     SectionMobile,
     JumboApp,
+    
   },
 
-  data(){
-      return{
-        
-          
-      }
+  data() {
+    return {
+     
+    };
   },
+
+ 
 }
-
 </script>
 
 <template>
-   <JumboApp></JumboApp>
+  <JumboApp></JumboApp>
   <IntroApp></IntroApp>
   <CategoryApp></CategoryApp>
   <SectionMobile></SectionMobile>
 </template>
+
 
 <style>
 

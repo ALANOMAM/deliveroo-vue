@@ -1,5 +1,6 @@
 <script>
 import axios from 'axios';
+import { useRoute } from 'vue-router';
 
 
 export default {
@@ -74,7 +75,8 @@ export default {
             const cartItem = {
                 name: this.currentDish.dish_name,
                 quantity: this.quantity,
-                price: this.currentDish.dish_price * this.quantity
+                price: this.currentDish.dish_price * this.quantity,
+                id: this.currentDish.id,
             };
             
             //Controlla se il piatto esiste già nel carrello
@@ -106,7 +108,13 @@ export default {
             this.currentDish = dish;
             this.quantity = 1;
             new bootstrap.Modal(document.getElementById('addDish')).show();
-        }
+        },
+
+        goToCheckout() {
+            const id = this.restaurantId;
+            this.$router.push({ name: 'checkout', params: { id} })
+        },
+        
 
     },
 
@@ -261,7 +269,7 @@ export default {
                          <!-- Bottone che porta alla pagina del carrello -->
 
                          <div class="d-flex justify-content-center">
-                            <a :href="'/restaurant/' + restaurant.id + '/card'"  class="btn card-btn">vai alla card</a>
+                            <div @click="goToCheckout(restaurant.id)" class="btn card-btn">vai alla card</div>
                         </div>
                     
                     </div>
