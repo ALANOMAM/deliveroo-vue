@@ -49,7 +49,7 @@ watch: {
                             <ul>
                                 <li><a href="" >Aiuto & Supporto</a></li>
                                 <li><a href="" >Diventa nostro Partner</a></li>
-                                <li><a href="">Diventa un Corriere Partner</a></li>
+                                <li><a href="">Diventa un Corriere</a></li>
                             </ul>
                         </div>
         
@@ -57,9 +57,9 @@ watch: {
                             <h2>Legale</h2>
                             <ul>
                                 <li><a href="" >Termini & Condizioni</a></li>
-                                <li><a href="" >Rimborso & Cancellazione</a></li>
                                 <li><a href="" >Informativa sulla Privacy</a></li>
                                 <li><a href="" >Informativa sui Cookie</a></li>
+                                <li><a href="" >Rimborsi</a></li>
                             </ul>
                         </div>
                     </div>
