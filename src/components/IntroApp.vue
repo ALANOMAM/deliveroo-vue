@@ -21,22 +21,22 @@ export default{
 
     methods: {
     async fetchTopRestaurants() {
-  try {
-    const response = await axios.get(this.store.apiBaseUrl + '/top-restaurants');
-    const data = response.data;
-  
-    if (data.success) {
-      this.topRestaurants = data.results.map(restaurant => ({
-        id: restaurant.restaurant_id,
-        name: restaurant.restaurant_name,
-        image:restaurant.image,
-        total_orders: restaurant.total_orders
-      }));
-    } 
-  } catch (error) {
-    console.error('Error fetching top restaurants:', error);
-  }
-}
+      try {
+        const response = await axios.get(this.store.apiBaseUrl + '/top-restaurants');
+        const data = response.data;
+      
+        if (data.success) {
+          this.topRestaurants = data.results.map(restaurant => ({
+            id: restaurant.restaurant_id,
+            name: restaurant.restaurant_name,
+            image:restaurant.image,
+            total_orders: restaurant.total_orders
+          }));
+        } 
+      } catch (error) {
+        console.error('Error fetching top restaurants:', error);
+      }
+    }
   },
 
   created() {

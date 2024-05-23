@@ -119,21 +119,21 @@ export default {
     },
 
     // Osserva i cambiamenti del ristorante e aggiorna il carrello di conseguenza
-    watch: {
-        $route(to, from) {
-            // Salva il carrello corrente
-            this.updateLocalStorage();
+    // watch: {
+    //     $route(to, from) {
+    //         // Salva il carrello corrente
+    //         this.updateLocalStorage();
 
-            // Aggiorna l'ID del ristorante e carica il nuovo carrello
-            this.restaurantId = to.params.id;
-            this.loadCart();
+    //         // Aggiorna l'ID del ristorante e carica il nuovo carrello
+    //         this.restaurantId = to.params.id;
+    //         this.loadCart();
 
-            // Ricarica i dati del ristorante
-            axios.get(`${this.baseApiUrl}/restaurants/${this.restaurantId}`).then(res => {
-                this.restaurant = res.data.restaurant;
-            });
-        }
-    }
+    //         // Ricarica i dati del ristorante
+    //         axios.get(`${this.baseApiUrl}/restaurants/${this.restaurantId}`).then(res => {
+    //             this.restaurant = res.data.restaurant;
+    //         });
+    //     }
+    // }
 }
 </script>
 
