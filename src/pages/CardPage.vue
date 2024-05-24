@@ -198,20 +198,33 @@ export default{
 
             try {
                 const response = await axios.post(this.store.apiBaseUrl + '/payment', paymentData);
+                const paymentStatus = {
+                    paymentSuccess: response.data.success,
+                    transactionId: response.data.transaction_id || null,
+                    errorMessage: response.data.message || null,
+                    customerEmail: this.customerEmail,
+                    customerPhone: this.customerPhone,
+                    customerAddress: this.customerAddress
+                };
+
+                localStorage.setItem('paymentStatus', JSON.stringify(paymentStatus));
 
                 if (response.data.success) {
-                    this.$router.push({ name: 'payment-status', query: { paymentSuccess: true, transactionId: response.data.transaction_id } });
+                    this.$router.push({ name: 'payment-status'});
                 } else {
-                    this.$router.push({ name: 'payment-status', query: { paymentSuccess: false, errorMessage: response.data.message } });
+                    this.$router.push({ name: 'payment-status'});
                 }
+
+                this.clearCart();
 
             } catch (error) {
                 console.error('Error processing payment:', error);
-                this.$router.push({ name: 'payment-status', query: { paymentSuccess: false, errorMessage: 'Error processing payment' } });
+                const paymentStatus = { paymentSuccess: false, errorMessage: 'Error processing payment' };
+                localStorage.setItem('paymentStatus', JSON.stringify(paymentStatus));
+                this.$router.push({ name: 'payment-status' });
             
             } finally {
                 this.loading = false;
-                this.clearCart();
             }
         },
 
