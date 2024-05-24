@@ -219,7 +219,7 @@ export default{
 
             } catch (error) {
                 console.error('Error processing payment:', error);
-                const paymentStatus = { paymentSuccess: false, errorMessage: 'Error processing payment' };
+                const paymentStatus = { paymentSuccess: false, errorMessage: 'Il pagamento non è andato a buon fine, riprova' };
                 localStorage.setItem('paymentStatus', JSON.stringify(paymentStatus));
                 this.$router.push({ name: 'payment-status' });
             
