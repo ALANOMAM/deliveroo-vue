@@ -54,6 +54,7 @@ export default{
             this.makePayment(nonce);
         }
 
+
         braintree.dropin.create({
             authorization: 'sandbox_38ccykrv_y58kr6st43mn4zfc',
             selector: '#dropin-container'
@@ -71,6 +72,7 @@ export default{
                 });
             })
         });
+
     },
 
     computed: {
@@ -185,7 +187,7 @@ export default{
         },
 
         validateForm() {
-            this.errors = {}; // Reset errors
+            this.errors = {}; 
 
             if (!this.customerName) {
                 this.errors.customer_name = ['Il campo nome è obbligatorio.'];
@@ -331,7 +333,7 @@ export default{
                 <i class="fa-solid fa-truck-fast"></i>
             <label for="user_address" class="form-label"><strong>Indirizzo Consegna</strong></label>
             </div>
-            <input  v-model="customerAddress" type="text" class="form-control" name="user_address" id="user_address" placeholder="Inserisci Indirizzo">
+            <input  v-model="customerAddress" type="text" class="form-control" name="user_address" id="user_address" placeholder="Inserisci Indirizzo" required>
             <!-- <div v-if="errors.customerAddress" class="text-danger">{{ errors.customerAddress }}</div> -->
             <div v-if="errors.customer_address" class="text-danger">{{ errors.customer_address[0] }}</div>
         </div>
@@ -341,7 +343,7 @@ export default{
             <i class="fa-solid fa-person"></i>
             <label for="user_name" class="form-label"><strong>Nome</strong></label>
             </div>
-            <input v-model="customerName"  type="text" class="form-control" name="user_name" id="user_name" placeholder="Inserisci Nome" >
+            <input v-model="customerName"  type="text" class="form-control" name="user_name" id="user_name" placeholder="Inserisci Nome" required>
             <!-- <div v-if="errors.customerName" class="text-danger">{{ errors.customerName }}</div> -->
             <div v-if="errors.customer_name" class="text-danger">{{ errors.customer_name[0] }}</div>
 
@@ -352,7 +354,7 @@ export default{
             <i class="fa-solid fa-person"></i>
             <label for="user_surname" class="form-label"><strong>Cognome</strong></label>
             </div>
-            <input v-model="customerSurname"  type="text" class="form-control" name="user_surname" id="user_surname" placeholder="Inserisci Cognome" >
+            <input v-model="customerSurname"  type="text" class="form-control" name="user_surname" id="user_surname" placeholder="Inserisci Cognome" required>
             <!-- <div v-if="errors.customerSurname" class="text-danger">{{ errors.customerSurname }}</div> -->
             <div v-if="errors.customer_surname" class="text-danger">{{ errors.customer_surname[0] }}</div>
 
@@ -363,7 +365,7 @@ export default{
             <i class="fa-solid fa-phone"></i>
             <label for="phone" class="form-label"><strong>Numero di telefono</strong></label>
             </div>
-            <input v-model="customerPhone"  type="text" class="form-control" name="phone" id="phone" placeholder="Numero di telefono" >
+            <input v-model="customerPhone"  type="text" class="form-control" name="phone" id="phone" placeholder="Numero di telefono" required>
             <!-- <div v-if="errors.customerPhone" class="text-danger">{{ errors.customerPhone }}</div> -->
             <div v-if="errors.customer_phone" class="text-danger">{{ errors.customer_phone[0] }}</div>
 
@@ -374,7 +376,7 @@ export default{
             <i class="fa-sharp fa-solid fa-envelope"></i>
             <label for="user_mail" class="form-label"><strong>Email</strong></label>
             </div>
-            <input v-model="customerEmail"  type="email" class="form-control"  name="user_mail" id="user_mail" aria-describedby="emailHelp" placeholder="esempio@rossi.com" >
+            <input v-model="customerEmail"  type="email" class="form-control"  name="user_mail" id="user_mail" aria-describedby="emailHelp" placeholder="esempio@rossi.com" required>
             <!-- <div v-if="errors.customerEmail" class="text-danger">{{ errors.customerEmail }}</div> -->
             <div v-if="errors.customer_email" class="text-danger">{{ errors.customer_email[0] }}</div>
         </div>
@@ -386,6 +388,7 @@ export default{
             <label for="exampleInputEmail1" class="form-label"><strong>Una nota per noi?</strong></label>
             </div>
             <textarea class="p-2" v-model="customerComment" name="exampleInputEmail1" id="exampleInputEmail1" cols="50" rows="5" placeholder="Inserisci un commento o nota"></textarea>
+            <span style="color:gray">Opzionale</span>
         </div>
 
 
