@@ -435,6 +435,25 @@ export default{
 
 }
 
+.pay-button {
+
+    margin-top: 10px;
+    padding: 10px 20px;
+
+    text-transform: uppercase;
+    font-size: bold;
+    font-weight: 16px;
+    
+    background-color: rgba(246, 89, 0, 1);
+    color: white;
+
+    &:hover {
+        background-color: transparent;
+        color: rgba(246, 89, 0, 1);
+        border: 1px solid rgba(246, 89, 0, 1);
+    }
+}
+
 form {
     min-height: 850px;
     display: flex;
