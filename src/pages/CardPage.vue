@@ -25,6 +25,9 @@ export default{
             cart: [],
             //loader
             loading: false,
+            // per validazione
+            errors: {}, 
+
         }
     },
 
@@ -183,6 +186,8 @@ export default{
         
         async makePayment(nonce) {
             this.loading = true;
+            // Resetto gli errori all'inizio
+            this.errors = {}; 
             
             const paymentData = {
                 customer_name: this.customerName,
@@ -210,18 +215,30 @@ export default{
                 localStorage.setItem('paymentStatus', JSON.stringify(paymentStatus));
 
                 if (response.data.success) {
-                    this.$router.push({ name: 'payment-status'});
+                    this.$router.push({ name: 'payment-status' });
+                    this.clearCart();
                 } else {
-                    this.$router.push({ name: 'payment-status'});
+                    console.error(response.data.message);
                 }
 
                 this.clearCart();
 
             } catch (error) {
-                console.error('Error processing payment:', error);
-                const paymentStatus = { paymentSuccess: false, errorMessage: 'Il pagamento non è andato a buon fine, riprova' };
-                localStorage.setItem('paymentStatus', JSON.stringify(paymentStatus));
-                this.$router.push({ name: 'payment-status' });
+
+                if (error.response && error.response.status === 422) {
+                    this.errors = error.response.data.errors;
+                } else {
+                    console.error('Error processing payment:', error);
+                    const paymentStatus = { paymentSuccess: false, errorMessage: 'Il pagamento non è andato a buon fine, riprova' };
+                    localStorage.setItem('paymentStatus', JSON.stringify(paymentStatus));
+                    this.$router.push({ name: 'payment-status' });
+                }
+
+                // QUELLO CHE C?ERA PRIMA
+                // console.error('Error processing payment:', error);
+                // const paymentStatus = { paymentSuccess: false, errorMessage: 'Il pagamento non è andato a buon fine, riprova' };
+                // localStorage.setItem('paymentStatus', JSON.stringify(paymentStatus));
+                // this.$router.push({ name: 'payment-status' });
             
             } finally {
                 this.loading = false;
@@ -283,6 +300,7 @@ export default{
             </div>
             <input  v-model="customerAddress" type="text" class="form-control" name="user_address" id="user_address" placeholder="Inserisci Indirizzo">
             <!-- <div v-if="errors.customerAddress" class="text-danger">{{ errors.customerAddress }}</div> -->
+            <div v-if="errors.customer_address" class="text-danger">{{ errors.customer_address[0] }}</div>
         </div>
 
         <div class="mb-3">
@@ -292,6 +310,7 @@ export default{
             </div>
             <input v-model="customerName"  type="text" class="form-control" name="user_name" id="user_name" placeholder="Inserisci Nome" >
             <!-- <div v-if="errors.customerName" class="text-danger">{{ errors.customerName }}</div> -->
+            <div v-if="errors.customer_name" class="text-danger">{{ errors.customer_name[0] }}</div>
 
         </div>
 
@@ -302,6 +321,7 @@ export default{
             </div>
             <input v-model="customerSurname"  type="text" class="form-control" name="user_surname" id="user_surname" placeholder="Inserisci Cognome" >
             <!-- <div v-if="errors.customerSurname" class="text-danger">{{ errors.customerSurname }}</div> -->
+            <div v-if="errors.customer_surname" class="text-danger">{{ errors.customer_surname[0] }}</div>
 
         </div>
 
@@ -312,6 +332,7 @@ export default{
             </div>
             <input v-model="customerPhone"  type="text" class="form-control" name="phone" id="phone" placeholder="Numero di telefono" >
             <!-- <div v-if="errors.customerPhone" class="text-danger">{{ errors.customerPhone }}</div> -->
+            <div v-if="errors.customer_phone" class="text-danger">{{ errors.customer_phone[0] }}</div>
 
         </div>
 
@@ -322,7 +343,7 @@ export default{
             </div>
             <input v-model="customerEmail"  type="email" class="form-control"  name="user_mail" id="user_mail" aria-describedby="emailHelp" placeholder="esempio@rossi.com" >
             <!-- <div v-if="errors.customerEmail" class="text-danger">{{ errors.customerEmail }}</div> -->
-
+            <div v-if="errors.customer_email" class="text-danger">{{ errors.customer_email[0] }}</div>
         </div>
             
     
