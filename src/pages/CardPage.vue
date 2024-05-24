@@ -22,8 +22,9 @@ export default{
             customerPhone: '',
 
             //var per validazione
-            // errors: {},
-            errorMessage: '', // Messaggio di errore
+            errors: {},
+            isFormValid: false, 
+            // errorMessage: '', // Messaggio di errore
 
             // isPaymentButtonDisabled: true,
 
@@ -132,6 +133,9 @@ methods: {
         }
 
         this.updateLocalStorage();
+
+        // Controlla la validità del form dopo ogni modifica del carrello
+        this.checkFormValidity();
     },
 
    //AGGIUNTO DA ME START
@@ -155,6 +159,9 @@ methods: {
     removeFromCart(index) {
         this.cart.splice(index, 1);
         this.updateLocalStorage();
+
+        // Controlla la validità del form dopo ogni modifica del carrello
+        this.checkFormValidity();
     },
 
     updateLocalStorage() {
@@ -177,49 +184,52 @@ methods: {
 
     //pagamento (token braintree)
         async getToken() {
+            
                 try {
                     const response = await axios.get( this.store.apiBaseUrl + '/get-token');
-                    this.nonce = response.data.token;
                 } catch (error) {
+
                     console.error('Error fetching token:', error);
                 }
             },
         
     async makePayment(nonce) {
 
-            if (!this.validateForm()) {
+        
+
+            if (!this.isFormValid) {
                 alert('Per favore, compila tutti i campi obbligatori.');
                 return;
             }
 
-            // this.errors = {};
+            this.errors = {};
 
-            // Validazione dei campi del form
-            // if (!this.customerName) {
-            //     this.errors.customerName = 'Il campo nome è obbligatorio.'
-            // }
+            
+            if (!this.customerName) {
+                this.errors.customerName = 'Il campo nome è obbligatorio.'
+            }
 
-            // if (!this.customerSurname) {
-            //     this.errors.customerSurname = 'Il campo cognome è obbligatorio.'
-            // }
+            if (!this.customerSurname) {
+                this.errors.customerSurname = 'Il campo cognome è obbligatorio.'
+            }
 
-            // if (!this.customerEmail) {
-            //     this.errors.customerEmail = 'Il campo della mail è obbligatorio.'
-            // } else if (!this.validEmail(this.customerEmail)) {
-            //     this.errors.customerEmail = 'Il campo email deve essere un indirizzo email valido.';
-            // }
+            if (!this.customerEmail) {
+                this.errors.customerEmail = 'Il campo della mail è obbligatorio.'
+            } else if (!this.validEmail(this.customerEmail)) {
+                this.errors.customerEmail = 'Il campo email deve essere un indirizzo email valido.';
+            }
 
-            // if (!this.customerPhone) {
-            //     this.errors.customerPhone = 'Il campo telefono è obbligatorio.'
-            // }
+            if (!this.customerPhone) {
+                this.errors.customerPhone = 'Il campo telefono è obbligatorio.'
+            }
 
-            // if (!this.customerAddress) {
-            //     this.errors.customerAddress = 'Il campo indirizzo è obbligatorio.'
-            // }
+            if (!this.customerAddress) {
+                this.errors.customerAddress = 'Il campo indirizzo è obbligatorio.'
+            }
 
-            // if (this.cart.length === 0) {
-            //     this.errors.cart = 'Il carrello è obbligatorio.';
-            // }
+            if (this.cart.length === 0) {
+                this.errors.cart = 'Il carrello è obbligatorio.';
+            }
 
             const paymentData = {
                 customer_name: this.customerName,
@@ -236,6 +246,7 @@ methods: {
 
             try {
                 const response = await axios.post(this.store.apiBaseUrl + '/payment', paymentData);
+
                 if (response.data.success) {
                     alert('Payment successful! Transaction ID: ' + response.data.transaction_id);
                     // Esegui altre azioni dopo un pagamento riuscito
@@ -249,6 +260,14 @@ methods: {
             }
     },
 
+    // validateForm() {
+    // //   controllo che i campi siano compilati
+    //   const requiredFields = ['customerName', 'customerSurname', 'customerEmail', 'customerPhone', 'customerAddress' ];
+    //   // controllo che non siano vuoti
+    //   return requiredFields.every(field => this[field]); 
+
+    // },
+
     clearCart() {
         this.cart = [];
         this.updateLocalStorage();
@@ -256,6 +275,16 @@ methods: {
 
     handlePaymentError(error) {
         this.errorMessage = error.message || 'Si è verificato un errore. Per favore, riprova.';
+    },
+
+    // Metodo per controllare la validità del form
+    checkFormValidity() {
+        this.isFormValid = Object.keys(this.errors).length === 0;
+    },
+
+    // Metodo per resettare gli errori del form
+    resetFormErrors() {
+        this.errors = {};
     },
 
 },
@@ -315,8 +344,8 @@ watch: {
                 <i class="fa-solid fa-truck-fast"></i>
             <label for="user_address" class="form-label"><strong>Indirizzo Consegna</strong></label>
             </div>
-            <input  v-model="customerAddress" type="text" class="form-control" name="user_address" id="user_address" placeholder="Inserisci Indirizzo" required>
-            <!-- <div v-if="errors.customerAddress" class="text-danger">{{ errors.customerAddress }}</div> -->
+            <input  v-model="customerAddress" type="text" class="form-control" name="user_address" id="user_address" placeholder="Inserisci Indirizzo">
+            <div v-if="errors.customerAddress" class="text-danger">{{ errors.customerAddress }}</div>
         </div>
 
         <div class="mb-3">
@@ -324,8 +353,8 @@ watch: {
             <i class="fa-solid fa-person"></i>
             <label for="user_name" class="form-label"><strong>Nome</strong></label>
             </div>
-            <input v-model="customerName"  type="text" class="form-control" name="user_name" id="user_name" placeholder="Inserisci Nome" required>
-            <!-- <div v-if="errors.customerName" class="text-danger">{{ errors.customerName }}</div> -->
+            <input v-model="customerName"  type="text" class="form-control" name="user_name" id="user_name" placeholder="Inserisci Nome">
+            <div v-if="errors.customerName" class="text-danger">{{ errors.customerName }}</div>
         </div>
 
         <div class="mb-3">
@@ -333,8 +362,8 @@ watch: {
             <i class="fa-solid fa-person"></i>
             <label for="user_surname" class="form-label"><strong>Cognome</strong></label>
             </div>
-            <input v-model="customerSurname"  type="text" class="form-control" name="user_surname" id="user_surname" placeholder="Inserisci Cognome" required>
-            <!-- <div v-if="errors.customerSurname" class="text-danger">{{ errors.customerSurname }}</div> -->
+            <input v-model="customerSurname"  type="text" class="form-control" name="user_surname" id="user_surname" placeholder="Inserisci Cognome">
+            <div v-if="errors.customerSurname" class="text-danger">{{ errors.customerSurname }}</div>
         </div>
 
         <div class="mb-3">
@@ -342,8 +371,8 @@ watch: {
             <i class="fa-solid fa-phone"></i>
             <label for="phone" class="form-label"><strong>Numero di telefono</strong></label>
             </div>
-            <input v-model="customerPhone"  type="text" class="form-control" name="phone" id="phone" placeholder="Numero di telefono" required>
-            <!-- <div v-if="errors.customerPhone" class="text-danger">{{ errors.customerPhone }}</div> -->
+            <input v-model="customerPhone"  type="text" class="form-control" name="phone" id="phone" placeholder="Numero di telefono">
+            <div v-if="errors.customerPhone" class="text-danger">{{ errors.customerPhone }}</div>
         </div>
 
         <div class="mb-3">
@@ -351,8 +380,8 @@ watch: {
             <i class="fa-sharp fa-solid fa-envelope"></i>
             <label for="user_mail" class="form-label"><strong>Email</strong></label>
             </div>
-            <input v-model="customerEmail"  type="email" class="form-control"  name="user_mail" id="user_mail" aria-describedby="emailHelp" placeholder="esempio@rossi.com" required>
-            <!-- <div v-if="errors.customerEmail" class="text-danger">{{ errors.customerEmail }}</div> -->
+            <input v-model="customerEmail"  type="email" class="form-control"  name="user_mail" id="user_mail" aria-describedby="emailHelp" placeholder="esempio@rossi.com">
+            <div v-if="errors.customerEmail" class="text-danger">{{ errors.customerEmail }}</div>
         </div>
             
     
@@ -416,12 +445,15 @@ watch: {
 
             <div>
                 <!--box del pagamento-->
-                <div class="box-payment" id="dropin-container"></div>
+                <div>
+                    <div class="box-payment" id="dropin-container"></div>
+                </div>
+                
 
                 <!-- Bottone che porta alla pagina del carrello -->
                 <div class="d-flex justify-content-center">
 
-                    <button id="submit-button" class="btn pay-button" >Effettua PAGAmento</button>
+                    <button  :disabled="!isFormValid" id="submit-button" class="btn pay-button" >Effettua PAGAmento</button>
                                         
                     <!--<a :href="'/restaurant/' + restaurant.id + '/card'"  class="btn card-btn">vai alla card</a>-->
                 </div>
