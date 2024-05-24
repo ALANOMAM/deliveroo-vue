@@ -183,81 +183,87 @@ methods: {
     },
 
     //pagamento (token braintree)
-        async getToken() {
+    async getToken() {
             
-                try {
-                    const response = await axios.get( this.store.apiBaseUrl + '/get-token');
-                } catch (error) {
+        try {
 
-                    console.error('Error fetching token:', error);
-                }
-            },
+            const response = await axios.get( this.store.apiBaseUrl + '/get-token');
+
+        } catch (error) {
+
+            console.error('Error fetching token:', error);
+        }
+    },
         
     async makePayment(nonce) {
 
-        
-
-            // if (!this.isFormValid) {
-            //     alert('Per favore, compila tutti i campi obbligatori.');
-            //     return;
-            // }
-
-            this.errors = {};
-
+        if (!this.validateForm()) {
             
-            if (!this.customerName) {
-                this.errors.customerName = 'Il campo nome è obbligatorio.'
+            return;
+        }
+
+        // this.errors = {};
+
+        
+        // if (!this.customerName) {
+        //     this.errors.customerName = 'Il campo nome è obbligatorio.'
+        // }
+
+        // if (!this.customerSurname) {
+        //     this.errors.customerSurname = 'Il campo cognome è obbligatorio.'
+        // }
+
+        // if (!this.customerEmail) {
+        //     this.errors.customerEmail = 'Il campo della mail è obbligatorio.'
+        // } else if (!this.validEmail(this.customerEmail)) {
+        //     this.errors.customerEmail = 'Il campo email deve essere un indirizzo email valido.';
+        // }
+
+        // if (!this.customerPhone) {
+        //     this.errors.customerPhone = 'Il campo telefono è obbligatorio.'
+        // }
+
+        // if (!this.customerAddress) {
+        //     this.errors.customerAddress = 'Il campo indirizzo è obbligatorio.'
+        // }
+
+        // if (this.cart.length === 0) {
+        //     this.errors.cart = 'Il carrello è obbligatorio.';
+        // }
+
+        const paymentData = {
+            customer_name: this.customerName,
+            customer_surname: this.customerSurname,
+            customer_email: this.customerEmail,
+            customer_phone: this.customerPhone,
+            customer_address: this.customerAddress,
+            message: this.customerComment,
+            cart: this.cart,
+            totalPrice: this.totalPrice,
+            nonce
+        };
+        
+        console.log(paymentData)
+
+        try {
+            const response = await axios.post(this.store.apiBaseUrl + '/payment', paymentData);
+
+            if (response.data.success) {
+                alert('Payment successful! Transaction ID: ' + response.data.transaction_id);
+                // Esegui altre azioni dopo un pagamento riuscito
+            } else {
+                alert('Payment failed: ' + response.data.message);
             }
 
-            if (!this.customerSurname) {
-                this.errors.customerSurname = 'Il campo cognome è obbligatorio.'
-            }
+        } catch (error) {
 
-            if (!this.customerEmail) {
-                this.errors.customerEmail = 'Il campo della mail è obbligatorio.'
-            } else if (!this.validEmail(this.customerEmail)) {
-                this.errors.customerEmail = 'Il campo email deve essere un indirizzo email valido.';
-            }
+            console.error('Error processing payment:', error);
 
-            if (!this.customerPhone) {
-                this.errors.customerPhone = 'Il campo telefono è obbligatorio.'
-            }
+        }finally{
 
-            if (!this.customerAddress) {
-                this.errors.customerAddress = 'Il campo indirizzo è obbligatorio.'
-            }
+            this.clearCart();
 
-            if (this.cart.length === 0) {
-                this.errors.cart = 'Il carrello è obbligatorio.';
-            }
-
-            const paymentData = {
-                customer_name: this.customerName,
-                customer_surname: this.customerSurname,
-                customer_email: this.customerEmail,
-                customer_phone: this.customerPhone,
-                customer_address: this.customerAddress,
-                message: this.customerComment,
-                cart: this.cart,
-                totalPrice: this.totalPrice,
-                nonce
-            };
-            console.log(paymentData)
-
-            try {
-                const response = await axios.post(this.store.apiBaseUrl + '/payment', paymentData);
-
-                if (response.data.success) {
-                    alert('Payment successful! Transaction ID: ' + response.data.transaction_id);
-                    // Esegui altre azioni dopo un pagamento riuscito
-                } else {
-                    alert('Payment failed: ' + response.data.message);
-                }
-            } catch (error) {
-                console.error('Error processing payment:', error);
-            }finally{
-                this.clearCart();
-            }
+        }
     },
 
     // validateForm() {
@@ -268,14 +274,14 @@ methods: {
 
     // },
 
-    clearCart() {
-        this.cart = [];
-        this.updateLocalStorage();
-    },
+    // clearCart() {
+    //     this.cart = [];
+    //     this.updateLocalStorage();
+    // },
 
-    handlePaymentError(error) {
-        this.errorMessage = error.message || 'Si è verificato un errore. Per favore, riprova.';
-    },
+    // handlePaymentError(error) {
+    //     this.errorMessage = error.message || 'Si è verificato un errore. Per favore, riprova.';
+    // },
 
     // // Metodo per controllare la validità del form
     // checkFormValidity() {
@@ -286,6 +292,39 @@ methods: {
     // resetFormErrors() {
     //     this.errors = {};
     // },
+
+    validateForm() {
+    // Effettua la validazione dei campi di input
+        this.errors = {};
+
+        if (this.customerName.length === 0) {
+            this.errors.customerName = 'Il campo nome è obbligatorio.'
+        }
+
+        if (this.customerSurname.length === 0) {
+            this.errors.customerSurname = 'Il campo cognome è obbligatorio.'
+        }
+
+        if (this.customerEmail.length === 0) {
+            this.errors.customerEmail = 'Il campo della mail è obbligatorio.'
+        } else if (!this.validEmail(this.customerEmail)) {
+            this.errors.customerEmail = 'Il campo email deve essere un indirizzo email valido.';
+        }
+
+        if (this.customerPhone.length === 0) {
+            this.errors.customerPhone = 'Il campo telefono è obbligatorio.'
+        }
+
+        if (this.customerAddress.length === 0) {
+            this.errors.customerAddress = 'Il campo indirizzo è obbligatorio.'
+        }
+
+        if (this.cart.length === 0) {
+            this.errors.cart = 'Il carrello è obbligatorio.';
+        }
+
+        return true; // Restituisci true se tutti i campi sono validi
+    },
 
 },
 
