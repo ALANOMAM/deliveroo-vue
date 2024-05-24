@@ -197,10 +197,10 @@ methods: {
 
         
 
-            if (!this.isFormValid) {
-                alert('Per favore, compila tutti i campi obbligatori.');
-                return;
-            }
+            // if (!this.isFormValid) {
+            //     alert('Per favore, compila tutti i campi obbligatori.');
+            //     return;
+            // }
 
             this.errors = {};
 
@@ -277,15 +277,15 @@ methods: {
         this.errorMessage = error.message || 'Si è verificato un errore. Per favore, riprova.';
     },
 
-    // Metodo per controllare la validità del form
-    checkFormValidity() {
-        this.isFormValid = Object.keys(this.errors).length === 0;
-    },
+    // // Metodo per controllare la validità del form
+    // checkFormValidity() {
+    //     this.isFormValid = Object.keys(this.errors).length === 0;
+    // },
 
-    // Metodo per resettare gli errori del form
-    resetFormErrors() {
-        this.errors = {};
-    },
+    // // Metodo per resettare gli errori del form
+    // resetFormErrors() {
+    //     this.errors = {};
+    // },
 
 },
 
@@ -453,7 +453,7 @@ watch: {
                 <!-- Bottone che porta alla pagina del carrello -->
                 <div class="d-flex justify-content-center">
 
-                    <button  :disabled="!isFormValid" id="submit-button" class="btn pay-button" >Effettua PAGAmento</button>
+                    <button id="submit-button" class="btn pay-button" >Effettua PAGAmento</button>
                                         
                     <!--<a :href="'/restaurant/' + restaurant.id + '/card'"  class="btn card-btn">vai alla card</a>-->
                 </div>
