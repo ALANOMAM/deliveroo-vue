@@ -183,8 +183,41 @@ export default{
                 console.error('Error fetching token:', error);
             }
         },
+
+        validateForm() {
+            this.errors = {}; // Reset errors
+
+            if (!this.customerName) {
+                this.errors.customer_name = ['Il campo nome è obbligatorio.'];
+            }
+            if (!this.customerSurname) {
+                this.errors.customer_surname = ['Il campo cognome è obbligatorio.'];
+            }
+            if (!this.customerEmail) {
+                this.errors.customer_email = ['Il campo email è obbligatorio.'];
+            }
+            if (!this.customerPhone) {
+                this.errors.customer_phone = ['Il campo telefono è obbligatorio.'];
+            }
+            if (!this.customerAddress) {
+                this.errors.customer_address = ['Il campo indirizzo è obbligatorio.'];
+            }
+            if (!this.cart || this.cart.length === 0) {
+                this.errors.cart = ['Il carrello è obbligatorio.'];
+            }
+
+            return Object.keys(this.errors).length === 0;
+        },
+
+
         
         async makePayment(nonce) {
+
+            if (!this.validateForm()) {
+            // Non procedere con il pagamento se ci sono errori di validazione
+                return;
+            }
+
             this.loading = true;
             // Resetto gli errori all'inizio
             this.errors = {}; 
