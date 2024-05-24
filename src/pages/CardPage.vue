@@ -282,6 +282,7 @@ export default{
             <label for="user_address" class="form-label"><strong>Indirizzo Consegna</strong></label>
             </div>
             <input  v-model="customerAddress" type="text" class="form-control" name="user_address" id="user_address" placeholder="Inserisci Indirizzo">
+            <!-- <div v-if="errors.customerAddress" class="text-danger">{{ errors.customerAddress }}</div> -->
         </div>
 
         <div class="mb-3">
@@ -290,6 +291,8 @@ export default{
             <label for="user_name" class="form-label"><strong>Nome</strong></label>
             </div>
             <input v-model="customerName"  type="text" class="form-control" name="user_name" id="user_name" placeholder="Inserisci Nome" >
+            <!-- <div v-if="errors.customerName" class="text-danger">{{ errors.customerName }}</div> -->
+
         </div>
 
         <div class="mb-3">
@@ -298,6 +301,8 @@ export default{
             <label for="user_surname" class="form-label"><strong>Cognome</strong></label>
             </div>
             <input v-model="customerSurname"  type="text" class="form-control" name="user_surname" id="user_surname" placeholder="Inserisci Cognome" >
+            <!-- <div v-if="errors.customerSurname" class="text-danger">{{ errors.customerSurname }}</div> -->
+
         </div>
 
         <div class="mb-3">
@@ -306,6 +311,8 @@ export default{
             <label for="phone" class="form-label"><strong>Numero di telefono</strong></label>
             </div>
             <input v-model="customerPhone"  type="text" class="form-control" name="phone" id="phone" placeholder="Numero di telefono" >
+            <!-- <div v-if="errors.customerPhone" class="text-danger">{{ errors.customerPhone }}</div> -->
+
         </div>
 
         <div class="mb-3">
@@ -314,6 +321,8 @@ export default{
             <label for="user_mail" class="form-label"><strong>Email</strong></label>
             </div>
             <input v-model="customerEmail"  type="email" class="form-control"  name="user_mail" id="user_mail" aria-describedby="emailHelp" placeholder="esempio@rossi.com" >
+            <!-- <div v-if="errors.customerEmail" class="text-danger">{{ errors.customerEmail }}</div> -->
+
         </div>
             
     
