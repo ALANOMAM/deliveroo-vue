@@ -167,15 +167,7 @@ export default {
 
             if (!this.customerEmail) {
                 this.errors.customer_email = ['Il campo email è obbligatorio.'];
-            } else {
-
-                // Controllo del formato dell'email usando un'espressione regolare
-                const emailPattern = /^[A-Za-z0-9._-']+@[A-Za-z._-]+\.[A-Za-z]{2,}$/;
-
-                if (!emailPattern.test(this.customerEmail)) {
-                    this.errors.customer_email = ['Inserisci una email valida, come justbool@example.com'];
-                }
-            } 
+            }
 
             if (!this.customerPhone) {
 
