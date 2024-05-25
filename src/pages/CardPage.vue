@@ -167,14 +167,44 @@ export default {
 
             if (!this.customerEmail) {
                 this.errors.customer_email = ['Il campo email è obbligatorio.'];
-            }
+            } else {
+
+                // Controllo del formato dell'email usando un'espressione regolare
+                const emailPattern = /^[A-Za-z0-9._-']+@[A-Za-z._-]+\.[A-Za-z]{2,}$/;
+
+                if (!emailPattern.test(this.customerEmail)) {
+                    this.errors.customer_email = ['Inserisci una email valida, come justbool@example.com'];
+                }
+            } 
 
             if (!this.customerPhone) {
+
                 this.errors.customer_phone = ['Il campo telefono è obbligatorio.'];
+
+            } else {
+
+                // Controllo se il telefono corrisponde al formato desiderato 
+                const phonePattern = /^\+39\s?[0-9]*$/;
+
+                if (!phonePattern.test(this.customerPhone)) {
+                    this.errors.customer_phone = ['Inserisci un numero di telefono valido (es. +393123456789). Deve iniziare con +39'];
+                }
+
+                // Controllo della lunghezza del telefono
+                if (this.customerPhone.length < 13 || this.customerPhone.length > 20) {
+                    this.errors.customer_phone = ['Il campo telefono deve essere compreso tra 13 e 20 caratteri.'];
+                }
             }
 
             if (!this.customerAddress) {
                 this.errors.customer_address = ['Il campo indirizzo è obbligatorio.'];
+
+            } else {
+                // Controllo se l'indirizzo è nel formato desiderato usando un'espressione regolare
+                const addressPattern = /^[a-zA-Z\s]+\s*,\s*[0-9]+[a-zA-Z]?\s*,\s*[a-zA-Z\s]+$/;
+                if (!addressPattern.test(this.customerAddress)) {
+                    this.errors.customer_address = ["L'indirizzo deve essere nel formato: via/piazza nome, numero civico, città"];
+                }
             }
 
             if (!this.cart || this.cart.length === 0) {
@@ -404,7 +434,7 @@ export default {
                 <i class="fa-solid fa-truck-fast"></i>
             <label for="user_address" class="form-label"><strong>Indirizzo Consegna</strong></label>
             </div>
-            <input  v-model="customerAddress" type="text" class="form-control" name="user_address" id="user_address" placeholder="Inserisci Indirizzo">
+            <input  v-model="customerAddress" type="text" class="form-control" name="user_address" id="user_address" placeholder="Inserisci Indirizzo" pattern="^[a-zA-Z\s]+\s*,\s*[0-9]+[a-zA-Z]?\s*,\s*[a-zA-Z\s]+$" title="L'indirizzo deve essere nel formato: via/piazza nome, numero civico, città" required>
             <div v-if="errors.customer_address" class="text-danger">{{ errors.customer_address[0] }}</div>
         </div>
 
@@ -415,7 +445,7 @@ export default {
             <i class="fa-solid fa-person"></i>
             <label for="user_name" class="form-label"><strong>Nome</strong></label>
             </div>
-            <input v-model="customerName"  type="text" class="form-control" name="user_name" id="user_name" placeholder="Inserisci Nome">
+            <input v-model="customerName"  type="text" class="form-control" name="user_name" id="user_name" placeholder="Inserisci Nome" required>
             <div v-if="errors.customer_name" class="text-danger">{{ errors.customer_name[0] }}</div>
 
         </div>
@@ -427,7 +457,7 @@ export default {
             <i class="fa-solid fa-person"></i>
             <label for="user_surname" class="form-label"><strong>Cognome</strong></label>
             </div>
-            <input v-model="customerSurname"  type="text" class="form-control" name="user_surname" id="user_surname" placeholder="Inserisci Cognome">
+            <input v-model="customerSurname"  type="text" class="form-control" name="user_surname" id="user_surname" placeholder="Inserisci Cognome" required>
             <div v-if="errors.customer_surname" class="text-danger">{{ errors.customer_surname[0] }}</div>
 
         </div>
@@ -439,7 +469,7 @@ export default {
             <i class="fa-solid fa-phone"></i>
             <label for="phone" class="form-label"><strong>Numero di telefono</strong></label>
             </div>
-            <input v-model="customerPhone"  type="text" class="form-control" name="phone" id="phone" placeholder="Numero di telefono">
+            <input v-model="customerPhone"  type="text" class="form-control" name="phone" id="phone" placeholder="Numero di telefono" pattern="\+39\s?[0-9]*" minlength="13" maxlength="20" title="Inserisci un numero di telefono valido (es. +393123456789). Deve iniziare con +39" required>
             <div v-if="errors.customer_phone" class="text-danger">{{ errors.customer_phone[0] }}</div>
 
         </div>
@@ -451,7 +481,7 @@ export default {
             <i class="fa-sharp fa-solid fa-envelope"></i>
             <label for="user_mail" class="form-label"><strong>Email</strong></label>
             </div>
-            <input v-model="customerEmail"  type="email" class="form-control"  name="user_mail" id="user_mail" aria-describedby="emailHelp" placeholder="esempio@rossi.com">
+            <input v-model="customerEmail"  type="email" class="form-control"  name="user_mail" id="user_mail" aria-describedby="emailHelp" placeholder="justbool@example.com" pattern="^[A-Za-z0-9._-']+@[A-Za-z._-]+\.[A-Za-z]{2,}$" required title="Inserisci una email valida, come justbool@example.com">
             <div v-if="errors.customer_email" class="text-danger">{{ errors.customer_email[0] }}</div>
         </div>
         
