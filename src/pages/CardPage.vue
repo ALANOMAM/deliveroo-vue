@@ -200,107 +200,96 @@ export default {
             }
 
             if (!this.cart || this.cart.length === 0) {
-                this.errors.cart = ['Il carrello è obbligatorio.'];
+                this.errors.cart = ['Il carrello è vuoto. Aggiungi degli articoli prima di procedere con il pagamento.'];
             }
 
             return Object.keys(this.errors).length === 0;
         },
 
-        // Metodo per elaborare il pagamento
         async makePayment() {
-        // Validazione del modulo di pagamento
-        if (!this.validateForm()) {
-            // Esce se la validazione fallisce
+    // Validazione del modulo di pagamento
+    if (!this.validateForm()) {
+        // Esce se la validazione fallisce
+        return;
+    }
+
+    // Imposta lo stato di caricamento a true
+    this.loading = true;
+    // Resetta gli errori
+    this.errors = {};
+
+    try {
+
+        const payload = await this.requestPaymentMethod();
+        if (!payload || !payload.nonce) {
+            this.errors.dropin_error = ['Inserire i dati della carta.'];
+            this.loading = false;
             return;
         }
+        // Dati del pagamento
+        const paymentData = {
+            customer_name: this.customerName,
+            customer_surname: this.customerSurname,
+            customer_email: this.customerEmail,
+            customer_phone: this.customerPhone,
+            customer_address: this.customerAddress,
+            message: this.customerComment,
+            cart: this.cart,
+            totalPrice: this.totalPrice,
+            nonce: payload.nonce
+        };
 
-        // Imposta lo stato di caricamento a true
-        this.loading = true;
-        // Resetta gli errori
-        this.errors = {};
+        // Invio dati del pagamento al backend
+        const response = await axios.post(this.store.apiBaseUrl + '/payment', paymentData);
 
-        try {
-            // Richiesta del metodo di pagamento a Braintree Drop-in
-            const payload = await this.requestPaymentMethod();
-            if (!payload) {
-                // Lancia un errore se la richiesta del metodo di pagamento fallisce
-                throw new Error('Richiesta del metodo di pagamento fallita');
-            }
+        // Gestione della risposta dal backend
+        if (response.data.success) {
+            // Reindirizza alla pagina di stato del pagamento se il pagamento ha successo
+            this.$router.push({ name: 'payment-status' });
+            // Svuota il carrello
+            this.clearCart();
+        } else {
+            // Log dell'eventuale messaggio di errore dal backend
+            console.error(response.data.message);
+        }
 
-            // Dati del pagamento
-            const paymentData = {
-                customer_name: this.customerName,
-                customer_surname: this.customerSurname,
-                customer_email: this.customerEmail,
-                customer_phone: this.customerPhone,
-                customer_address: this.customerAddress,
-                message: this.customerComment,
-                cart: this.cart,
-                totalPrice: this.totalPrice,
-                nonce: payload.nonce
-            };
+    } catch (error) {
 
-            // Invio dati del pagamento al backend
-            const response = await axios.post(this.store.apiBaseUrl + '/payment', paymentData);
+        this.handlePaymentError(error);
+        // Gestione degli errori durante il pagamento
+        if (error.response && error.response.status === 422) {
+            // Aggiorna gli errori con quelli dal backend
+            this.errors = error.response.data.errors;
 
-            // Gestione della risposta dal backend
-            const paymentStatus = {
-                paymentSuccess: response.data.success,
-                transactionId: response.data.transaction_id || null,
-                errorMessage: response.data.message || null,
-                customerEmail: this.customerEmail,
-                customerPhone: this.customerPhone,
-                customerAddress: this.customerAddress
-            };
+        } else {
+            console.error('Error processing payment:', error);
+            const paymentStatus = { paymentSuccess: false, errorMessage: 'Il pagamento non è andato a buon fine, riprova' };
 
             // Salva lo stato del pagamento nel localStorage
             localStorage.setItem('paymentStatus', JSON.stringify(paymentStatus));
 
-            if (response.data.success) {
-                // Reindirizza alla pagina di stato del pagamento se il pagamento ha successo
-                this.$router.push({ name: 'payment-status' });
-                // Svuota il carrello
-                this.clearCart();
-            } else {
-                // Log dell'eventuale messaggio di errore dal backend
-                console.error(response.data.message);
-            }
-
-            // Svuota il carrello
-            this.clearCart();
-        } catch (error) {
-            // Gestione degli errori durante il pagamento
-            if (error.response && error.response.status === 422) {
-                // Aggiorna gli errori con quelli dal backend
-                this.errors = error.response.data.errors;
-            } else {
-                console.error('Error processing payment:', error);
-                const paymentStatus = { paymentSuccess: false, errorMessage: 'Il pagamento non è andato a buon fine, riprova' };
-
-                // Salva lo stato del pagamento nel localStorage
-                localStorage.setItem('paymentStatus', JSON.stringify(paymentStatus));
-
-                // Reindirizza alla pagina di stato del pagamento
-                this.$router.push({ name: 'payment-status' });
-            }
-        } finally {
-            this.loading = false;
+            // Reindirizza alla pagina di stato del pagamento
+            this.$router.push({ name: 'payment-status' });
         }
-    },
 
-    // Metodo per richiedere il metodo di pagamento a Braintree Drop-in
-    async requestPaymentMethod() {
-        return new Promise((resolve, reject) => {
-            this.dropinInstance.requestPaymentMethod((err, payload) => {
-                if (err) {
-                    console.error(err);
-                    reject(err);
-                } else {
-                    resolve(payload);
-                }
+    } finally {
+        this.loading = false;
+    }
+},
+
+        // Metodo per richiedere il metodo di pagamento a Braintree Drop-in
+        async requestPaymentMethod() {
+            return new Promise((resolve, reject) => {
+                this.dropinInstance.requestPaymentMethod((err, payload) => {
+                    if (err) {
+                        console.error(err);
+                        reject(err);
+                    } else {
+                        resolve(payload);
+                    }
+                });
             });
-        });
-    },
+        },
 
         // Metodo per pulire il carrello
         clearCart() {
@@ -350,6 +339,10 @@ export default {
                 <!--RIEPILOGO ORDINE -->
 
                 <div>
+                    <div v-if="errors.cart" class="alert alert-danger" role="alert">
+                        {{ errors.cart[0] }}
+                    </div>
+
 
                     <h2 class="text-center fs-4 mb-5 pt-4 text-uppercase">Riepilogo ordine</h2>
 
@@ -398,6 +391,8 @@ export default {
                     
                     <!--box del pagamento-->
                     <div class="box-payment" id="dropin-container"></div>
+
+                    
 
                 </div>
 
@@ -485,7 +480,7 @@ export default {
 
         <div class="d-flex justify-content-center">
 
-            <button id="submit-button" class="btn pay-button">Effettua Pagamento</button>
+            <button id="submit-button" class="btn pay-button" >Effettua Pagamento</button>
 
         </div>
 
