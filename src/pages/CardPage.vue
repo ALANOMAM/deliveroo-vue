@@ -208,107 +208,99 @@ export default {
 
         // Metodo per elaborare il pagamento
         async makePayment() {
+        // Validazione del modulo di pagamento
+        if (!this.validateForm()) {
+            // Esce se la validazione fallisce
+            return;
+        }
 
-            // Validazione del modulo di pagamento
-            if (!this.validateForm()) {
-                // Esce se la validazione fallisce
-                return;
+        // Imposta lo stato di caricamento a true
+        this.loading = true;
+        // Resetta gli errori
+        this.errors = {};
+
+        try {
+            // Richiesta del metodo di pagamento a Braintree Drop-in
+            const payload = await this.requestPaymentMethod();
+            if (!payload) {
+                // Lancia un errore se la richiesta del metodo di pagamento fallisce
+                throw new Error('Richiesta del metodo di pagamento fallita');
             }
 
-            // Imposta lo stato di caricamento a true
-            this.loading = true;
-            // Resetta gli errori
-            this.errors = {};
+            // Dati del pagamento
+            const paymentData = {
+                customer_name: this.customerName,
+                customer_surname: this.customerSurname,
+                customer_email: this.customerEmail,
+                customer_phone: this.customerPhone,
+                customer_address: this.customerAddress,
+                message: this.customerComment,
+                cart: this.cart,
+                totalPrice: this.totalPrice,
+                nonce: payload.nonce
+            };
 
-            try {
+            // Invio dati del pagamento al backend
+            const response = await axios.post(this.store.apiBaseUrl + '/payment', paymentData);
 
-                // Richiesta del metodo di pagamento a Braintree Drop-in
-                const payload = await this.requestPaymentMethod();
-                if (!payload) {
+            // Gestione della risposta dal backend
+            const paymentStatus = {
+                paymentSuccess: response.data.success,
+                transactionId: response.data.transaction_id || null,
+                errorMessage: response.data.message || null,
+                customerEmail: this.customerEmail,
+                customerPhone: this.customerPhone,
+                customerAddress: this.customerAddress
+            };
 
-                    // Lancia un errore se la richiesta del metodo di pagamento fallisce
-                    throw new Error('Richiesta del metodo di pagamento fallita');
-                }
+            // Salva lo stato del pagamento nel localStorage
+            localStorage.setItem('paymentStatus', JSON.stringify(paymentStatus));
 
-                // Dati del pagamento
-                const paymentData = {
-                    customer_name: this.customerName,
-                    customer_surname: this.customerSurname,
-                    customer_email: this.customerEmail,
-                    customer_phone: this.customerPhone,
-                    customer_address: this.customerAddress,
-                    message: this.customerComment,
-                    cart: this.cart,
-                    totalPrice: this.totalPrice,
-                    nonce: payload.nonce
-                };
+            if (response.data.success) {
+                // Reindirizza alla pagina di stato del pagamento se il pagamento ha successo
+                this.$router.push({ name: 'payment-status' });
+                // Svuota il carrello
+                this.clearCart();
+            } else {
+                // Log dell'eventuale messaggio di errore dal backend
+                console.error(response.data.message);
+            }
 
-                // Invio dati del pagamento al backend
-                const response = await axios.post(this.store.apiBaseUrl + '/payment', paymentData);
-
-                // Gestione della risposta dal backend
-                const paymentStatus = {
-                    paymentSuccess: response.data.success,
-                    transactionId: response.data.transaction_id || null,
-                    errorMessage: response.data.message || null,
-                    customerEmail: this.customerEmail,
-                    customerPhone: this.customerPhone,
-                    customerAddress: this.customerAddress
-                };
+            // Svuota il carrello
+            this.clearCart();
+        } catch (error) {
+            // Gestione degli errori durante il pagamento
+            if (error.response && error.response.status === 422) {
+                // Aggiorna gli errori con quelli dal backend
+                this.errors = error.response.data.errors;
+            } else {
+                console.error('Error processing payment:', error);
+                const paymentStatus = { paymentSuccess: false, errorMessage: 'Il pagamento non è andato a buon fine, riprova' };
 
                 // Salva lo stato del pagamento nel localStorage
                 localStorage.setItem('paymentStatus', JSON.stringify(paymentStatus));
 
-                if (response.data.success) {
-                    // Reindirizza alla pagina di stato del pagamento se il pagamento ha successo
-                    this.$router.push({ name: 'payment-status' });
-                    // Svuota il carrello
-                    this.clearCart();
-
-                } else {
-                    // Log dell'eventuale messaggio di errore dal backend
-                    console.error(response.data.message);
-                }
-
-                // Svuota il carrello
-                this.clearCart();
-
-            } catch (error) {
-
-                // Gestione degli errori durante il pagamento
-                if (error.response && error.response.status === 422) {
-                    // Aggiorna gli errori con quelli dal backend
-                    this.errors = error.response.data.errors;
-
-                } else {
-                    console.error('Error processing payment:', error);
-                    const paymentStatus = { paymentSuccess: false, errorMessage: 'Il pagamento non è andato a buon fine, riprova' };
-
-                    // Salva lo stato del pagamento nel localStorage
-                    localStorage.setItem('paymentStatus', JSON.stringify(paymentStatus));
-
-                    // Reindirizza alla pagina di stato del pagamento
-                    this.$router.push({ name: 'payment-status' });
-                }
-
-            } finally {
-                this.loading = false;
+                // Reindirizza alla pagina di stato del pagamento
+                this.$router.push({ name: 'payment-status' });
             }
-        },
+        } finally {
+            this.loading = false;
+        }
+    },
 
-        // Metodo per richiedere il metodo di pagamento a Braintree Drop-in
-        async requestPaymentMethod() {
-            return new Promise((resolve, reject) => {
-                this.dropinInstance.requestPaymentMethod((err, payload) => {
-                    if (err) {
-                        console.error(err);
-                        reject(err);
-                    } else {
-                        resolve(payload);
-                    }
-                });
+    // Metodo per richiedere il metodo di pagamento a Braintree Drop-in
+    async requestPaymentMethod() {
+        return new Promise((resolve, reject) => {
+            this.dropinInstance.requestPaymentMethod((err, payload) => {
+                if (err) {
+                    console.error(err);
+                    reject(err);
+                } else {
+                    resolve(payload);
+                }
             });
-        },
+        });
+    },
 
         // Metodo per pulire il carrello
         clearCart() {
@@ -493,7 +485,7 @@ export default {
 
         <div class="d-flex justify-content-center">
 
-            <button id="submit-button" class="btn pay-button" @click="requestPaymentMethod()">Effettua PAGAmento</button>
+            <button id="submit-button" class="btn pay-button">Effettua Pagamento</button>
 
         </div>
 
