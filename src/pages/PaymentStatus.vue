@@ -1,5 +1,7 @@
 <script>
 
+import {store} from '../store.js'
+
 export default {
     
     name:'PaymentStatus',
@@ -7,7 +9,7 @@ export default {
     data() {
         return {
             paymentStatus: {
-                paymentSuccess: null,
+                paymentSuccess: store.paymentSuccess,
                 transactionId: null,
                 errorMessage: null,
                 customerEmail: null,
@@ -15,39 +17,41 @@ export default {
                 customerAddress: null
             },
 
+            store,
+
             loading: true,
         };
     },
 
     mounted() {
-        const paymentStatus = JSON.parse(localStorage.getItem('paymentStatus'));
-        if (paymentStatus) {
-            this.paymentStatus = paymentStatus;
-        }
+        // const paymentStatus = JSON.parse(localStorage.getItem('paymentStatus'));
+        // if (paymentStatus) {
+        //     this.paymentStatus = paymentStatus;
+        // }
 
         this.loading = false;
     },
 
-    computed: {
-        paymentSuccess() {
-            return this.paymentStatus.paymentSuccess;
-        },
-        transactionId() {
-            return this.paymentStatus.transactionId;
-        },
-        errorMessage() {
-            return this.paymentStatus.errorMessage;
-        },
-        customerEmail() {
-            return this.paymentStatus.customerEmail;
-        },
-        customerPhone() {
-            return this.paymentStatus.customerPhone;
-        },
-        customerAddress() {
-            return this.paymentStatus.customerAddress;
-        }
-    }
+    // computed: {
+    //     paymentSuccess() {
+    //         return this.paymentStatus.paymentSuccess;
+    //     },
+    //     transactionId() {
+    //         return this.paymentStatus.transactionId;
+    //     },
+    //     errorMessage() {
+    //         return this.paymentStatus.errorMessage;
+    //     },
+    //     customerEmail() {
+    //         return this.paymentStatus.customerEmail;
+    //     },
+    //     customerPhone() {
+    //         return this.paymentStatus.customerPhone;
+    //     },
+    //     customerAddress() {
+    //         return this.paymentStatus.customerAddress;
+    //     }
+    // }
 };
 </script>
 
@@ -59,17 +63,17 @@ export default {
     </div>
 
     <div v-else>
-        <div v-if="paymentSuccess" class="d-flex flex-column align-items-center justify-content-center payment-success my-5">
+        <div v-if="paymentStatus.paymentSuccess" class="d-flex flex-column align-items-center justify-content-center payment-success my-5">
             <i class="fa-solid fa-circle-check pb-2"></i>
             <div class="text-center my-5">
                 <h1>Pagamento Avvenuto con Successo!</h1>
                 <span>Una mail con i dati del tuo ordine è stata inoltrata al tuo indirizzo di posta</span>
             </div>
             <div class="payment-info my-4">
-                <h3>Ordine N°: <span>{{ transactionId }}</span></h3>
-                <h3>Email: <span>{{ customerEmail }}</span></h3>
-                <h3>Tel: <span>{{ customerPhone }}</span></h3>
-                <h3>Indirizzo: <span>{{ customerAddress }}</span></h3>
+                <h3>Ordine N°: <span>{{ store.paymentDetails?.transactionId }}</span></h3>
+                <h3>Email: <span>{{ store.paymentDetails?.email }}</span></h3>
+                <h3>Tel: <span>{{ store.paymentDetails?.phone }}</span></h3>
+                <h3>Indirizzo: <span>{{ store.paymentDetails?.address }}</span></h3>
             </div>
         </div>
 

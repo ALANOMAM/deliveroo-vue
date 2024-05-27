@@ -17,6 +17,10 @@ export const store = reactive({
     cartTracker: null,
 
 
+    paymentSuccess: false,
+
+    paymentDetails: {},
+    
 })
 
 

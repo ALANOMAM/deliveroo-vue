@@ -207,67 +207,82 @@ export default {
         },
 
         async makePayment() {
-    // Resetta gli errori all'inizio del metodo
-    this.errors = {};
+            // Resetta gli errori all'inizio del metodo
+            this.errors = {};
 
-    // Validazione del modulo di pagamento
-    if (!this.validateForm()) {
-        // Esce se la validazione fallisce
-        return;
-    }
+            // Validazione del modulo di pagamento
+            if (!this.validateForm()) {
+                // Esce se la validazione fallisce
+                return;
+            }
 
-    // Controlla se il metodo di pagamento è stato compilato
-    if (!this.dropinInstance) {
-        this.errors.dropin_error = ['Inserisci i dati del metodo di pagamento.'];
-        return;
-    }
+            // Controlla se il metodo di pagamento è stato compilato
+            if (!this.dropinInstance) {
+                this.errors.dropin_error = ['Inserisci i dati del metodo di pagamento.'];
+                return;
+            }
 
-    // Imposta lo stato di caricamento a true
-    this.loading = true;
+            // Imposta lo stato di caricamento a true
+            this.loading = true;
 
-    try {
-        const payload = await this.requestPaymentMethod();
-        if (!payload || !payload.nonce) {
-            this.errors.dropin_error = ['Inserire i dati del metodo di pagamento.'];
-            this.loading = false;
-            return;
-        }
-        const paymentData = {
-            customer_name: this.customerName,
-            customer_surname: this.customerSurname,
-            customer_email: this.customerEmail,
-            customer_phone: this.customerPhone,
-            customer_address: this.customerAddress,
-            message: this.customerComment,
-            cart: this.cart,
-            totalPrice: this.totalPrice,
-            nonce: payload.nonce
-        };
+            try {
+                const payload = await this.requestPaymentMethod();
+                
+                if (!payload || !payload.nonce) {
+                    this.errors.dropin_error = ['Inserire i dati del metodo di pagamento.'];
+                    this.loading = false;
+                    return;
+                }
 
-        const response = await axios.post(this.store.apiBaseUrl + '/payment', paymentData);
+            
+                const paymentData = {
+                    customer_name: this.customerName,
+                    customer_surname: this.customerSurname,
+                    customer_email: this.customerEmail,
+                    customer_phone: this.customerPhone,
+                    customer_address: this.customerAddress,
+                    message: this.customerComment,
+                    cart: this.cart,
+                    totalPrice: this.totalPrice,
+                    nonce: payload.nonce
+                };
 
-        if (response.data.success) {
-            this.$router.push({ name: 'payment-status' });
-            this.clearCart();
-        } else {
-            console.error(response.data.message);
-        }
+        
 
-    } catch (error) {
-        this.handlePaymentError(error);
-        if (error.response && error.response.status === 422) {
-            this.errors = error.response.data.errors;
-        } else {
-            console.error('Error processing payment:', error);
-            const paymentStatus = { paymentSuccess: false, errorMessage: 'Il pagamento non è andato a buon fine, riprova' };
-            localStorage.setItem('paymentStatus', JSON.stringify(paymentStatus));
-            this.$router.push({ name: 'payment-status' });
-        }
+                const response = await axios.post(this.store.apiBaseUrl + '/payment', paymentData);
 
-    } finally {
-        this.loading = false;
-    }
-},
+                if (response.data.success) {
+                    this.store.paymentSuccess = true;
+                    this.store.paymentDetails = {
+                        email: this.customerEmail,
+                        phone: this.customerPhone,
+                        address: this.customerAddress,
+                        message: this.customerComment,
+                        name: this.customerName,
+                        surname: this.customerSurname,
+                        price: this.totalPrice,
+                        transactionId: response.data.transaction_id,
+                    },
+                    this.$router.push({ name: 'payment-status' });
+                    this.clearCart();
+                } else {
+                    console.error(response.data.message);
+                }
+
+            } catch (error) {
+                if ((error.response && error.response.status === 422) || error.name == 'DropinError') {
+                    this.errors = error.response.data.errors;
+                } else {
+                    console.error('Error processing payment:', error);
+                    const paymentStatus = { paymentSuccess: false, errorMessage: 'Il pagamento non è andato a buon fine, riprova' };
+                    // localStorage.setItem('paymentStatus', JSON.stringify(paymentStatus));
+                    this.$router.push({ name: 'payment-status' });
+                }
+
+            } finally {
+                this.loading = false;
+            }
+        },
 
         // Metodo per richiedere il metodo di pagamento a Braintree Drop-in
         async requestPaymentMethod() {
