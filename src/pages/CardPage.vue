@@ -314,95 +314,24 @@ export default {
 
 <template>
 
-<div class="header-checkout pt-5">
-
-    <div class="w-100 m-auto position-relative">
-        <h2 class="fs-2 pt-4 text-center text-uppercase text-black">Checkout</h2> 
-
-        <!-- Immagine a destra -->
-        <div class="img-bowl">
-            <img src="/img/bowl-jumbo.png" alt="Bowl Jumbo">
+    
+    
+    
+    <!--inizio container-->
+    <div class="container" >
+    
+        <div class="w-100 ">
+            <h2 class="fs-2 pt-3 fw-semibold text-black">Checkout</h2> 
+           
         </div>
-    </div>
+        <hr>
 
-</div>
-
-<!--inizio container-->
-<div class="container d-flex justify-content-between gap-4 mt-5 pb-5">
-
+    <div class=" row justify-content-between">
         <!--RIEPILOGO ORDINE CON METODO DI PAGAMENTO-->
 
-        <div class="col-md-5 mb-5">
-
-            <div class="cart bg-transparent">
-
-                <!--RIEPILOGO ORDINE -->
-
-                <div>
-                    <div v-if="errors.cart" class="alert alert-danger" role="alert">
-                        {{ errors.cart[0] }}
-                    </div>
-
-
-                    <h2 class="text-center fs-4 mb-5 pt-4 text-uppercase">Riepilogo ordine</h2>
-
-                    <ul>
-                        <li v-for="(cartItem, index) in cart" :key="index" class="d-flex justify-content-between mb-4">
-                            <div class="d-flex flex-column">
-                                <span>{{ cartItem.name }}</span>
-                                <span class="price">€ {{ cartItem.price }}</span>
-                            </div>
-
-                            <div class="d-flex align-items-center">
-
-                                <!--numero, piu e meno-->
-                                <div class="d-flex gap-2 align-items-center" >
-                                <i class="fa-solid fa-minus" @click="updateCartItem(index, false)"></i>
-                                <span>{{ cartItem.quantity }}</span>
-                                <i class="fa-solid fa-plus" @click="updateCartItem(index, true)"></i>
-                                </div>
-                                <!--numero, piu e meno-->
-
-                                <span @click="removeFromCart(index)" class="remove-item">
-                                    <i class="fa-solid fa-x ms-4 me-2 d-none"></i>
-                                    <i class="fa-solid fa-trash fs-5 ms-4 me-2"></i>
-                                </span>
-                            </div>
-
-                        </li>
-                    </ul>
-
-                    <hr class="mx-4">
-
-                    <!-- PREZZO TOTALE ORDINE -->
-
-                    <div class="d-flex justify-content-between align-items-center mx-4">
-                        <h2 class="fs-4 ms-2">Totale</h2>
-
-                        <span class="fs-3 me-1">{{ totalPrice }} €</span>
-                    </div>
-
-                </div>
-
-                <!-- METODO DI PAGAMENTO -->
-
-                <div>
-                    <h2 class="text-center fs-4 mt-4 pt-4 text-uppercase">MEDOTO DI PAGAMENTO</h2>
-                    
-                    <!--box del pagamento-->
-                    <div class="box-payment" id="dropin-container"></div>
-
-                    
-
-                </div>
-
-
-            </div>
-
-        </div>
 
     <!--CONTACT FORM CON DATI PERSONALI-->   
-    <form class="col-md-6 form" @submit.prevent="makePayment">
+    <form class="col-md-6 col-12 form" @submit.prevent="makePayment">
 
         <h2 class="text-center fs-4 mb-4 pt-4 text-uppercase">Dati personali</h2>
 
@@ -483,10 +412,82 @@ export default {
             <button id="submit-button" class="btn pay-button" >Effettua Pagamento</button>
 
         </div>
+       
 
 
     </form>
+
+
     
+    <div class="col-md-5 col-12 mb-5">
+
+        <div class="cart bg-transparent">
+
+    <!--RIEPILOGO ORDINE -->
+
+            <div>
+                <div v-if="errors.cart" class="alert alert-danger" role="alert">
+                    {{ errors.cart[0] }}
+                </div>
+
+
+                <h2 class="text-center fs-4 mb-5 pt-4 text-uppercase">Riepilogo ordine</h2>
+
+                <ul>
+                    <li v-for="(cartItem, index) in cart" :key="index" class="d-flex justify-content-between mb-4">
+                        <div class="d-flex flex-column">
+                            <span>{{ cartItem.name }}</span>
+                            <span class="price">€ {{ cartItem.price }}</span>
+                        </div>
+
+                        <div class="d-flex align-items-center">
+
+                            <!--numero, piu e meno-->
+                            <div class="d-flex gap-2 align-items-center" >
+                            <i class="fa-solid fa-minus" @click="updateCartItem(index, false)"></i>
+                            <span>{{ cartItem.quantity }}</span>
+                            <i class="fa-solid fa-plus" @click="updateCartItem(index, true)"></i>
+                            </div>
+                            <!--numero, piu e meno-->
+
+                            <span @click="removeFromCart(index)" class="remove-item">
+                                <i class="fa-solid fa-x ms-4 me-2 d-none"></i>
+                                <i class="fa-solid fa-trash fs-5 ms-4 me-2"></i>
+                            </span>
+                        </div>
+
+                    </li>
+                </ul>
+
+                <hr class="mx-4">
+
+                <!-- PREZZO TOTALE ORDINE -->
+
+                <div class="d-flex justify-content-between align-items-center mx-4">
+                    <h2 class="fs-4 ms-2">Totale</h2>
+
+                    <span class="fs-3 me-1">{{ totalPrice }} €</span>
+                </div>
+
+            </div>
+
+            <!-- METODO DI PAGAMENTO -->
+
+            <div>
+                <h2 class="text-center fs-4 mt-4 pt-4 text-uppercase">MEDOTO DI PAGAMENTO</h2>
+                
+                <!--box del pagamento-->
+                <div class="box-payment" id="dropin-container"></div>
+
+                
+
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
 
 </div>
 
