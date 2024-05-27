@@ -207,26 +207,31 @@ export default {
         },
 
         async makePayment() {
+    // Resetta gli errori all'inizio del metodo
+    this.errors = {};
+
     // Validazione del modulo di pagamento
     if (!this.validateForm()) {
         // Esce se la validazione fallisce
         return;
     }
 
+    // Controlla se il metodo di pagamento è stato compilato
+    if (!this.dropinInstance) {
+        this.errors.dropin_error = ['Inserisci i dati del metodo di pagamento.'];
+        return;
+    }
+
     // Imposta lo stato di caricamento a true
     this.loading = true;
-    // Resetta gli errori
-    this.errors = {};
 
     try {
-
         const payload = await this.requestPaymentMethod();
         if (!payload || !payload.nonce) {
-            this.errors.dropin_error = ['Inserire i dati della carta.'];
+            this.errors.dropin_error = ['Inserire i dati del metodo di pagamento.'];
             this.loading = false;
             return;
         }
-        // Dati del pagamento
         const paymentData = {
             customer_name: this.customerName,
             customer_surname: this.customerSurname,
@@ -239,36 +244,23 @@ export default {
             nonce: payload.nonce
         };
 
-        // Invio dati del pagamento al backend
         const response = await axios.post(this.store.apiBaseUrl + '/payment', paymentData);
 
-        // Gestione della risposta dal backend
         if (response.data.success) {
-            // Reindirizza alla pagina di stato del pagamento se il pagamento ha successo
             this.$router.push({ name: 'payment-status' });
-            // Svuota il carrello
             this.clearCart();
         } else {
-            // Log dell'eventuale messaggio di errore dal backend
             console.error(response.data.message);
         }
 
     } catch (error) {
-
         this.handlePaymentError(error);
-        // Gestione degli errori durante il pagamento
         if (error.response && error.response.status === 422) {
-            // Aggiorna gli errori con quelli dal backend
             this.errors = error.response.data.errors;
-
         } else {
             console.error('Error processing payment:', error);
             const paymentStatus = { paymentSuccess: false, errorMessage: 'Il pagamento non è andato a buon fine, riprova' };
-
-            // Salva lo stato del pagamento nel localStorage
             localStorage.setItem('paymentStatus', JSON.stringify(paymentStatus));
-
-            // Reindirizza alla pagina di stato del pagamento
             this.$router.push({ name: 'payment-status' });
         }
 
@@ -326,170 +318,175 @@ export default {
         </div>
         <hr>
 
-    <div class=" row justify-content-between">
-        <!--RIEPILOGO ORDINE CON METODO DI PAGAMENTO-->
-
-
-    <!--CONTACT FORM CON DATI PERSONALI-->   
-    <form class="col-md-6 col-12 form" @submit.prevent="makePayment">
-
-        <h2 class="text-center fs-4 mb-4 pt-4 text-uppercase">Dati personali</h2>
-
-        <!--INDIRIZZO CONSEGNA-->
-
-        <div class="mb-3">
-            <div class="d-flex gap-2">
-                <i class="fa-solid fa-truck-fast"></i>
-            <label for="user_address" class="form-label"><strong>Indirizzo Consegna</strong></label>
-            </div>
-            <input  v-model="customerAddress" type="text" class="form-control" name="user_address" id="user_address" placeholder="Inserisci Indirizzo" pattern="^[a-zA-Z\s]+\s*,\s*[0-9]+[a-zA-Z]?\s*,\s*[a-zA-Z\s]+$" title="L'indirizzo deve essere nel formato: via/piazza nome, numero civico, città" required>
-            <div v-if="errors.customer_address" class="text-danger">{{ errors.customer_address[0] }}</div>
-        </div>
-
-        <!--NOME UTENTE-->
-
-        <div class="mb-3">
-            <div class="d-flex gap-2">
-            <i class="fa-solid fa-person"></i>
-            <label for="user_name" class="form-label"><strong>Nome</strong></label>
-            </div>
-            <input v-model="customerName"  type="text" class="form-control" name="user_name" id="user_name" placeholder="Inserisci Nome" required>
-            <div v-if="errors.customer_name" class="text-danger">{{ errors.customer_name[0] }}</div>
-
-        </div>
-
-        <!--COGNOME UTENTE-->
-
-        <div class="mb-3">
-            <div class="d-flex gap-2">
-            <i class="fa-solid fa-person"></i>
-            <label for="user_surname" class="form-label"><strong>Cognome</strong></label>
-            </div>
-            <input v-model="customerSurname"  type="text" class="form-control" name="user_surname" id="user_surname" placeholder="Inserisci Cognome" required>
-            <div v-if="errors.customer_surname" class="text-danger">{{ errors.customer_surname[0] }}</div>
-
-        </div>
-
-        <!--TELEFONO UTENTE-->
-
-        <div class="mb-3">
-            <div class="d-flex gap-2">
-            <i class="fa-solid fa-phone"></i>
-            <label for="phone" class="form-label"><strong>Numero di telefono</strong></label>
-            </div>
-            <input v-model="customerPhone"  type="text" class="form-control" name="phone" id="phone" placeholder="Numero di telefono" pattern="\+39\s?[0-9]*" minlength="13" maxlength="20" title="Inserisci un numero di telefono valido (es. +393123456789). Deve iniziare con +39" required>
-            <div v-if="errors.customer_phone" class="text-danger">{{ errors.customer_phone[0] }}</div>
-
-        </div>
-
-        <!--EMAIL UTENTE-->
-
-        <div class="mb-3">
-            <div class="d-flex gap-2">
-            <i class="fa-sharp fa-solid fa-envelope"></i>
-            <label for="user_mail" class="form-label"><strong>Email</strong></label>
-            </div>
-            <input v-model="customerEmail"  type="email" class="form-control"  name="user_mail" id="user_mail" aria-describedby="emailHelp" placeholder="justbool@example.com" pattern="^[A-Za-z0-9._-']+@[A-Za-z._-]+\.[A-Za-z]{2,}$" required title="Inserisci una email valida, come justbool@example.com">
-            <div v-if="errors.customer_email" class="text-danger">{{ errors.customer_email[0] }}</div>
-        </div>
         
-        <!--MESSAGGIO UTENTE-->
-    
-        <div class="mb-3 d-flex flex-column">
-            <div class="d-flex gap-2">
-                <i class="fa-solid fa-pen"></i>
-            <label for="exampleInputEmail1" class="form-label"><strong>Una nota per noi?</strong></label>
-            </div>
-            <textarea class="p-2" v-model="customerComment" name="exampleInputEmail1" id="exampleInputEmail1" cols="50" rows="5" placeholder="Inserisci un commento o nota"></textarea>
-            <span style="color:gray">Opzionale</span>
-        </div>
+            
 
 
-        <!-- BOTTONE PER PAGAMENTO -->
+        <!--CONTACT FORM CON DATI PERSONALI-->   
+        <form class="form row justify-content-between" @submit.prevent="makePayment">
+            <div class="col-md-6 col-12" >
 
-        <div class="d-flex justify-content-center">
+            <h2 class="text-center fs-4 mb-4 pt-4 text-uppercase">Dati personali</h2>
 
-            <button id="submit-button" class="btn pay-button" >Effettua Pagamento</button>
+            <!--INDIRIZZO CONSEGNA-->
 
-        </div>
-       
-
-
-    </form>
-
-
-    
-    <div class="col-md-5 col-12 mb-5">
-
-        <div class="cart bg-transparent">
-
-    <!--RIEPILOGO ORDINE -->
-
-            <div>
-                <div v-if="errors.cart" class="alert alert-danger" role="alert">
-                    {{ errors.cart[0] }}
+            <div class="mb-3">
+                <div class="d-flex gap-2">
+                    <i class="fa-solid fa-truck-fast"></i>
+                <label for="user_address" class="form-label"><strong>Indirizzo Consegna</strong></label>
                 </div>
+                <input  v-model="customerAddress" type="text" class="form-control" name="user_address" id="user_address" placeholder="Inserisci Indirizzo" pattern="^[a-zA-Z\s]+\s*,\s*[0-9]+[a-zA-Z]?\s*,\s*[a-zA-Z\s]+$" title="L'indirizzo deve essere nel formato: via/piazza nome, numero civico, città" required>
+                <div v-if="errors.customer_address" class="text-danger">{{ errors.customer_address[0] }}</div>
+            </div>
+
+            <!--NOME UTENTE-->
+
+            <div class="mb-3">
+                <div class="d-flex gap-2">
+                <i class="fa-solid fa-person"></i>
+                <label for="user_name" class="form-label"><strong>Nome</strong></label>
+                </div>
+                <input v-model="customerName"  type="text" class="form-control" name="user_name" id="user_name" placeholder="Inserisci Nome" required>
+                <div v-if="errors.customer_name" class="text-danger">{{ errors.customer_name[0] }}</div>
+
+            </div>
+
+            <!--COGNOME UTENTE-->
+
+            <div class="mb-3">
+                <div class="d-flex gap-2">
+                <i class="fa-solid fa-person"></i>
+                <label for="user_surname" class="form-label"><strong>Cognome</strong></label>
+                </div>
+                <input v-model="customerSurname"  type="text" class="form-control" name="user_surname" id="user_surname" placeholder="Inserisci Cognome" required>
+                <div v-if="errors.customer_surname" class="text-danger">{{ errors.customer_surname[0] }}</div>
+
+            </div>
+
+            <!--TELEFONO UTENTE-->
+
+            <div class="mb-3">
+                <div class="d-flex gap-2">
+                <i class="fa-solid fa-phone"></i>
+                <label for="phone" class="form-label"><strong>Numero di telefono</strong></label>
+                </div>
+                <input v-model="customerPhone"  type="text" class="form-control" name="phone" id="phone" placeholder="Numero di telefono" pattern="\+39\s?[0-9]*" minlength="13" maxlength="20" title="Inserisci un numero di telefono valido (es. +393123456789). Deve iniziare con +39" required>
+                <div v-if="errors.customer_phone" class="text-danger">{{ errors.customer_phone[0] }}</div>
+
+            </div>
+
+            <!--EMAIL UTENTE-->
+
+            <div class="mb-3">
+                <div class="d-flex gap-2">
+                <i class="fa-sharp fa-solid fa-envelope"></i>
+                <label for="user_mail" class="form-label"><strong>Email</strong></label>
+                </div>
+                <input v-model="customerEmail"  type="email" class="form-control"  name="user_mail" id="user_mail" aria-describedby="emailHelp" placeholder="justbool@example.com" pattern="^[A-Za-z0-9._-']+@[A-Za-z._-]+\.[A-Za-z]{2,}$" required title="Inserisci una email valida, come justbool@example.com">
+                <div v-if="errors.customer_email" class="text-danger">{{ errors.customer_email[0] }}</div>
+            </div>
+            
+            <!--MESSAGGIO UTENTE-->
+        
+            <div class="mb-3 d-flex flex-column">
+                <div class="d-flex gap-2">
+                    <i class="fa-solid fa-pen"></i>
+                <label for="exampleInputEmail1" class="form-label"><strong>Una nota per noi?</strong></label>
+                </div>
+                <textarea class="p-2" v-model="customerComment" name="exampleInputEmail1" id="exampleInputEmail1" cols="50" rows="5" placeholder="Inserisci un commento o nota"></textarea>
+                <span style="color:gray">Opzionale</span>
+            </div>
+        </div>
+
+            <!-- BOTTONE PER PAGAMENTO -->
 
 
-                <h2 class="text-center fs-4 mb-5 pt-4 text-uppercase">Riepilogo ordine</h2>
 
-                <ul>
-                    <li v-for="(cartItem, index) in cart" :key="index" class="d-flex justify-content-between mb-4">
-                        <div class="d-flex flex-column">
-                            <span>{{ cartItem.name }}</span>
-                            <span class="price">€ {{ cartItem.price }}</span>
+
+            <!--RIEPILOGO ORDINE CON METODO DI PAGAMENTO-->
+            
+        
+            <div class="col-md-5 col-12 mb-5">
+
+                <div class="cart bg-transparent">
+
+                <!--RIEPILOGO ORDINE -->
+
+                    <div>
+                        <div v-if="errors.cart" class="alert alert-danger" role="alert">
+                            {{ errors.cart[0] }}
                         </div>
 
-                        <div class="d-flex align-items-center">
 
-                            <!--numero, piu e meno-->
-                            <div class="d-flex gap-2 align-items-center" >
-                            <i class="fa-solid fa-minus" @click="updateCartItem(index, false)"></i>
-                            <span>{{ cartItem.quantity }}</span>
-                            <i class="fa-solid fa-plus" @click="updateCartItem(index, true)"></i>
-                            </div>
-                            <!--numero, piu e meno-->
+                        <h2 class="text-center fs-4 mb-5 pt-4 text-uppercase">Riepilogo ordine</h2>
 
-                            <span @click="removeFromCart(index)" class="remove-item">
-                                <i class="fa-solid fa-x ms-4 me-2 d-none"></i>
-                                <i class="fa-solid fa-trash fs-5 ms-4 me-2"></i>
-                            </span>
+                        <ul>
+                            <li v-for="(cartItem, index) in cart" :key="index" class="d-flex justify-content-between mb-4">
+                                <div class="d-flex flex-column">
+                                    <span>{{ cartItem.name }}</span>
+                                    <span class="price">€ {{ cartItem.price }}</span>
+                                </div>
+
+                                <div class="d-flex align-items-center">
+
+                                    <!--numero, piu e meno-->
+                                    <div class="d-flex gap-2 align-items-center" >
+                                    <i class="fa-solid fa-minus" @click="updateCartItem(index, false)"></i>
+                                    <span>{{ cartItem.quantity }}</span>
+                                    <i class="fa-solid fa-plus" @click="updateCartItem(index, true)"></i>
+                                    </div>
+                                    <!--numero, piu e meno-->
+
+                                    <span @click="removeFromCart(index)" class="remove-item">
+                                        <i class="fa-solid fa-x ms-4 me-2 d-none"></i>
+                                        <i class="fa-solid fa-trash fs-5 ms-4 me-2"></i>
+                                    </span>
+                                </div>
+
+                            </li>
+                        </ul>
+
+                        <hr class="mx-4">
+
+                        <!-- PREZZO TOTALE ORDINE -->
+
+                        <div class="d-flex justify-content-between align-items-center mx-4">
+                            <h2 class="fs-4 ms-2">Totale</h2>
+
+                            <span class="fs-3 me-1">{{ totalPrice }} €</span>
                         </div>
 
-                    </li>
-                </ul>
+                    </div>
 
-                <hr class="mx-4">
+                    <!-- METODO DI PAGAMENTO -->
 
-                <!-- PREZZO TOTALE ORDINE -->
+                    <div>
+                        <h2 class="text-center fs-4 mt-4 pt-4 text-uppercase">MEDOTO DI PAGAMENTO</h2>
+                        
+                        <!--box del pagamento-->
+                        <div class="box-payment" id="dropin-container"></div>
 
-                <div class="d-flex justify-content-between align-items-center mx-4">
-                    <h2 class="fs-4 ms-2">Totale</h2>
+                        <div class="d-flex justify-content-center">
 
-                    <span class="fs-3 me-1">{{ totalPrice }} €</span>
+                            <button id="submit-button" class="btn pay-button" >Effettua Pagamento</button>
+
+                        </div>
+
+                    </div>
+
+
                 </div>
 
             </div>
 
-            <!-- METODO DI PAGAMENTO -->
-
-            <div>
-                <h2 class="text-center fs-4 mt-4 pt-4 text-uppercase">MEDOTO DI PAGAMENTO</h2>
-                
-                <!--box del pagamento-->
-                <div class="box-payment" id="dropin-container"></div>
-
-                
-
-            </div>
+        </form>
 
 
-        </div>
-
-    </div>
+    
+  
 </div>
 
-</div>
+
 
 
 <!-- LOADEAR -->
@@ -543,13 +540,6 @@ export default {
         color: rgba(246, 89, 0, 1);
         border: 1px solid rgba(246, 89, 0, 1);
     }
-}
-
-form {
-    min-height: 850px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
 }
 
 i{
