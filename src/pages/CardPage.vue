@@ -236,6 +236,7 @@ export default {
 
             
                 const paymentData = {
+                    restaurantId: this.restaurantId,
                     customer_name: this.customerName,
                     customer_surname: this.customerSurname,
                     customer_email: this.customerEmail,
