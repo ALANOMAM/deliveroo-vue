@@ -26,7 +26,7 @@ export default{
 <template>
   <a :href="'/restaurant/' + topRestaurant.id" class="restaurant-card py-3 px-3 mb-sm-0 text-decoration-none d-flex justify-content-between">
     <div class="d-flex flex-column">
-        <p class="text-center">{{ topRestaurant.total_orders }} ordini</p>
+        <!-- <p class="text-center">{{ topRestaurant.total_orders }} ordini</p> -->
     <div class="d-flex flex-column align-self-start">
       <div class="image rounded-4 overflow-hidden">
         <img v-if="topRestaurant.image === null" src="/img/restaurant_placeholder.jpg" class="card-img-left" alt="...">
@@ -36,7 +36,7 @@ export default{
     </div>
 
     <div class="d-flex flex-column justify-content-center align-items-center">
-      <h4 class="py-2 mb-4 ms-3">{{ topRestaurant.name }}</h4>
+      <h4 class="py-2 mb-4 ms-3 text-wrap">{{ topRestaurant.name }}</h4>
       <div class="text-center d-flex gap-2 ms-3">
         <div class="bg-pills text-white px-2 rounded-5" v-for="category in topRestaurant.categories">{{ category.category_name }}</div>
       </div>
@@ -50,7 +50,7 @@ export default{
     .restaurant-card {
       background-color: white;
       width: 20%;
-      border-bottom: 1px solid rgb(179, 179, 179);
+      
     }
   
     .image {

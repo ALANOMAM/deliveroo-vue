@@ -90,14 +90,14 @@ export default{
 
     </div>
 
+    <div class="container pt-3 mb-4">
+      <h2 class="text-center mb-5">Ristoranti più popolari</h2>
+    <div class="d-flex m-auto" v-if="topRestaurants.length">
+      <TopRestaurantCard v-for="restaurant in topRestaurants" :key="restaurant.id" :topRestaurant="restaurant"></TopRestaurantCard>
+    </div>
+  </div>
   </section>
 
-  <div class="container">
-    <h2 class="text-center mt-5 pt-5">I RISTORANTI PIU' POPOLARI</h2>
-  <div class="d-flex m-auto" v-if="topRestaurants.length > 0">
-  <TopRestaurantCard v-for="restaurant in topRestaurants" :key="restaurant.id" :topRestaurant="restaurant"></TopRestaurantCard>
-</div>
-</div>
 
 
 
@@ -114,7 +114,8 @@ h2 {
   position: relative;
   
   .order-bg {
-    width: 60px;
+    width: 67px;
+    height: 82px;
     border-radius: 20px;
   }
   
@@ -131,7 +132,8 @@ h2 {
   position: relative;
   
   .payments-bg {
-    width: 50px;
+    width: 52px;
+    height: 82px;
   }
 
   .payments-icon {
@@ -147,11 +149,12 @@ h2 {
   position: relative;
   
   .meals-bg {
-    width: 70px;
+    width: 82px;
+    height: 82px;
   }
 
   .meals-icon {
-    width: 55px;
+    width: 65px;
     position: absolute;
     top: 60%;
     left: 50%;
