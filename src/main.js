@@ -20,4 +20,5 @@ import { router } from './router.js';
 
 
 
+
 createApp(App).use(router).use(VueAwesomePaginate).mount('#app') 

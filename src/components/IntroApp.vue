@@ -2,49 +2,68 @@
 import axios from 'axios';
 import { store } from '../store.js';
 import TopRestaurantCard from '../components/TopRestaurantCard.vue';
+import Swiper from 'swiper/bundle'; 
 
-export default{
-    name:'IntroApp',
-    components: {
-      TopRestaurantCard
-    },
-
-    data(){
-        return{
-           store,
-           topRestaurants: []
-        }
-    },
-
-   
-
-
-    methods: {
-    async fetchTopRestaurants() {
-  try {
-    const response = await axios.get(this.store.apiBaseUrl + '/top-restaurants');
-    const data = response.data;
-  
-    if (data.success) {
-      this.topRestaurants = data.results.map(restaurant => ({
-        id: restaurant.restaurant_id,
-        name: restaurant.restaurant_name,
-        image:restaurant.image,
-        total_orders: restaurant.total_orders
-      }));
-    } 
-  } catch (error) {
-    console.error('Error fetching top restaurants:', error);
-  }
-}
+export default {
+  name: 'IntroApp',
+  components: {
+    TopRestaurantCard
   },
-
+  data() {
+    return {
+      store,
+      topRestaurants: [],
+      swiper: null,
+      slidesPerView: 5 // Imposta un valore predefinito per slidesPerView
+    }
+  },
+  methods: {
+    async fetchTopRestaurants() {
+      try {
+        const response = await axios.get(this.store.apiBaseUrl + '/top-restaurants');
+        const data = response.data;
+        if (data.success) {
+          this.topRestaurants = data.results.map(restaurant => ({
+            id: restaurant.restaurant_id,
+            name: restaurant.restaurant_name,
+            image: restaurant.image,
+            total_orders: restaurant.total_orders
+          }));
+          this.initSwiper(); // Inizializza lo Swiper
+        }
+      } catch (error) {
+        console.error('Error fetching top restaurants:', error);
+      }
+    },
+    initSwiper() {
+      if (this.swiper) {
+        this.swiper.destroy(); 
+      }
+      // Imposta il numero di elementi visibili in base alla larghezza della finestra
+      this.slidesPerView = window.innerWidth < 768 ? 2 : 5;
+      this.swiper = new Swiper(".swiper", {
+        loop: true,
+        spaceBetween: 4,
+        slidesPerView: this.slidesPerView, 
+        speed: 1000,
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        },
+      });
+    },
+    handleWindowResize() {
+      // Aggiorna lo Swiper quando cambia la dimensione della finestra
+      window.addEventListener('resize', () => {
+        this.initSwiper();
+      });
+    }
+  },
   created() {
     this.fetchTopRestaurants();
-  },
+    this.handleWindowResize(); 
+  }
 }
-
-
 </script>
 
 <template>
@@ -92,10 +111,14 @@ export default{
 
     <div class="container pt-3 mb-4">
       <h2 class="text-center mb-5">Ristoranti più popolari</h2>
-    <div class="d-flex m-auto" v-if="topRestaurants.length">
-      <TopRestaurantCard v-for="restaurant in topRestaurants" :key="restaurant.id" :topRestaurant="restaurant"></TopRestaurantCard>
+      <div class="swiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide" v-for="restaurant in topRestaurants" :key="restaurant.id">
+            <TopRestaurantCard :topRestaurant="restaurant"></TopRestaurantCard>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
   </section>
 
 
