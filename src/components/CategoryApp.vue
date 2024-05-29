@@ -131,7 +131,7 @@ export default {
 </script>
 
 <template>
-  <section class="parallax"> 
+  <section class="parallax d-none d-sm-block"> 
     <div class="container text-center">
       <h2 class="text-white">Cerca Per Categorie</h2>
 
@@ -156,33 +156,6 @@ export default {
         </div>
       </div>
 
-      <div class="d-block d-sm-none ">
-        <button type="button" class="btn btn-primary" @click="openModal">
-          Categorie
-        </button>
-
-        <div class="modal" :class="{ 'is-active': showModal }" @click.self="closeModal">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Categorie</h5>
-              <button type="button" class="modal-close" @click="closeModal">
-                &times;
-              </button>
-            </div>
-            <div class="modal-body">
-              <div v-for="category in categories" :key="category.category_name" class="form-check">
-                <input class="form-check-input" type="checkbox" :value="category.category_name" v-model="store.checkBoxValue" @change="filterCategory">
-                <label class="form-check-label">
-                  {{ category.category_name }}
-                </label>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" @click="closeModal">Chiudi</button>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </section>  
 
@@ -197,6 +170,35 @@ export default {
 
   <section v-else class="restaurants-section">
     <h2 class="text-center my-5">Lista Ristoranti</h2>
+
+    <div class="d-block d-sm-none button-modal-wrapper">
+    <button type="button" class="btn btn-primary" @click="openModal">
+      Categorie
+    </button>
+
+    <div class="modal" :class="{ 'is-active': showModal }" @click.self="closeModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Categorie</h5>
+          <button type="button" class="modal-close" @click="closeModal">
+            &times;
+          </button>
+        </div>
+        <div class="modal-body">
+          <div v-for="category in categories" :key="category.category_name" class="form-check">
+            <input class="form-check-input" type="checkbox" :value="category.category_name" v-model="store.checkBoxValue" @change="filterCategory">
+            <label class="form-check-label">
+              {{ category.category_name }}
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" @click="closeModal">Chiudi</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
     <div class="container my-5">
       <div class="row">
         <RestaurantCard v-for="restaurant in restaurants" :key="restaurant.id" :restaurant="restaurant"></RestaurantCard>
@@ -215,10 +217,12 @@ export default {
       </div>
     </div>
   </section>
+
+  
 </template>
 
 
-<style lang="scss" >
+<style lang="scss" scoped>
 
 .box {
   border: none;
