@@ -131,11 +131,11 @@ export default {
 </script>
 
 <template>
-  <section class="parallax d-none d-sm-block"> 
+  <section class="parallax d-none d-md-block"> 
     <div class="container text-center">
       <h2 class="text-white">Cerca Per Categorie</h2>
 
-      <div class="d-none d-sm-block">
+      <div class="d-none d-md-block">
         <div class="row">
           <div class="col-sm-2 mt-4 mb-sm-0" v-for="(categoryElement, catIndex) in categories" :key="categoryElement">
             <div class="card box" :class="{ 'selected': isCategorySelected(categoryElement.category_name) }" @click="toggleCategorySelection(categoryElement.category_name)">
@@ -171,13 +171,15 @@ export default {
   <section v-else class="restaurants-section">
     <h2 class="text-center my-5">Lista Ristoranti</h2>
 
-    <div class="d-block d-sm-none button-modal-wrapper">
-    <button type="button" class="btn btn-primary" @click="openModal">
-      Categorie
-    </button>
+    <div class="d-block d-md-none button-modal-wrapper">
+      <div class="d-flex justify-content-center"> 
+        <button type="button" class="btn cat-button" @click="openModal">
+          Seleziona categorie
+        </button>
+      </div>
 
-    <div class="modal" :class="{ 'is-active': showModal }" @click.self="closeModal">
-      <div class="modal-content">
+    <div class="modal cat" :class="{ 'is-active': showModal }" @click.self="closeModal">
+      <div class="modal-content content">
         <div class="modal-header">
           <h5 class="modal-title">Categorie</h5>
           <button type="button" class="modal-close" @click="closeModal">
@@ -199,7 +201,7 @@ export default {
     </div>
   </div>
 
-    <div class="container my-5">
+    <div class="my-5">
       <div class="row">
         <RestaurantCard v-for="restaurant in restaurants" :key="restaurant.id" :restaurant="restaurant"></RestaurantCard>
       </div>
@@ -222,12 +224,13 @@ export default {
 </template>
 
 
-<style lang="scss" scoped>
+<style lang="scss">
 
 .box {
   border: none;
   background-color: rgba(245, 245, 245, 0.564);
   color: black;
+  height: 140px;
   font-weight: bold;
 
   &:hover {
@@ -315,6 +318,11 @@ section {
   }
 }
 
+.cat-button {
+  background-color: #F17228;
+  color: white;
+}
+
 .card {
   width: 100%;
 }
@@ -334,7 +342,7 @@ section {
   }
 
 }
-.modal {
+.cat {
   display: none;
   position: fixed;
   z-index: 1050;
@@ -350,7 +358,7 @@ section {
   display: block;
 }
 
-.modal-content {
+.content {
   position: relative;
   margin: auto;
   padding: 20px;
@@ -372,4 +380,22 @@ section {
   cursor: pointer;
 }
 
+
+@media (max-width: 767px) {
+  .categories-wrapper {
+    display: none;
+  }
+
+  .button-modal-wrapper {
+    display: block;
+  }
+}
+
+
+@media (max-width: 992px) {
+  .box {
+    max-width: 120px;
+  }
+
+}
 </style>

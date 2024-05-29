@@ -88,7 +88,7 @@ img {
   
   .image {
     width: 140px;
-    height: 80px;
+    height: 120px;
 
   }
 }

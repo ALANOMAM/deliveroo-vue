@@ -12,7 +12,7 @@ export default{
 </script>
 
 <template>
-    <div class="mobile-section">
+    <div class="mobile-section ">
         <div class="img">
             <!-- onda di sfondo -->
             <img src="/public/img/wave.png" alt="" class="wave">

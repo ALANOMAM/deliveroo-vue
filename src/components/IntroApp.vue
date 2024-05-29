@@ -41,7 +41,7 @@ export default {
       }
 
       const screenWidth = window.innerWidth;
-      if (screenWidth >= 900) {
+      if (screenWidth >= 992) {
         this.slidesPerView = 5;
       } else if (screenWidth >= 768) {
         this.slidesPerView = 3;

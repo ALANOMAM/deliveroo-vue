@@ -32,7 +32,7 @@ export default {
   <JumboApp></JumboApp>
   <IntroApp></IntroApp>
   <CategoryApp></CategoryApp>
-  <SectionMobile></SectionMobile>
+  <SectionMobile class="d-none d-xl-block"></SectionMobile>
 </template>
 
 
