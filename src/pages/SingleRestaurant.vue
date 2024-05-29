@@ -189,7 +189,7 @@ export default {
                             <!-- Immagine Piatto -->
                             <div class="img-dish d-flex align-items-center">
                                 <div class="image me-2">
-                                    <img v-if="dish.dish_image === null" src="/img/restaurant_placeholder.jpg" class="card-img-left" alt="...">
+                                    <img v-if="dish.dish_image === null" src="/img/dish_placeholder.jpg" class="card-img-left" alt="...">
                                     <img v-else-if="dish.dish_image.startsWith('dish_images/')" :src="'http://localhost:8000/storage/' + dish.dish_image" class="card-img-left" alt="...">
                                     <img v-else :src="dish.dish_image" class="card-img-left" alt="...">
                                 </div>
