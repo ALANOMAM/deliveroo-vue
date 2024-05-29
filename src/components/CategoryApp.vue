@@ -338,7 +338,7 @@ section {
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: auto; /* Allow scrolling if content is taller than screen */
+  overflow: auto;
   background-color: rgba(0, 0, 0, 0.5);
 }
 
@@ -353,10 +353,10 @@ section {
   background: white;
   border-radius: 5px;
   top: 50%;
-  transform: translateY(-50%); /* Center modal vertically */
-  max-width: 90%; /* Limit the modal width for smaller screens */
-  max-height: 90%; /* Limit the modal height for smaller screens */
-  overflow-y: auto; /* Add vertical scrolling if needed */
+  transform: translateY(-50%);
+  max-width: 90%;
+  max-height: 90%;
+  overflow-y: auto; 
 }
 
 .modal-close {
