@@ -14,7 +14,7 @@ export default {
       store,
       topRestaurants: [],
       swiper: null,
-      slidesPerView: 5 // Imposta un valore predefinito per slidesPerView
+      slidesPerView: 5 
     }
   },
   methods: {

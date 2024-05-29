@@ -16,6 +16,7 @@ export default {
       last_page: 1,
       total_items: 1,
       apiLinks: [],
+      showModal: false,
 
       categoryImages: [
         '/public/img/cinese-category.jpg',
@@ -114,7 +115,16 @@ export default {
     isCategorySelected(categoryName) {
       // Controlla se la categoria è selezionata
       return this.store.checkBoxValue.includes(categoryName);
+    },
+
+    openModal() {
+      this.showModal = true;
+    },
+
+    closeModal() {
+      this.showModal = false
     }
+  
 
   }
 };
@@ -125,75 +135,95 @@ export default {
     <div class="container text-center">
       <h2 class="text-white">Cerca Per Categorie</h2>
 
-      <div class="row">
-        <div class="col-sm-2 mt-4 mb-sm-0 " v-for="(categoryElement , catIndex) in categories" :key="categoryElement">
-          
-          <div class="card box" :class="{ 'selected': isCategorySelected(categoryElement.category_name) }" @click="toggleCategorySelection(categoryElement.category_name)">
-            <div class="card-body d-flex flex-column align-items-center">
-
-              <div  class="category-icon">
-                 <!--tutti gli elementi dell'array delle immagini-->
-                <div v-for="(categoryLogo,logoIndex) in categoryImages" >
-                    <!--solo le immagini che corrispondono all'index della categoria-->
+      <div class="d-none d-sm-block">
+        <div class="row">
+          <div class="col-sm-2 mt-4 mb-sm-0" v-for="(categoryElement, catIndex) in categories" :key="categoryElement">
+            <div class="card box" :class="{ 'selected': isCategorySelected(categoryElement.category_name) }" @click="toggleCategorySelection(categoryElement.category_name)">
+              <div class="card-body d-flex flex-column align-items-center">
+                <div class="category-icon">
+                  <div v-for="(categoryLogo, logoIndex) in categoryImages" :key="logoIndex">
                     <div v-if="catIndex == logoIndex">
-                    <img  class="category-image" :src="categoryLogo" alt="">
+                      <img class="category-image" :src="categoryLogo" alt="">
                     </div>
+                  </div>
                 </div>
-               
+                <div class="checkbox-name">
+                  <label class="form-check-label categoryEv" :for="categoryElement.category_name">{{ categoryElement.category_name }}</label>
+                </div>
               </div>
-               
-
-              <div class="checkbox-name">
-                <label class="form-check-label categoryEv" :for="categoryElement.category_name">{{ categoryElement.category_name }}</label>
-              <!--<label class=" form-check-label categoryEv "   :class=" isActive? 'active' : ''"  @click = selectedCategory(catIndex)  :for="categoryElement.category_name">{{categoryElement.category_name}}</label>-->
-              <!-- <a href="#" class="btn category-name" @click.prevent="filterCategory(categoryElement.category_name)">{{ categoryElement.category_name }}</a> -->
-             </div>
-            
             </div>
           </div>
+        </div>
+      </div>
 
+      <div class="d-block d-sm-none ">
+        <button type="button" data-bs-toggle="modal" href="#exampleModalToggle" class="btn btn-primary" @click="openModal">
+          Categorie
+        </button>
 
-
-
-
-
+        <div class="modal modal-background" id="exampleModalToggle" aria-hidden="true" aria-labelledby="modalToggle">
+          <div class=" modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="modalToggle">Categorie</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div v-for="category in categories" :key="category.category_name" class="form-check">
+                  <input class="form-check-input" type="checkbox" :value="category.category_name" v-model="store.checkBoxValue" @change="filterCategory">
+                  <label class="form-check-label">
+                    {{ category.category_name }}
+                  </label>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">Chiudi</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    
   </section>  
 
-  <section v-if="restaurants.length === 0" class="restaurants-section" >
-
+  <section v-if="restaurants.length === 0" class="restaurants-section">
     <div class="container my-5">
-
-      <div class="d-flex flex-column align-items-center justify-content-center ">
+      <div class="d-flex flex-column align-items-center justify-content-center">
         <i class="fa-solid fa-circle-exclamation"></i>
         <h1 class="text-center my-5">Non ci sono ristoranti per queste categorie, ci dispiace!</h1>
+      </div>
+    </div>
+  </section>
 
+  <section v-if="restaurants.length === 0" class="restaurants-section">
+    <div class="container my-5">
+      <div class="d-flex flex-column align-items-center justify-content-center">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <h1 class="text-center my-5">Non ci sono ristoranti per queste categorie, ci dispiace!</h1>
+      </div>
+    </div>
+  </section>
+
+  <section v-else class="restaurants-section">
+    <h2 class="text-center my-5">Lista Ristoranti</h2>
+    <div class="container my-5">
+      <div class="row">
+        <RestaurantCard v-for="restaurant in restaurants" :key="restaurant.id" :restaurant="restaurant"></RestaurantCard>
       </div>
 
-    </div>
-
-  </section>
-  <section v-else class="restaurants-section">
-       <h2 class="text-center my-5">Lista Ristoranti</h2>
-    <div class="container my-5">
-        <div class="row">
-            <RestaurantCard v-for="restaurant in restaurants" :key="restaurant.id" :restaurant="restaurant"></RestaurantCard>
-        </div>
-
-        <div class="text-center mt-5">
-            <vue-awesome-paginate
-              v-if="restaurants && restaurants.length > 0"
-              :total-items="total_items"
-              v-model="currentPage"
-              :items-per-page="per_page"
-              :max-pages-shown="last_page"
-              :on-click="changePage"
-              :hide-prev-next-when-ends="true"
-            />
-        </div>
+      <div class="text-center mt-5">
+        <vue-awesome-paginate
+          v-if="restaurants && restaurants.length > 0"
+          :total-items="total_items"
+          v-model="currentPage"
+          :items-per-page="per_page"
+          :max-pages-shown="last_page"
+          :on-click="changePage"
+          :hide-prev-next-when-ends="true"
+        />
+      </div>
     </div>
   </section>
 
@@ -202,87 +232,81 @@ export default {
 
 <style lang="scss" >
 
-
 .box {
   border: none;
   background-color: rgba(245, 245, 245, 0.564);
-  color:black;
+  color: black;
   font-weight: bold;
-  
 
-  &:hover{
-
+  &:hover {
     background-color: rgba(245, 245, 245, 0.335);
   }
 
   &.selected {
-
     background-color: #f17228aa;
     color: white;
     font-weight: bold;
     box-shadow: 1px 1px 1px #F17228;
   }
-
 }
 
 .checkbox-name {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .pagination-container {
-    display: flex;
-    column-gap: 10px;
-  }
-  .paginate-buttons {
-    height: 40px;
-    width: 40px;
-    border-radius: 20px;
-    cursor: pointer;
-    background-color: rgb(242, 242, 242);
-    border: 1px solid rgb(217, 217, 217);
-    color: black;
-  }
-  .paginate-buttons:hover {
-    background-color: #d8d8d8;
-  }
-  .active-page {
-    background-color: #F17228;
-    border: 1px solid #F17228;
-    color: white;
-  }
-  .active-page:hover {
-    background-color: rgba(255, 179, 14, 1);
-    border: 1px solid rgba(255, 179, 14, 1);
-  }
+  display: flex;
+  column-gap: 10px;
+}
 
-  h2 {
+.paginate-buttons {
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
+  cursor: pointer;
+  background-color: rgb(242, 242, 242);
+  border: 1px solid rgb(217, 217, 217);
+  color: black;
+}
+
+.paginate-buttons:hover {
+  background-color: #d8d8d8;
+}
+
+.active-page {
+  background-color: #F17228;
+  border: 1px solid #F17228;
+  color: white;
+}
+
+.active-page:hover {
+  background-color: rgba(255, 179, 14, 1);
+  border: 1px solid rgba(255, 179, 14, 1);
+}
+
+h2 {
   color: #F17228;
   font-weight: 700;
 }
 
-.categoryEv{
-    padding:5px;
-    border-radius: 5px;
-
+.categoryEv {
+  padding: 5px;
+  border-radius: 5px;
 }
 
 .parallax {
-
   background-image: url('/img/categories_background.jpeg');
   background-position: center;
   padding-top: 40px;
   padding-bottom: 400px;
-
   max-height: 460px;
-
   background-attachment: fixed;
   background-position: center bottom;
   background-repeat: no-repeat;
   background-size: cover;
   filter: blur(0px);
-
 }
 
 section {
@@ -304,20 +328,53 @@ section {
 }
 
 .category-icon {
-  /*border: 1px solid red;*/
   width: 100%;
-  height:auto;
+  height: auto;
   display: flex;
   justify-content: center;
   align-items: center;
-    
- .category-image{
+
+  .category-image {
     width: 70px;
     height: 70px;
     border-radius: 50%;
-    object-fit:cover;
- }
+    object-fit: cover;
+  }
 
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1050;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal.is-active {
+    display: block;
+}
+
+.modal-content {
+    position: relative;
+    margin: auto;
+    padding: 20px;
+    background: white;
+    border-radius: 5px;
+    top: 50%;
+    transform: translateY(-50%, -50%);
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    cursor: pointer;
 }
 
 </style>
