@@ -157,45 +157,34 @@ export default {
       </div>
 
       <div class="d-block d-sm-none ">
-        <button type="button" data-bs-toggle="modal" href="#exampleModalToggle" class="btn btn-primary" @click="openModal">
+        <button type="button" class="btn btn-primary" @click="openModal">
           Categorie
         </button>
 
-        <div class="modal modal-background" id="exampleModalToggle" aria-hidden="true" aria-labelledby="modalToggle">
-          <div class=" modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="modalToggle">Categorie</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
+        <div class="modal" :class="{ 'is-active': showModal }" @click.self="closeModal">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Categorie</h5>
+              <button type="button" class="modal-close" @click="closeModal">
+                &times;
+              </button>
+            </div>
+            <div class="modal-body">
+              <div v-for="category in categories" :key="category.category_name" class="form-check">
+                <input class="form-check-input" type="checkbox" :value="category.category_name" v-model="store.checkBoxValue" @change="filterCategory">
+                <label class="form-check-label">
+                  {{ category.category_name }}
+                </label>
               </div>
-              <div class="modal-body">
-                <div v-for="category in categories" :key="category.category_name" class="form-check">
-                  <input class="form-check-input" type="checkbox" :value="category.category_name" v-model="store.checkBoxValue" @change="filterCategory">
-                  <label class="form-check-label">
-                    {{ category.category_name }}
-                  </label>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">Chiudi</button>
-              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" @click="closeModal">Chiudi</button>
             </div>
           </div>
         </div>
       </div>
     </div>
   </section>  
-
-  <section v-if="restaurants.length === 0" class="restaurants-section">
-    <div class="container my-5">
-      <div class="d-flex flex-column align-items-center justify-content-center">
-        <i class="fa-solid fa-circle-exclamation"></i>
-        <h1 class="text-center my-5">Non ci sono ristoranti per queste categorie, ci dispiace!</h1>
-      </div>
-    </div>
-  </section>
 
   <section v-if="restaurants.length === 0" class="restaurants-section">
     <div class="container my-5">
@@ -226,7 +215,6 @@ export default {
       </div>
     </div>
   </section>
-
 </template>
 
 
@@ -343,38 +331,41 @@ section {
 
 }
 .modal {
-    display: none;
-    position: fixed;
-    z-index: 1050;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  position: fixed;
+  z-index: 1050;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; /* Allow scrolling if content is taller than screen */
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .modal.is-active {
-    display: block;
+  display: block;
 }
 
 .modal-content {
-    position: relative;
-    margin: auto;
-    padding: 20px;
-    background: white;
-    border-radius: 5px;
-    top: 50%;
-    transform: translateY(-50%, -50%);
+  position: relative;
+  margin: auto;
+  padding: 20px;
+  background: white;
+  border-radius: 5px;
+  top: 50%;
+  transform: translateY(-50%); /* Center modal vertically */
+  max-width: 90%; /* Limit the modal width for smaller screens */
+  max-height: 90%; /* Limit the modal height for smaller screens */
+  overflow-y: auto; /* Add vertical scrolling if needed */
 }
 
 .modal-close {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: none;
-    border: none;
-    cursor: pointer;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
 </style>

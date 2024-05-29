@@ -37,14 +37,22 @@ export default {
     },
     initSwiper() {
       if (this.swiper) {
-        this.swiper.destroy(); 
+        this.swiper.destroy();
       }
-      // Imposta il numero di elementi visibili in base alla larghezza della finestra
-      this.slidesPerView = window.innerWidth < 768 ? 2 : 5;
+
+      const screenWidth = window.innerWidth;
+      if (screenWidth >= 900) {
+        this.slidesPerView = 5;
+      } else if (screenWidth >= 768) {
+        this.slidesPerView = 3;
+      } else {
+        this.slidesPerView = 2;
+      }
+
       this.swiper = new Swiper(".swiper", {
         loop: true,
         spaceBetween: 4,
-        slidesPerView: this.slidesPerView, 
+        slidesPerView: this.slidesPerView,
         speed: 1000,
         navigation: {
           nextEl: ".swiper-button-next",
