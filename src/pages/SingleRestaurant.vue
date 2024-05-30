@@ -154,9 +154,9 @@ export default {
                 </div>
 
                 <div class="info">
-                    <h2 class="fs-3">{{ restaurant.restaurant_name }}</h2>
+                    <h2 class="fs-3 text-center text-md-start mt-2 mt-md-0">{{ restaurant.restaurant_name }}</h2>
 
-                    <div class="category list-group-item d-flex mt-3 gap-1 flex-wrap w-75">
+                    <div class="category list-group-item my-2">
                         <span v-for="category in restaurant.categories" :key="category.id" class="badge rounded-pill">
                             {{ category.category_name }}
                         </span>
@@ -165,7 +165,7 @@ export default {
                     <p class="mt-3" v-if="restaurant.description">{{ restaurant.description }}</p>
                 </div>
 
-                <div class="contacts d-flex flex-column gap-2">
+                <div class="contacts d-flex flex-md-column gap-3 gap-md-2 mt-2 mt-md-0">
                     <span class="phone" v-if="restaurant.phone"><i class="fa-solid fa-phone me-2"></i> <a href="tel:{{ restaurant.phone }}" class="text-decoration-none">{{ restaurant.phone }}</a></span>
                     <span class="address" v-if="restaurant.address"><i class="fa-solid fa-location-dot me-2 mb-3"></i> <a :href="'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(restaurant.address)" target="_blank" class="text-decoration-none">{{ restaurant.address }}</a>.</span>
                     <span class="vat" v-if="restaurant.vat">VAT: {{ restaurant.vat }}</span>
@@ -174,12 +174,12 @@ export default {
         </div>
     </div>
 
-    <div class="page py-5">
+    <div class="page pb-5 py-lg-5">
         <div class="container">
 
             <div class="row">
 
-                <div class="col-md-8">
+                <div class="col-12 col-lg-8">
 
                     <h2 class="text-center fs-2 my-4 text-uppercase">Menù</h2>
 
@@ -195,14 +195,14 @@ export default {
                                 </div>
                             </div>
 
-                            <div class="info-dish d-flex flex-column justify-content-center">
+                            <div class="info-dish">
                                 <!-- Nome piatto -->
                                 <div class="title-dish">
                                     <div class="fw-bold"> {{ dish.dish_name }} </div>
                                 </div>
             
                                 <!-- Prezzo piatto -->
-                                <div class="price-dish">
+                                <div class="price-dish badge rounded-pill">
                                     <div class="fw-normal"> {{ dish.dish_price }} € </div>
                                 </div>
             
@@ -240,7 +240,7 @@ export default {
                 </div>
 
                 <!--carello inizio-->
-                <div class="col-md-4">
+                <div class="col-12 col-lg-4 mt-4 mt-lg-5 cart-box">
                     <div class="cart">
                         <h2 class="text-center fs-2 mb-5 pt-4 text-uppercase">Carrello</h2>
                         <ul>
@@ -267,12 +267,6 @@ export default {
 
                             <span class="fs-3 me-1">{{ totalPrice }} €</span>
                         </div>
-                     
-                         <!-- Bottone che porta alla pagina del checkout -->
-
-                         <!-- <div class="d-flex justify-content-center">
-                            <div @click="goToCheckout(restaurant.id)" class="btn card-btn">vai alla card</div>
-                        </div> -->
 
                         <div class="d-flex justify-content-center">
                             <button type="button" class="btn button-cart" @click="goToCheckout(restaurant.id)">Procedi all'ordine</button>
@@ -287,22 +281,18 @@ export default {
             
         </div>
     </div>
-
-
-
-
 </template>
 
 <style lang="scss" scoped>
-
 .header-page {
     background-color: #202020;
     cursor: default;
     
     .restaurant {
-        margin: 0 90px;
+        margin: 0 60px;
         padding: 15px 0;
         display: flex;
+        justify-content: space-between;
         align-items: center;
         color: #A0A0A0;
 
@@ -312,13 +302,17 @@ export default {
         }
 
         .info {
-            padding:0 50px;
-
-            .category span {
-                font-size: 11px;
-                color: #403f3f;
-                background: linear-gradient(to right, #ebb45b 0%, #c68434 100%);
-                box-shadow: 0px 1px 6px rgba(242, 173, 60, 0.5);
+            .category {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 5px;
+                max-width: 300px;
+                span {
+                    font-size: 11px;
+                    color: #403f3f;
+                    background: linear-gradient(to left, #c68434 0%, #ebb45b 100%);
+                    box-shadow: 0px 1px 6px rgba(242, 173, 60, 0.5);
+                }
             }
 
             p {
@@ -328,8 +322,6 @@ export default {
         }
 
         .contacts {
-            padding-left: 50px;
-
             .phone, .address {
                 font-size: 13px;
                 transition: 0.2s;
@@ -364,8 +356,30 @@ export default {
             height: 65px;
             border-radius: 8px;
         }
-    }
 
+        .info-dish {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+
+            .price-dish {
+                position: absolute;
+                top: 3px;
+                left: 450px;
+                font-size: 16px;
+                font-weight: 900;
+                background-color: #F65901;
+                background: linear-gradient(to left, #F65901 0%, #ff8844 100%);
+            }
+
+            .ingedients-dish {
+                margin-top: 5px;
+                font-size: 16px;
+                color: #807f7f;
+            }
+        }
+    }
 }
 
 
@@ -401,7 +415,7 @@ export default {
     }
 }
 
-.cart {
+.cart-box .cart {
     padding-bottom: 20px;
     background-color: #FEFAF1;
 
@@ -434,6 +448,148 @@ export default {
             background-color: transparent;
             color: rgba(246, 89, 0, 1);
             border: 1px solid rgba(246, 89, 0, 1);
+        }
+    }
+
+}
+
+
+//laptop-view
+@media (max-width: 992px) {
+    .header-page {
+        .restaurant {
+            margin: 0;
+
+            .image-box .image img {
+                width: 200px;
+            }
+
+            .info {
+                .category span {
+                    font-size: 11px;
+                }
+
+                p {
+                    max-width: 200px;
+                    font-size: 10px;
+                }
+            }
+
+            .contacts {
+                padding-left: 0;
+
+                .phone, .address {
+                    font-size: 11px;
+                }
+
+                .vat {
+                    font-size: 11px;
+                }
+            }
+        }
+    }
+
+    .page {
+        .dish {
+            .info-dish {
+                .price-dish {
+                    position: absolute;
+                    top: 3px;
+                    left: 450px;
+                    font-size: 16px;
+                    font-weight: 900;
+                    background-color: #F65901;
+                    background: linear-gradient(to left, #F65901 0%, #ff8844 100%);
+                }
+
+                .ingedients-dish {
+                    margin-top: 5px;
+                    font-size: 16px;
+                    color: #807f7f;
+                }
+            }
+        }
+    }
+
+    .cart-box {
+        display: flex;
+        justify-content: center;
+        
+        .cart {
+            min-width: 550px;
+        }
+    }
+}
+
+
+
+//tablet-view
+@media (max-width: 768px) {
+    .restaurant {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .page {
+        .dish {
+            .info-dish {
+                .price-dish {
+                    position: absolute;
+                    top: 0px;
+                    left: 300px;
+                    font-size: 14px;
+                    font-weight: 900;
+                    background-color: #F65901;
+                    background: linear-gradient(to left, #F65901 0%, #ff8844 100%);
+                }
+
+                .ingedients-dish {
+                    margin-top: 5px;
+                    font-size: 14px;
+                    color: #807f7f;
+                }
+            }
+        }
+    }
+}
+
+
+
+//mobile-view
+@media (max-width: 576px) {
+    .header-page {        
+        .restaurant {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            .image-box .image img {
+                width: 200px;
+            }
+
+            .contacts {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    }
+
+    .page {
+        .dish {
+            .info-dish {
+                .price-dish {
+                    top: 5px;
+                    left: -70px;
+                }
+            }
+        }
+    }
+
+    .cart-box {
+        .cart {
+            min-width: 320px;
         }
     }
 }

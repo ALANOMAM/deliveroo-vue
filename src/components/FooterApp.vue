@@ -32,9 +32,9 @@ watch: {
     <div class="footer">
         <div class="container">
             <div class="row">
-                <div class="left col-lg-6 col-12 ms-4 m-lg-0">
+                <div class="left col-lg-6 col-12 ms-2 m-lg-0">
                     <div class="row">
-                        <div class="col">
+                        <div class="col p-0">
                             <h2>Azienda</h2>
                             <ul>
                                 <li><a href="" >Chi Siamo </a></li>
@@ -44,7 +44,7 @@ watch: {
                             </ul>
                         </div>
         
-                        <div class="col">
+                        <div class="col p-0 pe-3">
                             <h2>Contatti</h2>
                             <ul>
                                 <li><a href="" >Aiuto & Supporto</a></li>
@@ -53,7 +53,7 @@ watch: {
                             </ul>
                         </div>
         
-                        <div class="col">
+                        <div class="col p-0 pe-2">
                             <h2>Legale</h2>
                             <ul>
                                 <li><a href="" >Termini & Condizioni</a></li>
@@ -65,7 +65,7 @@ watch: {
                     </div>
                 </div>
 
-                <div class="right col-lg-6 col-12 d-flex justify-content-lg-end justify-content-center">
+                <div class="right col-lg-6 col-12 d-flex justify-content-lg-end py-0 py-md-4 py-lg-0">
                     <div class="row">
                         <div class="col">
                             <h2>Follow us</h2>
@@ -95,7 +95,7 @@ watch: {
                 <div class="col-9 col-lg company">
                     <span>Tutti i diritti riservati <i class="fa-regular fa-copyright"></i> <strong>Miriam Evardi, Mario Arista, Alan Omam, Pietro Antonio Nini</strong></span>   
                 </div>
-                <div class="col-3 col-lg made-by">
+                <div class="col-3 col-lg made-by p-0 pe-3">
                     <span>Made with <i class="fa-solid fa-heart"></i> by <strong>Boolean</strong></span>
                 </div>
             </div>
@@ -104,14 +104,6 @@ watch: {
 </template>
 
 <style lang="scss" scoped>
-
-
-
-.options{
-font-size: 20px;
-color: red;
-}
-
 .footer {
     position: relative;
     padding: 40px 0;
@@ -124,26 +116,28 @@ color: red;
             h2 {
                 margin-bottom: 20px;
                 font-size: 20px;
-                color: white;
+                color: #DBDBDB;
                 cursor: default;
             }
 
             ul {
                 padding: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
 
                 li {
                     list-style-type: none;
-                    a{
+                    font-size: 15px;
+                    transition: 0.5s;
+                    a {
                         text-decoration: none;
-                         font-size: 15px;
                         color: #DBDBDB;
-                        transition: 0.5s;
+                    }
 
-                        &:hover {
-                            font-size: 17px;
-                            color: #fffcfc;
-                           
-                        }
+                    &:hover {
+                        text-decoration: underline;
+                        color: #fffcfc;       
                     }
                 }
             } 
@@ -248,6 +242,60 @@ color: red;
         i {
             cursor: default;
             color: #F2AD3C;
+        }
+    }
+}
+
+@media (max-width: 576px) {
+    .footer {
+        padding: 20px 0;
+        .row {
+            .left {
+                h2 {
+                    margin-bottom: 18px;
+                    font-size: 16px;
+                }
+
+                ul {
+                    gap: 2px;
+                    li {
+                        font-size: 11px;
+                    }
+                } 
+            }
+
+            .right {
+                .row {
+                    gap: 2px;
+                    .col {
+                        h2 {
+                            font-size: 16px;
+                        }
+
+                        a {
+                            font-size: 16px;
+                        }
+
+                        span {
+                            font-size: 13px;
+                        }
+
+                        .input-icon {
+                            input {
+                                width: 240px;
+                            }
+                        }
+                    } 
+                }
+            }
+        }
+
+        .company {
+            font-size: 6px;
+        }
+
+        .made-by {
+            font-size: 6px;
         }
     }
 }
