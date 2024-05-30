@@ -305,6 +305,10 @@ export default {
             this.cart = [];
             this.updateLocalStorage();
         },
+
+        goBack() {
+            this.$router.go(-1);
+        }
     },
 
     watch: {
@@ -335,10 +339,12 @@ export default {
         </div>
         <hr>
 
+
+        <div class="mt-3 back">
+             <a @click="goBack" class="mb-3"><i class="fa-solid fa-arrow-left"></i> Torna alla pagina del ristorante</a>
+        </div>
+
         
-            
-
-
         <!--CONTACT FORM CON DATI PERSONALI-->   
         <form class="form row justify-content-between" @submit.prevent="makePayment">
             <div class="col-md-6 col-12" >
@@ -538,6 +544,19 @@ export default {
 
     }
 
+}
+
+a,
+.fa-arrow-left {
+    color: #F65901;
+    cursor: pointer;
+    text-decoration: none;
+
+}
+.back:hover a,
+.back:hover i{
+    color: #ffab24 !important;
+    text-decoration: none;
 }
 
 .pay-button {

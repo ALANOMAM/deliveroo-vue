@@ -357,7 +357,7 @@ a {
 }
 a:hover {
     color: #ffab24;
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 .page {
