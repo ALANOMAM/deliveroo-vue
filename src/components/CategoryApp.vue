@@ -159,18 +159,9 @@ export default {
     </div>
   </section>  
 
-  <section v-if="restaurants.length === 0" class="restaurants-section">
-    <div class="container my-5">
-      <div class="d-flex flex-column align-items-center justify-content-center">
-        <i class="fa-solid fa-circle-exclamation"></i>
-        <h1 class="text-center my-5">Non ci sono ristoranti per queste categorie, ci dispiace!</h1>
-      </div>
-    </div>
-  </section>
 
-  <section v-else class="restaurants-section">
-    <h2 class="text-center my-5">Lista Ristoranti</h2>
-
+  <h2 v-if="restaurants.length !== 0" class="text-center my-5">Lista Ristoranti</h2>
+  
     <div class="d-block d-md-none button-modal-wrapper">
       <div class="d-flex justify-content-center"> 
         <button type="button" class="btn cat-button" @click="openModal">
@@ -200,6 +191,18 @@ export default {
       </div>
     </div>
   </div>
+
+  <section v-if="restaurants.length === 0" class="restaurants-section">
+    <div class="container my-5">
+      <div class="d-flex flex-column align-items-center justify-content-center">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <h1 class="text-center my-5">Non ci sono ristoranti per queste categorie, ci dispiace!</h1>
+      </div>
+    </div>
+  </section>
+
+  <section v-else class="restaurants-section">
+
 
     <div class="my-5">
       <div class="row">

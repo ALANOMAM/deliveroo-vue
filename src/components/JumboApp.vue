@@ -11,11 +11,7 @@ export default {
                 <!-- Titoli a sinistra -->
                 <div class="text-section p-3 rounded-4">
                     <h1 class="fw-semibold">Hai Fame?</h1>
-                    <h2 class="fs-3 fw-normal">Con un click, senza stress, il tuo pasto è un success</h2>
-                </div>
-                <!-- Immagine a destra -->
-                <div class="img-bowl">
-                    <img src="/img/bowl-jumbo.png" alt="Bowl Jumbo">
+                    <h2 class="fs-3 text-white fw-normal">Con un click, senza stress, il tuo pasto è un success</h2>
                 </div>
             </div>
         </div>
@@ -26,13 +22,20 @@ export default {
 section {
     width: 100%;
     height: 620px;
-    background: rgb(255,138,0);
-    background: linear-gradient(0deg, rgba(255,138,0,1) 0%, rgba(255,174,0,1) 58%);
     overflow: hidden;
+    background: url('/img/Jumboy.jpg') no-repeat center center;
+    background-size: cover;
 
     h1 {
         font-size: 100px;
         color: white;
+    }
+
+    .text-section {
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6); 
+        z-index: 1;
     }
 
     h2 {
@@ -59,8 +62,6 @@ section {
         display: none;
     }
     .jumbo-section {
-        background: url('/img/jumbo.jpg') no-repeat center center;
-        background-size: cover;
         display: flex;
         justify-content: center;
         align-items: center;
