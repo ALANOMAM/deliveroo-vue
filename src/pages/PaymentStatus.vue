@@ -87,7 +87,7 @@ export default {
                 </p>
             </div>
             <div class="payment-info my-4">
-                <h3 class="d-none">Ordine N°: <span>{{ store.paymentDetails?.transactionId }}</span></h3>
+                <h3>ID della transazione: <span>{{ store.paymentDetails?.transactionId }}</span></h3>
                 <h3>Email: <span>{{ store.paymentDetails?.email }}</span></h3>
                 <h3>Tel: <span>{{ store.paymentDetails?.phone }}</span></h3>
                 <h3>Indirizzo: <span>{{ store.paymentDetails?.address }}</span></h3>
@@ -95,8 +95,8 @@ export default {
         </div>
 
         <div v-else class="d-flex flex-column align-items-center justify-content-center payment-failed my-5">
-            <i class="fa-solid fa-circle-x pb-5"></i>
-            <h1 class="text-center my-5 text-danger">Pagamento Fallito</h1>
+            <i class="fa-solid fa-circle-xmark text-danger fs-1"></i>
+            <h1 class="text-center my-4 text-danger">Pagamento Fallito</h1>
             <p>{{ errorMessage }}</p>
         </div>
     </div>
@@ -200,6 +200,13 @@ section {
         }
         
         .payment-info {
+
+            flex-direction: column;
+            padding: 40px;
+            border-radius: 40px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            margin-bottom: 30px;
+
             h3 {
                 font-size: 25px;
                 text-transform: uppercase;
@@ -263,4 +270,21 @@ section {
     }
 
 }
+
+
+@media (max-width: 767px) {
+
+    .payment-info {
+    //border: 1px solid blue;
+        flex-direction: column;
+        padding: 5px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+        &:hover{
+            box-shadow: 0 4px 8px 0 rgba(255, 179, 14, 0.2), 0 6px 20px 0 rgba(255, 179, 14, 0.19);
+        }   
+
+    }
+}
+
 </style>
