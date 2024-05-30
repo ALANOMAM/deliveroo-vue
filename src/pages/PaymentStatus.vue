@@ -56,6 +56,19 @@ export default {
 </script>
 
 <template>
+
+<section class="jumbo-section">
+    <div class="container position-relative d-flex align-items-center h-100">
+        <div class="d-flex justify-content-between align-items-center">
+            <!-- Titoli a sinistra -->
+            <div class="text-section p-3 rounded-4">
+                <h1 class="fw-normal">Allora avevi fame!</h1>
+                <h2 class="fs-3 text-white fw-normal">Con un click, senza stress, il tuo pasto è un success</h2>
+            </div>
+        </div>
+    </div>
+</section>
+
 <div class="payment-box">
     <!-- Loader -->
     <div v-if="loading" class="loader-box">
@@ -67,10 +80,14 @@ export default {
             <i class="fa-solid fa-circle-check pb-2"></i>
             <div class="text-center my-5">
                 <h1>Pagamento Avvenuto con Successo!</h1>
-                <span>Una mail con i dati del tuo ordine è stata inoltrata al tuo indirizzo di posta</span>
+                <p class="fs-5">
+                    Grazie {{ store.paymentDetails?.full_name }} per aver ordinato su JustBool!
+                    <br>
+                    Una mail con i dati del tuo ordine è stata inoltrata al tuo indirizzo di posta.
+                </p>
             </div>
             <div class="payment-info my-4">
-                <h3>Ordine N°: <span>{{ store.paymentDetails?.transactionId }}</span></h3>
+                <h3 class="d-none">Ordine N°: <span>{{ store.paymentDetails?.transactionId }}</span></h3>
                 <h3>Email: <span>{{ store.paymentDetails?.email }}</span></h3>
                 <h3>Tel: <span>{{ store.paymentDetails?.phone }}</span></h3>
                 <h3>Indirizzo: <span>{{ store.paymentDetails?.address }}</span></h3>
@@ -79,7 +96,7 @@ export default {
 
         <div v-else class="d-flex flex-column align-items-center justify-content-center payment-failed my-5">
             <i class="fa-solid fa-circle-x pb-5"></i>
-            <h1 class="text-center my-5">Pagamento Fallito</h1>
+            <h1 class="text-center my-5 text-danger">Pagamento Fallito</h1>
             <p>{{ errorMessage }}</p>
         </div>
     </div>
@@ -87,8 +104,38 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+
+section {
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+    background: url('/img/Jumboy.jpg') no-repeat center center;
+    background-size: cover;
+
+    h1 {
+        font-size: 70px;
+        color: white;
+    }
+
+    .text-section {
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6); 
+        z-index: 1;
+    }
+
+    h2 {
+        color: black;
+        font-size: 18px;
+    }
+    
+}
+
+
+
 .payment-box {
-    height: calc(100vh - 456.5px);
+    // height: calc(100vh - 456.5px);
+
     /* loader */
     .loader-box {
         position: fixed;
@@ -149,7 +196,7 @@ export default {
     
         i {
             color: #1fae24;
-            font-size: 90px;
+            font-size: 70px;
         }
         
         .payment-info {
@@ -185,5 +232,35 @@ export default {
             font-size: 90px;
         }
     }
+}
+
+/* Media Query per schermi piccoli */
+@media (max-width: 1200px) {
+ 
+    .jumbo-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .text-section {
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6); 
+        z-index: 1;
+    }
+
+    .container {
+        display: none;
+    }
+
+    .jumbo-section h1 {
+        font-size: 60px;
+    }
+
+    .jumbo-section h2 {
+        color: white;
+    }
+
 }
 </style>
