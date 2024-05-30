@@ -484,7 +484,7 @@ export default {
                     <!-- METODO DI PAGAMENTO -->
 
                     <div>
-                        <h2 class="text-center fs-4 mt-4 pt-4 text-uppercase">MEDOTO DI PAGAMENTO</h2>
+                        <h2 class="text-center fs-4 mt-4 pt-4 text-uppercase">METODO DI PAGAMENTO</h2>
                         
                         <!--box del pagamento-->
                         <div class="box-payment" id="dropin-container"></div>
@@ -590,6 +590,15 @@ i{
     .price {
         font-size: 14px;
         color: #A0A0A0;
+    }
+
+    .fa-minus, .fa-plus {
+        cursor: pointer;
+        transition: 0.1s;
+
+        &:hover {
+            transform: scale(120%);
+        }
     }
 
     .remove-item i {

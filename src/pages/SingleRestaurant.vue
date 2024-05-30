@@ -104,6 +104,19 @@ export default {
             localStorage.setItem('cart_' + this.restaurantId, JSON.stringify(this.cart));
         },
 
+        // Metodo per aggiornare la quantità di un articolo nel carrello
+        updateCartItem(index, increment) {
+            if (increment) {
+                this.cart[index].quantity++;
+            } else if (this.cart[index].quantity > 1) {
+                this.cart[index].quantity--;
+            } else {
+                return;
+            }
+            this.cart[index].price = this.cart[index].quantity * (this.cart[index].price / (this.cart[index].quantity + (increment ? -1 : 1)));
+            this.updateLocalStorage();
+        },
+
         openModal(dish) {
             this.currentDish = dish;
             this.quantity = 1;
@@ -257,10 +270,15 @@ export default {
                                     <span class="price">€ {{ cartItem.price }}</span>
                                 </div>
 
-                                <div>
+                                <div class="d-flex align-items-center">
+                                   <!--numero, piu e meno-->
+                                    <div class="d-flex gap-2 align-items-center" >
+                                    <i class="fa-solid fa-minus" @click="updateCartItem(index, false)"></i>
                                     <span>{{ cartItem.quantity }}</span>
+                                    <i class="fa-solid fa-plus" @click="updateCartItem(index, true)"></i>
+                                    </div>
+
                                     <span @click="removeFromCart(index)" class="remove-item">
-                                        <i class="fa-solid fa-x ms-4 me-2 d-none"></i>
                                         <i class="fa-solid fa-trash fs-5 ms-4 me-2"></i>
                                     </span>
                                 </div>
@@ -442,8 +460,20 @@ a:hover {
         color: #A0A0A0;
     }
 
+    .fa-minus, .fa-plus {
+        font-size: 18px;
+        cursor: pointer;
+        color:#ebb45b;
+        transition: 0.1s;
+
+        &:hover {
+            transform: scale(120%);
+        }
+    }
+
     .remove-item i {
         cursor: pointer;
+        color:#ebb45b;
         transition: 0.1s;
 
         &:hover {
