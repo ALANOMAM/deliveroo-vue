@@ -48,7 +48,7 @@ export default{
   
   <style lang="scss" scoped>
     .restaurant-card {
-  background-color: white;
+  background-color: #FDEED0;
   width: 100%;
   display: flex;
   flex-direction: column;

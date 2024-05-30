@@ -165,7 +165,7 @@ export default {
     <div class="d-block d-md-none button-modal-wrapper">
       <div class="d-flex justify-content-center"> 
         <button type="button" class="btn cat-button" @click="openModal">
-          Seleziona categorie
+          Filtra per categorie
         </button>
       </div>
 
@@ -322,9 +322,22 @@ section {
 }
 
 .cat-button {
-  background-color: #F17228;
-  color: white;
-}
+        margin-top: 10px;
+        padding: 10px 20px;
+    
+        text-transform: uppercase;
+        font-size: bold;
+        font-weight: 16px;
+        
+        background-color: rgba(246, 89, 0, 1);
+        color: white;
+    
+        &:hover {
+            background-color: transparent;
+            color: rgba(246, 89, 0, 1);
+            border: 1px solid rgba(246, 89, 0, 1);
+        }
+    }
 
 .card {
   width: 100%;

@@ -117,6 +117,11 @@ export default {
 
     </div>
 
+  </section>
+  
+  <div class="wave_bg"></div>
+  <section class="top-rst-sect">
+
     <div class="container pt-3 mb-4">
       <h2 class="text-center mb-5">Ristoranti più popolari</h2>
       <div class="swiper">
@@ -127,7 +132,10 @@ export default {
         </div>
       </div>
     </div>
+
   </section>
+
+
 
 
 
@@ -135,6 +143,21 @@ export default {
 </template>
 
 <style lang="scss" scoped>
+
+.wave_bg {
+  width: 100%;
+  height: 100px;
+  background-image: url('/img/wave_bg.png');
+  
+}
+
+
+
+.top-rst-sect {
+  background-color: #FDEED0;
+  width: 100%;
+}
+
 
 h2 {
   color: #F17228;
