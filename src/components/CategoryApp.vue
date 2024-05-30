@@ -228,9 +228,6 @@ export default {
 
 
 <style lang="scss">
-* {
-  overflow-x: hidden;
-}
 
 .box {
   border: none;
@@ -298,7 +295,6 @@ h2 {
 }
 
 .parallax {
-  overflow-y: hidden;
   background-image: url('/img/categories_background.jpeg');
   background-position: center;
   padding-top: 40px;
