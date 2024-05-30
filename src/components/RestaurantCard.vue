@@ -32,7 +32,7 @@ export default{
       
       <div class="d-flex flex-column description-box">
         <h4 class="py-2 mb-4 ms-3">{{ restaurant.restaurant_name }}</h4>
-        <div class="text-center d-flex gap-2 ms-3">
+        <div class="text-center d-flex gap-2 flex-wrap ms-3">
           <div class="bg-pills text-white px-2 rounded-5" v-for="category in restaurant.categories">{{ category.category_name }}</div>
         </div>
       </div>

@@ -37,5 +37,7 @@ export default {
 
 
 <style>
-
+* {
+  overflow-x: hidden;
+}
 </style>
