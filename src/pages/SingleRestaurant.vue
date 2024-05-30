@@ -114,6 +114,10 @@ export default {
             const id = this.restaurantId;
             this.$router.push({ name: 'checkout', params: { id} })
         },
+
+        goBack() {
+            this.$router.go(-1);
+        }
         
 
     },
@@ -174,14 +178,17 @@ export default {
         </div>
     </div>
 
-    <div class="page pb-5 py-lg-5">
+    <div class="page pb-5 py-lg-2">
         <div class="container">
 
             <div class="row">
 
                 <div class="col-12 col-lg-8">
+                    <div class="mt-3">
+                        <a @click="goBack" class="mb-3"><i class="fa-solid fa-arrow-left"></i> indietro</a>
+                    </div>
 
-                    <h2 class="text-center fs-2 my-4 text-uppercase">Menù</h2>
+                    <h2 class="text-center fs-2 mt-2 mb-4 text-uppercase">Menù</h2>
 
                     <div class="dishes" v-for="dish in restaurant.dishes" :key="dish.id">
                         <div class="dish" type="button" data-bs-toggle="modal" data-bs-target="#addDish" @click="openModal(dish)" v-if="!dish.visible">
@@ -340,6 +347,17 @@ export default {
             
         }
     }
+}
+
+a {
+    color: #F65901;
+    cursor: pointer;
+    text-decoration: none;
+
+}
+a:hover {
+    color: #ffab24;
+    text-decoration: underline;
 }
 
 .page {

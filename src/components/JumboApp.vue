@@ -10,7 +10,7 @@ export default {
             <div class="d-flex justify-content-between align-items-center">
                 <!-- Titoli a sinistra -->
                 <div class="text-section p-3 rounded-4">
-                    <h1 class="fw-semibold">Hai Fame?</h1>
+                    <h1 class="fw-normal">Hai Fame?</h1>
                     <h2 class="fs-3 text-white fw-normal">Con un click, senza stress, il tuo pasto è un success</h2>
                 </div>
             </div>
