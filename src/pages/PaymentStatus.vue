@@ -32,6 +32,12 @@ export default {
         this.loading = false;
     },
 
+    methods: {
+        goBack() {
+            this.$router.go(-2);
+        }
+    },
+
     // computed: {
     //     paymentSuccess() {
     //         return this.paymentStatus.paymentSuccess;
@@ -69,7 +75,9 @@ export default {
     </div>
 </section>
 
-<div class="payment-box">
+<div class="payment-box ">
+    <a @click="goBack" class="back"><i class="fa-solid fa-arrow-left"></i>Torna al Ristorante</a>
+
     <!-- Loader -->
     <div v-if="loading" class="loader-box">
         <span class="loader"></span>
@@ -97,7 +105,10 @@ export default {
         <div v-else class="d-flex flex-column align-items-center justify-content-center payment-failed my-5">
             <i class="fa-solid fa-circle-xmark text-danger fs-1"></i>
             <h1 class="text-center my-4 text-danger">Pagamento Fallito</h1>
-            <p>{{ errorMessage }}</p>
+            <p class="text-center fs-5">
+                Siamo spiacenti, ma il tuo pagamento non è stato completato con successo. <br> Ti invitiamo a verificare i dati inseriti e a tentare nuovamente. <br>
+                Se riscontri ancora problemi, prova a utilizzare un altro metodo di pagamento o contattaci per ricevere assistenza.
+            </p>
         </div>
     </div>
 </div>
@@ -134,7 +145,20 @@ section {
 
 
 .payment-box {
-    // height: calc(100vh - 456.5px);
+    position: relative;
+    .back {
+        position: absolute;
+        top: -20px;
+        left: 15px;
+        color: #eb6b3e;
+        text-decoration: none;
+        transition: 0.1s;
+
+        &:hover {
+            cursor: pointer;
+            color: #ffab24;
+        }
+    }
 
     /* loader */
     .loader-box {
