@@ -34,7 +34,7 @@ section {
     .text-section {
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.6); 
+        background-color: #F17228; 
         z-index: 1;
     }
 
@@ -70,7 +70,7 @@ section {
     .text-section {
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.6); 
+        background-color: #F17228; 
         z-index: 1;
     }
 

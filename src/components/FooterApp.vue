@@ -93,7 +93,8 @@ watch: {
 
             <div class="row">
                 <div class="col-9 col-lg company">
-                    <span>Tutti i diritti riservati <i class="fa-regular fa-copyright"></i> <strong>Miriam Evardi, Mario Arista, Alan Omam, Pietro Antonio Nini</strong></span>   
+                    <span>Tutti i diritti riservati <i class="fa-regular fa-copyright"></i> <strong>
+                        <a class="text-decoration-none text-white link" href="https://github.com/MiriamEvardi" target="_blank">Miriam Evardi</a>, <a class="text-decoration-none text-white link" href="https://github.com/Mario-Arista" target="_blank">Mario Arista</a>, <a class="text-decoration-none text-white link" href="https://github.com/ALANOMAM" target="_blank">Alan Omam</a>, <a class="text-decoration-none text-white link" href="https://github.com/PietroAntonioNini" target="_blank">Pietro Antonio Nini</a></strong></span>   
                 </div>
                 <div class="col-3 col-lg made-by p-0 pe-3">
                     <span>Made with <i class="fa-solid fa-heart"></i> by <strong>Boolean</strong></span>
@@ -244,7 +245,10 @@ watch: {
             color: #F2AD3C;
         }
     }
+
 }
+
+    
 
 @media (max-width: 576px) {
     .footer {
