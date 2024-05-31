@@ -217,14 +217,16 @@ export default {
 
                             <div class="info-dish">
                                 <!-- Nome piatto -->
-                                <div class="title-dish">
+                                <div class="title-dish d-flex gap-3">
                                     <div class="fw-bold"> {{ dish.dish_name }} </div>
+
+                                    <!-- Prezzo piatto -->
+                                    <div class="price-dish badge rounded-pill">
+                                        <div class="fw-normal"> {{ dish.dish_price }} € </div>
+                                    </div>
                                 </div>
             
-                                <!-- Prezzo piatto -->
-                                <div class="price-dish badge rounded-pill">
-                                    <div class="fw-normal"> {{ dish.dish_price }} € </div>
-                                </div>
+                                
             
                                 <!-- Ingredienti piatto -->
                                 <div class="ingedients-dish">
@@ -397,14 +399,10 @@ a:hover {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            position: relative;
+
 
             .price-dish {
-                position: absolute;
-                top: 3px;
-                left: 450px;
-                font-size: 16px;
-                font-weight: 900;
+                font-size: 14px;
                 background-color: #F65901;
                 background: linear-gradient(to left, #F65901 0%, #ff8844 100%);
             }
@@ -540,16 +538,6 @@ a:hover {
     .page {
         .dish {
             .info-dish {
-                .price-dish {
-                    position: absolute;
-                    top: 3px;
-                    left: 450px;
-                    font-size: 16px;
-                    font-weight: 900;
-                    background-color: #F65901;
-                    background: linear-gradient(to left, #F65901 0%, #ff8844 100%);
-                }
-
                 .ingedients-dish {
                     margin-top: 5px;
                     font-size: 16px;
@@ -581,20 +569,8 @@ a:hover {
     .page {
         .dish {
             .info-dish {
-                .price-dish {
-                    position: absolute;
-                    top: 0px;
-                    left: 300px;
-                    font-size: 14px;
-                    font-weight: 900;
-                    background-color: #F65901;
-                    background: linear-gradient(to left, #F65901 0%, #ff8844 100%);
-                }
-
                 .ingedients-dish {
-                    margin-top: 5px;
                     font-size: 14px;
-                    color: #807f7f;
                 }
             }
         }
